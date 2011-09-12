@@ -3,7 +3,7 @@ Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 0.1a
+Stable tag: 0.2
 
 Adds shortcodes to display the content of a post or a list of posts.
 
@@ -11,11 +11,11 @@ Adds shortcodes to display the content of a post or a list of posts.
 
 This plugin adds two shortcodes that allow you to display either the content of a post or a list of posts within the content area of a post. This plugin should be fully compatible with all post types, as it simply uses the `get_post()` and `get_posts()` WordPress functions.
 
-= Post Content =
+**Post Content**
 
 The first shortcode is the `[post-content]` shortcode. Using that shortcode will allow you to display the content of one post within another post. This shortcode requires a single attribute with a key of "id". To use this shortcode to display the content of a post or page with an ID of 25, you would use this shortcode like `[post-content id=25]`.
 
-= Post List =
+**Post List**
 
 The second shortcode is the `[post-list]` shortcode. This shortcode does not require any arguments, but will accept the following arguments (most of which are the default arguments used with `get_posts()`):
 
@@ -109,5 +109,10 @@ Yes.
 
 == Changelog ==
 
+= 0.2 =
+
+* Attempted to fix issue with original readme file (no info from readme was showing up in the WordPress repo)
+
 = 0.1a =
+
 This is the first version of this plugin
