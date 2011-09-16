@@ -33,12 +33,39 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 * post_parent => null
 * post_status => 'publish'
 * exclude_current => true
+* blog_id => 0
 
-The last argument shown is not a standard argument for the `get_posts()` function. It is a custom argument for this plugin. When that argument is set to `true`, the current page or post will be excluded from the list of posts. If it is set to `false`, `"false"` or `0`, the current page or post will be included in the post list.
+The `exclude_current` argument is not a standard argument for the `get_posts()` function. It is a custom argument for this plugin. When that argument is set to `true`, the current page or post will be excluded from the list of posts. If it is set to `false`, `"false"` or `0`, the current page or post will be included in the post list.
+
+The `blog_id` argument is also not standard. That argument allows you to pull a post from a site other than the current site when using WordPress multisite. Simply set that argument to the ID of the site from which you want to pull the post, and the post with the `id` you specify will be pulled from the blog/site with the `blog_id` you specify.
 
 To read more about the other arguments, please [visit the codex page for the `get_posts()` function](http://codex.wordpress.org/Function_Reference/get_posts).
 
 If you are looking to display a list of attachments in a post, rather than displaying a list of posts or pages, you might want to check out the [List Attachments Shortcode plugin](http://wordpress.org/extend/plugins/list-attachments-shortcode/) instead.
+
+**Multisite - Pulling Posts From Another Blog**
+
+To pull a list of posts from another blog, simply provide the blog's ID as the `blog_id` argument in the shortcode. With that argument, this plugin will pull a list of posts that match the other criteria you provided. If the `blog_id` argument is provided, and the `blog_id` doesn't match the ID of the current blog, the `exclude_current` argument will be ignored (otherwise, this plugin would automatically exclude whatever post on the other blog happens to have the same ID as the current post).
+
+When the list is displayed, shortlinks (that blog's URL with `?p=[post_id]`) will be used, rather than the proper permalink, since it would require a lot more resources to build the proper permalink.
+
+The usage would look something like:
+
+`
+[post-list blog_id=12 post_type="page"]
+`
+
+When displaying a post list, you can use any `post_type` that is registered on that blog (that post_type does not have to be registered on the current site).
+
+To display the content of a single post from another blog, again, simply provide the blog's ID as the `blog_id` argument. That will pull the content of that post. Unfortunately, at this time, there is no way to invoke all of the plugins from the blog from which you're pulling the content, so any shortcodes, filters, etc. that may be active on the source blog will not be parsed when the content is displayed on the current blog. Obviously, if all of the same plugins and themes are active (or, if any plugins/themes that introduce shortcodes and filters are active) on both the source blog and the current blog, then there is nothing to worry about.
+
+The usage would look something like:
+
+`
+[post-content blog_id=12 id=25]
+`
+
+That would pull the content for the post with an ID of 25 from the blog with an ID of 12.
 
 == Installation ==
 
@@ -72,9 +99,29 @@ If that doesn't work, or if you prefer to install it manually, you have two opti
 
 = Must-Use Installation =
 
-If you would like to **force** this plugin to be active (generally only useful for Multi Site installations) without an option to deactivate it, you can upload the post-content-shortcodes.php to your /wp-content/mu-plugins folder. If that folder does not exist, you can safely create it. Make sure **not** to upload the post-content-shortcodes *folder* into your mu-plugins directory, as "Must Use" plugins must reside in the root mu-plugins directory in order to work.
+If you would like to **force** this plugin to be active (generally only useful for Multi Site installations) without an option to deactivate it, you can upload the post-content-shortcodes.php & class-post-content-shortcodes.php files to your /wp-content/mu-plugins folder. If the mu-plugins folder does not exist, you can safely create it. Make sure **not** to upload the post-content-shortcodes *folder* into your mu-plugins directory, as "Must Use" plugins must reside in the root mu-plugins directory in order to work.
 
 == Frequently Asked Questions ==
+
+= How do I use this plugin? =
+
+To display the content of a single post within another post, you want to use the `[post-content]` shortcode. To display the content of the post with an ID of 25, the usage would look like:
+
+`
+[post-content id=25]
+`
+
+To display a list of posts within another post, you want to use the `[post-list]` shortcode. To display a list of all pages (post_type=page) on this site, the usage would look like:
+
+`
+[post-list post_type="page"]
+`
+
+By default, this plugin will display **all** posts that match the specified criteria (except for the current post). To limit the number of posts that are displayed, you should add the `numberposts` argument to the shortcode. That would look like:
+
+`
+[post-list post_type="page" numberposts=15]
+`
 
 = Does the shortcode output any extra HTML? =
 
@@ -107,7 +154,32 @@ Yes.
 * If you would like to use a different set of default values for the shortcode arguments, you can hook into the `post-content-shortcodes-defaults` filter. The array of default arguments is passed to that filter before it gets used.
 * If you would like to alter the output of the `[post-content]` shortcode (for instance, to wrap it in an HTML container, or to add content before or after), you can hook into the `post-content-shortcodes-content` filter. The constructed HTML output is passed as the first parameter, and the WordPress post object is passed as a second parameter.
 
+= Why isn't the current post included in the list of posts? =
+
+By default, the `[post-list]` shortcode excludes the current post (since that would cause somewhat of a loop in the user's mind; clicking on a link in the page only to have the page reload with the same content). To allow the current post to be displayed in the list of posts, set the `exclude_current` argument to `0`. That might look something like:
+
+`
+[post-list exclude_current=0]
+`
+
+= How do I pull posts from another blog in the network? =
+
+Use the `blog_id` argument in the shortcode to indicate from which blog the posts should be pulled. This plugin does not have to be active on the source blog (the one from which you're pulling the post/list), it only needs to be active on the blog on which you're using the shortcode.
+
+= Will this plugin work in a multisite environment? =
+
+Yes. You can safely network-activate this plugin, or even use it as a mu-plugin.
+
+= Will this plugin work with multinetwork? =
+
+Yes. The way this plugin works, there is no distinction between multi-network & multisite. You can use the `blog_id` argument to pull posts from any site in the entire multi-network installation; regardless of which network they fall under.
+
 == Changelog ==
+
+= 0.3 =
+
+* Added ability to display content of a post from another site in a multisite installation
+* Added ability to list posts from another site in a multisite installation (uses shortlinks rather than permalinks)
 
 = 0.2 =
 
@@ -116,3 +188,9 @@ Yes.
 = 0.1a =
 
 This is the first version of this plugin
+
+== Upgrade Notice ==
+
+= 0.3 =
+
+* This is a feature update. It simply adds multisite functionality, allowing information to be pulled from a site other than the current site. If you are not using multisite, there is no rush to update.
