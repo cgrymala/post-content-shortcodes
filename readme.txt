@@ -22,7 +22,7 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 * numberposts => -1
 * offset => 0
 * category => null
-* orderby => post_title
+* orderby => title
 * order => asc
 * include => null
 * exclude => null
@@ -180,6 +180,8 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 
 * Added ability to display content of a post from another site in a multisite installation
 * Added ability to list posts from another site in a multisite installation (uses shortlinks rather than permalinks)
+* Fixed bug in orderby parameter of post-list shortcode
+* Reduced transient timeout from 24 hours to 1 hour
 
 = 0.2 =
 

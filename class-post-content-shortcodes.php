@@ -65,7 +65,7 @@ if( !class_exists( post_content_shortcodes ) ) {
 			
 			global $wpdb;
 			$org_blog = $wpdb->set_blog_id( $blog_id );
-			$p = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE ID=%d", $post_id ) );
+			$p = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE ID=%d", $post_id ) );
 			$wpdb->set_blog_id( $org_blog );
 			
 			set_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id, $p, 60 *60 );
@@ -159,7 +159,9 @@ if( !class_exists( post_content_shortcodes ) ) {
 				}
 			}
 			
-			unset( $atts['blog_id'] );
+			$atts['orderby'] = str_replace( 'post_', '', $atts['orderby'] );
+			
+			unset( $atts['blog_id'], $atts['exclude_current'] );
 			
 			return array_filter( $atts );
 		}
