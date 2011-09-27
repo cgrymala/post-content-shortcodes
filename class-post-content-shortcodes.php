@@ -3,7 +3,7 @@
  * The class setup for post-content-shortcodes plugin
  * @version 0.3
  */
-if( !class_exists( post_content_shortcodes ) ) {
+if( !class_exists( 'post_content_shortcodes' ) ) {
 	/**
 	 * Class and methods to implement various shortcodes for cloning content
 	 */
@@ -33,6 +33,12 @@ if( !class_exists( post_content_shortcodes ) ) {
 			
 			add_shortcode( 'post-content', array( &$this, 'post_content' ) );
 			add_shortcode( 'post-list', array( &$this, 'post_list' ) );
+			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+		}
+		
+		function register_widgets() {
+			register_widget( 'pcs_list_widget' );
+			register_widget( 'pcs_content_widget' );
 		}
 		
 		/**
@@ -49,7 +55,7 @@ if( !class_exists( post_content_shortcodes ) ) {
 			
 			$p = $this->get_post_from_blog( $id, $blog_id );
 			if( empty( $p ) || is_wp_error( $p ) )
-				return;
+				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
 			
 			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $p->post_content ), $p );
 		}
@@ -82,7 +88,7 @@ if( !class_exists( post_content_shortcodes ) ) {
 			
 			$posts = $this->get_posts_from_blog( $atts, $atts['blog_id'] );
 			if( empty( $posts ) )
-				return apply_filters( 'post-content-shortcodes-no-posts-error', '', $this->get_args( $atts ) );
+				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
 			
 			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list">' );
 			foreach( $posts as $p ) {

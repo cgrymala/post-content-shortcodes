@@ -182,6 +182,7 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 * Added ability to list posts from another site in a multisite installation (uses shortlinks rather than permalinks)
 * Fixed bug in orderby parameter of post-list shortcode
 * Reduced transient timeout from 24 hours to 1 hour
+* Added widgets to plugin (one to display a list of posts and one to display a single post)
 
 = 0.2 =
 
