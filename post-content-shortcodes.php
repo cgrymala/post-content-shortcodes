@@ -11,19 +11,22 @@ License: GPL2
 /**
  * Pull in the post_content_shortcodes class definition file
  */
-if( !class_exists( post_content_shortcodes ) )
-	require_once( 'class-post-content-shortcodes.php' );
+if( !class_exists( 'post_content_shortcodes' ) )
+	require_once( 'class-post-content-shortcodes-admin.php' );
 if( !class_exists( 'pcs_widget' ) )
 	require_once( 'class-post-content-widgets.php' );
 
 /**
  * Initiate the post_content_shortcodes object
  */
-add_action( 'init', 'init_post_content_shortcodes' );
-add_action( 'widgets_init', array( 'post_content_shortcodes', 'register_widgets' ) );
+add_action( 'init', 'init_post_content_shortcodes', 1 );
+/*add_action( 'widgets_init', array( 'post_content_shortcodes', 'register_widgets' ) );*/
 
 function init_post_content_shortcodes() {
 	global $post_content_shortcodes_obj;
-	return $post_content_shortcodes_obj = new post_content_shortcodes;
+	if( is_admin() )
+		return $post_content_shortcodes_obj = new post_content_shortcodes_admin;
+	else
+		return $post_content_shortcodes_obj = new post_content_shortcodes;
 }
 ?>

@@ -8,10 +8,27 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 	 * Class and methods to implement various shortcodes for cloning content
 	 */
 	class post_content_shortcodes {
+		/**
+		 * A container to hold our default shortcode attributes
+		 */
 		var $defaults	= array();
+		/**
+		 * A container to hold our global plugin settings
+		 */
+		var $settings	= array( 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false );
 		
+		/**
+		 * Build the post_content_shortcodes object
+		 */
 		function __construct() {
+			$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
+			
 			global $blog_id;
+			/**
+			 * Set up the default values for our shortcode attributes
+			 * These attributes are used for both shortcodes
+			 * @uses apply_filters() to allow filtering the list with the post-content-shortcodes-defaults filter
+			 */
 			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', array(
 				'id'			=> 0,
 				'post_type'		=> 'post',
@@ -34,11 +51,59 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			add_shortcode( 'post-content', array( &$this, 'post_content' ) );
 			add_shortcode( 'post-list', array( &$this, 'post_list' ) );
 			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+			
+			/**
+			 * Set up the various admin options items
+			 */
+			add_action( 'admin_init', array( &$this, 'admin_init' ) );
+			if( $this->is_multinetwork() )
+				add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
+			elseif( $this->is_plugin_active_for_network() )
+				add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
+			else
+				add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 		}
 		
+		/**
+		 * Determine whether this is a multinetwork install or not
+		 */
+		function is_multinetwork() {
+			return function_exists( 'is_multinetwork' ) && function_exists( 'add_mnetwork_option' ) && is_multinetwork();
+		}
+		
+		/**
+		 * Determine whether this plugin is network active in a multisite install
+		 */
+		function is_plugin_active_for_network() {
+			return function_exists( 'is_plugin_active_for_network' ) && is_multisite() && is_plugin_active_for_network( $this->plugin_dir_name );
+		}
+		
+		/**
+		 * Retrieve our options from the database
+		 */
+		protected function _get_options() {
+			if( $this->is_multinetwork() )
+				$this->settings = get_mnetwork_option( 'pcs-settings', array() );
+			elseif( $this->is_plugin_active_for_network() )
+				$this->settings = get_site_option( 'pcs-settings', array() );
+			else
+				$this->settings = get_option( 'pcs-settings', array() );
+			
+			if( empty( $this->settings ) )
+				$this->settings = array( 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false );
+			
+			return;
+		}
+		
+		/**
+		 * Register the two widgets
+		 */
 		function register_widgets() {
-			register_widget( 'pcs_list_widget' );
-			register_widget( 'pcs_content_widget' );
+			$this->_get_options();
+			if( 'on' == $this->settings['enable-pcs-list-widget'] )
+				register_widget( 'pcs_list_widget' );
+			if( 'on' == $this->settings['enable-pcs-content-widget'] )
+				register_widget( 'pcs_content_widget' );
 		}
 		
 		/**
