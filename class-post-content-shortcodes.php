@@ -15,7 +15,9 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 		/**
 		 * A container to hold our global plugin settings
 		 */
-		var $settings	= array( 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false );
+		var $settings 	= array();
+		var $stock_settings	= array( 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false, 'use-styles' => true );
+		var $use_styles = true;
 		
 		/**
 		 * Build the post_content_shortcodes object
@@ -46,11 +48,17 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 				'post_parent'	=> null,
 				'exclude_current'=> true,
 				'blog_id'		=> $blog_id,
+				'show_image'	=> false,
+				'show_excerpt'	=> false,
+				'excerpt_length'=> 0,
+				'image_width'	=> 0,
+				'image_height'	=> 0,
 			) );
 			
 			add_shortcode( 'post-content', array( &$this, 'post_content' ) );
 			add_shortcode( 'post-list', array( &$this, 'post_list' ) );
 			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
 			
 			/**
 			 * Set up the various admin options items
@@ -62,6 +70,15 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 				add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
 			else
 				add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		}
+		
+		/**
+		 * Enqueue the stylesheet
+		 */
+		function print_styles() {
+			$this->_get_options();
+			if( $this->settings['use-styles'] )
+				wp_enqueue_style( 'pcs-styles', plugins_url( 'default-styles.css', __FILE__ ), array(), '0.3', 'screen' );
 		}
 		
 		/**
@@ -89,9 +106,7 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			else
 				$this->settings = get_option( 'pcs-settings', array() );
 			
-			if( empty( $this->settings ) )
-				$this->settings = array( 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false );
-			
+			$this->settings = array_merge( $this->stock_settings, $this->settings );
 			return;
 		}
 		
@@ -150,17 +165,41 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 		function post_list( $atts=array() ) {
 			$atts = shortcode_atts( $this->defaults, $atts );
 			$this->is_true( $atts['exclude_current'] );
+			$this->is_true( $atts['show_excerpt'] );
+			$this->is_true( $atts['show_image'] );
 			
 			$posts = $this->get_posts_from_blog( $atts, $atts['blog_id'] );
 			if( empty( $posts ) )
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
 			
-			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list">' );
+			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">' );
 			foreach( $posts as $p ) {
 				$output .= apply_filters( 'post-content-shortcodes-open-item', '<li class="listed-post">' );
-				$output .= apply_filters( 'post-content-shortcodes-item-link-open', '<a href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">', apply_filters( 'the_permalink', get_permalink( $p->ID ) ), apply_filters( 'the_title_attribute', $p->post_title ) );
+				$output .= apply_filters( 'post-content-shortcodes-item-link-open', '<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">', apply_filters( 'the_permalink', get_permalink( $p->ID ) ), apply_filters( 'the_title_attribute', $p->post_title ) );
 				$output .= apply_filters( 'the_title', $p->post_title );
 				$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>' );
+				if( $atts['show_excerpt'] ) {
+					$output .= '<div class="pcs-excerpt-wrapper">';
+				}
+				if( $atts['show_image'] && has_post_thumbnail( $p->ID ) ) {
+					if( empty( $atts['image_height'] ) && empty( $atts['image_width'] ) )
+						$image_size = 'thumbnail';
+					else
+						$image_size = array( $atts['image_width'], $atts['image_height'] );
+					$output .= get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => 'pcs-featured-image' ) );
+				}
+				if( $atts['show_excerpt'] ) {
+					$excerpt = empty( $p->post_excerpt ) ? $p->post_content : $p->post_excerpt;
+					if( !empty( $atts['excerpt_length'] ) && is_numeric( $atts['excerpt_length'] ) ) {
+						$excerpt = apply_filters( 'the_excerpt', $excerpt );
+						if( str_word_count( $excerpt ) > $atts['excerpt_length'] ) {
+							$excerpt = explode( ' ', $excerpt );
+							$excerpt = implode( ' ', array_slice( $excerpt, 0, ( $atts['excerpt_length'] - 1 ) ) );
+							$excerpt = force_balance_tags( $excerpt );
+						}
+					}
+					$output .= '<div class="pcs-excerpt">' . $excerpt . '</div></div>';
+				}
 				$output .= apply_filters( 'post-content-shortcodes-close-item', '</li>' );
 			}
 			$output .= apply_filters( 'post-content-shortcodes-close-list', '</ul>' );

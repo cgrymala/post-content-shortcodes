@@ -44,6 +44,7 @@ if( !class_exists( 'post_content_shortcodes_admin' ) ) {
 			add_settings_field( 'enable-pcs-content-widget', __( 'Enable the post content widget?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-content-widget' ) );
 			add_settings_field( 'enable-pcs-list-widget', __( 'Enable the post list widget?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-list-widget' ) );
 			/*add_settings_field( 'enable-pcs-ajax', __( 'Enable experimental AJAX features?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-ajax' ) );*/
+			add_settings_field( 'use-styles', __( 'Enable the default stylesheet?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'use-styles' ) );
 		}
 		
 		/**
@@ -88,6 +89,11 @@ if( !class_exists( 'post_content_shortcodes_admin' ) ) {
 				case 'enable-pcs-ajax':
 ?>
 	<p class="note"><?php _e( 'Experimental feature that attempts to retrieve lists of posts based on the criteria specified; making it easier to find the right post ID. If enabled, this feature will be available in any enabled PCS widgets, as well as the Visual Editor button.' ) ?></p>
+<?php
+					break;
+				case 'use-styles':
+?>
+	<p class="note"><?php _e( 'Some default styles are included with the plugin to help style the lists of posts. If you would like to use these default styles, check this box. If you want to apply your own styles, uncheck this box.' ) ?></p>
 <?php
 					break;
 			}
