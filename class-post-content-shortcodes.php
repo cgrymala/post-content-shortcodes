@@ -46,6 +46,7 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 				'meta_value'	=> null,
 				'post_mime_type'=> null,
 				'post_parent'	=> null,
+				/* Non-standard arguments */
 				'exclude_current'=> true,
 				'blog_id'		=> $blog_id,
 				'show_image'	=> false,

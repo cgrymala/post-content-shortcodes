@@ -34,10 +34,21 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 * post_status => 'publish'
 * exclude_current => true
 * blog_id => 0
+* show_image => false
+* show_excerpt => false
+* excerpt_length => 0
+* image_width => 0
+* image_height => 0
+
+The first 13 arguments are standard arguments for the `get_posts()` function.
 
 The `exclude_current` argument is not a standard argument for the `get_posts()` function. It is a custom argument for this plugin. When that argument is set to `true`, the current page or post will be excluded from the list of posts. If it is set to `false`, `"false"` or `0`, the current page or post will be included in the post list.
 
 The `blog_id` argument is also not standard. That argument allows you to pull a post from a site other than the current site when using WordPress multisite. Simply set that argument to the ID of the site from which you want to pull the post, and the post with the `id` you specify will be pulled from the blog/site with the `blog_id` you specify.
+
+The `show_image`, `image_width` and `image_height` arguments only apply to the `post-list` shortcode. They determine whether to display the featured image and how to display it for each post within the list. If the `image_width` and `image_height` arguments are both set to 0 (which is the default), the "thumbnail" size will be used (assuming the `show_image` argument is set to 1 or "true").
+
+The 'show_excerpt` and `excerpt_length` arguments also apply only to the post-list shortcode. If you set `show_excerpt` to 1 or "true", the post excerpt will be shown if it exists. If it doesn't exist (or is empty), the post content will be shown (with HTML stripped out of it). You can truncate the length of the excerpts that are shown in the post list by setting the `excerpt_length` value. The `excerpt_length` is measured in words, so if you would like each excerpt to display no more than 50 words, you would set the `excerpt_length` parameter to 50. If you leave it set to 0 (which is the default), the entire excerpt or content will be shown in the post list.
 
 To read more about the other arguments, please [visit the codex page for the `get_posts()` function](http://codex.wordpress.org/Function_Reference/get_posts).
 
