@@ -14,7 +14,11 @@ ul.post-list>li {
 	margin: 0 0 1em;
 	padding: 0;
 	break-inside: avoid-column;
+	-moz-break-inside: avoid-column;
+	column-break-inside: avoid;
 	-webkit-column-break-inside: avoid;
+	-moz-column-break-inside: avoid;
+	-o-column-break-inside: avoid;
 	border-bottom: 1px dotted #666;
 }
 
@@ -24,11 +28,17 @@ ul.post-list>li {
 
 .post-list.with-excerpt {
 	column-count: 2;
-	column-gap: 1em;
-	column-rule: dashed;
+	column-gap: 3em;
+	column-rule: 1px dotted #666;
 	-webkit-column-count: 2;
 	-webkit-column-gap: 3em;
 	-webkit-column-rule: 1px dotted #666;
+	-moz-column-count: 2;
+	-moz-column-gap: 3em;
+	-moz-column-rule: 1px dotted #666;
+	-o-column-count: 2;
+	-o-column-gap: 3em;
+	-o-column-rule: 1px dotted #666;
 }
 
 .pcs-excerpt-wrapper {
