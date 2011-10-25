@@ -199,7 +199,7 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 							$excerpt = force_balance_tags( $excerpt );
 						}
 					}
-					$output .= '<div class="pcs-excerpt">' . $excerpt . '</div></div>';
+					$output .= '<div class="pcs-excerpt">' . apply_filters( 'the_content', $excerpt ) . '</div></div>';
 				}
 				$output .= apply_filters( 'post-content-shortcodes-close-item', '</li>' );
 			}
