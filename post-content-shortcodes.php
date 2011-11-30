@@ -8,7 +8,7 @@ Author: cgrymala
 Author URI: http://ten-321.com/
 License: GPL2
 */
-if( !class_exists( post_content_shortcodes ) ) {
+if( !class_exists( 'post_content_shortcodes' ) ) {
 	/**
 	 * Class and methods to implement various shortcodes for cloning content
 	 */
