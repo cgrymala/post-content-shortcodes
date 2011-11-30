@@ -13,7 +13,13 @@ This plugin adds two shortcodes that allow you to display either the content of 
 
 **Post Content**
 
-The first shortcode is the `[post-content]` shortcode. Using that shortcode will allow you to display the content of one post within another post. This shortcode requires a single attribute with a key of "id". To use this shortcode to display the content of a post or page with an ID of 25, you would use this shortcode like `[post-content id=25]`.
+The first shortcode is the `[post-content]` shortcode. Using that shortcode will allow you to display the content of one post within another post. This shortcode requires a single attribute with a key of "id". To use this shortcode to display the content of a post or page with an ID of 25, you would use this shortcode like `[post-content id=25]`. This shortcode also accepts the following optional arguments:
+
+* show_image => false - Determines whether or not to display the featured image (if so, this appears before the content)
+* show_excerpt => false - Determines whether to default to showing the post excerpt instead of the post content (still falls back to post content if the excerpt is not set)
+* excerpt_length => 0 - If you would like to limit the length of the content/excerpt shown on the page, specify the maximum number of words that should be shown (a read more link will automatically be appended to any entries that exceed that limit).
+* image_width => 0 - The width, in pixels, to which the featured image should be sized
+* image_height => 0 - The height, in pixels, to which the featured image should be sized
 
 **Post List**
 
@@ -164,6 +170,9 @@ Yes.
 * If the `[post-list]` shortcode retrieves an empty list of posts/pages, it will normally return an empty string (so as not to disrupt the flow of the page). However, you can have the shortcode output a custom error message by hooking into the `post-content-shortcodes-no-posts-error` filter.
 * If you would like to use a different set of default values for the shortcode arguments, you can hook into the `post-content-shortcodes-defaults` filter. The array of default arguments is passed to that filter before it gets used.
 * If you would like to alter the output of the `[post-content]` shortcode (for instance, to wrap it in an HTML container, or to add content before or after), you can hook into the `post-content-shortcodes-content` filter. The constructed HTML output is passed as the first parameter, and the WordPress post object is passed as a second parameter.
+* If you would like to change the "Read More" link used in the `[post-content]` shortcode (if you are limiting the length of the content/excerpt), you can use the `post-content-shortcodes-read-more` filter to do so.
+* If you would like to modify the class used on the featured image (if appropriate), you can use the `post-content-shortcodes-image-class` to do that.
+* By default, the plugin uses 'thumbnail' as the size of the featured image. If you would like to use a different registered size, you can change that with the `post-content-shortcodes-default-image-size` filter.
 
 = Why isn't the current post included in the list of posts? =
 
@@ -194,6 +203,9 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 * Fixed bug in orderby parameter of post-list shortcode
 * Reduced transient timeout from 24 hours to 1 hour
 * Added widgets to plugin (one to display a list of posts and one to display a single post)
+* Added ability to display excerpt instead of content in post-content shortcode
+* Added ability to limit length of content/excerpt shown in post-content shortcode
+* Added ability to display featured image with post-content
 
 = 0.2 =
 
@@ -207,4 +219,8 @@ This is the first version of this plugin
 
 = 0.3 =
 
-* This is a feature update. It simply adds multisite functionality, allowing information to be pulled from a site other than the current site. If you are not using multisite, there is no rush to update.
+* This is a feature update. It adds quite a few new functions to the plugin, including the ability to pull posts across sites within a multisite environment.
+
+== To Do ==
+
+* Add AJAX features to allow user to choose from a list of posts/sites, instead of requiring them to manually enter the ID

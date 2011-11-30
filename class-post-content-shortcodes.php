@@ -138,7 +138,30 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			if( empty( $p ) || is_wp_error( $p ) )
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
 			
-			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $p->post_content ), $p );
+			$this->is_true( $show_excerpt );
+			$this->is_true( $show_image );
+			
+			if ( $show_excerpt ) {
+				$content = empty( $p->post_excerpt ) ? $p->post_content : $p->post_excerpt;
+			}
+			
+			if ( intval( $excerpt_length ) && intval( $excerpt_length ) < str_word_count( $content ) ) {
+				$content = explode( ' ', $content );
+				$content = implode( ' ', array_slice( $content, 0, ( intval( $excerpt_length ) - 1 ) ) );
+				$content = force_balance_tags( $content );
+				$content .= apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more' ) . '</a></span>' );
+			}
+			
+			if ( $show_image ) {
+				if ( empty( $image_height ) && empty( $image_width ) )
+					$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail' );
+				else
+					$image_size = array( intval( $image_width ), intval( $image_height ) );
+					
+				$content = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ) ) . $content;
+			}
+			
+			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content ), $p );
 		}
 		
 		function get_post_from_blog( $post_id=0, $blog_id=0 ) {
