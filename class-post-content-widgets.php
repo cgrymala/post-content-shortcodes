@@ -135,6 +135,7 @@ if( !class_exists( 'pcs_widget' ) ) {
 			$instance['type']	= 'content';
 			$instance['id']		= isset( $new_instance['id'] ) ? absint( $new_instance['id'] ) : 0;
 			$instance['blog_id']= isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];
+			$instance['show_excerpt'] = true;
 			return $instance;
 		}
 	}
