@@ -1,7 +1,7 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.3
+ * @version 0.3.1
  */
 if( !class_exists( 'post_content_shortcodes' ) ) {
 	/**
@@ -140,6 +140,8 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			
 			$this->is_true( $show_excerpt );
 			$this->is_true( $show_image );
+			
+			$content = $p->post_content;
 			
 			if ( $show_excerpt ) {
 				$content = empty( $p->post_excerpt ) ? $p->post_content : $p->post_excerpt;

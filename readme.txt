@@ -196,6 +196,10 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 
 == Changelog ==
 
+= 0.3.1 =
+
+* Urgent bugfix (post-content shortcode wasn't showing content)
+
 = 0.3 =
 
 * Added ability to display content of a post from another site in a multisite installation
@@ -216,6 +220,10 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 This is the first version of this plugin
 
 == Upgrade Notice ==
+
+= 0.3.1 =
+
+* Fixes major bug in previous version, where content wasn't displayed with post-content shortcode.
 
 = 0.3 =
 
