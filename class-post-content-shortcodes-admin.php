@@ -4,17 +4,17 @@
  * @version 0.3
  */
 
-if( !class_exists( 'post_content_shortcodes' ) )
+if( !class_exists( 'Post_Content_Shortcodes' ) )
 	/**
 	 * Make sure the parent class exists
 	 */
 	require_once( 'class-post-content-shortcodes.php' );
 
-if( !class_exists( 'post_content_shortcodes_admin' ) ) {
+if( !class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 	/**
 	 * Define the admin child class for post_content_shortcodes
 	 */
-	class post_content_shortcodes_admin extends post_content_shortcodes {
+	class Post_Content_Shortcodes_Admin extends Post_Content_Shortcodes {
 		var $settings_page		= 'post-content-shortcodes';
 		var $settings_section	= 'post-content-shortcodes-section';
 		

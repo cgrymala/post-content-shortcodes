@@ -1,13 +1,13 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.3.1
+ * @version 0.3.2
  */
-if( !class_exists( 'post_content_shortcodes' ) ) {
+if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 	/**
 	 * Class and methods to implement various shortcodes for cloning content
 	 */
-	class post_content_shortcodes {
+	class Post_Content_Shortcodes {
 		/**
 		 * A container to hold our default shortcode attributes
 		 */
@@ -117,9 +117,9 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 		function register_widgets() {
 			$this->_get_options();
 			if( 'on' == $this->settings['enable-pcs-list-widget'] )
-				register_widget( 'pcs_list_widget' );
+				register_widget( 'PCS_List_Widget' );
 			if( 'on' == $this->settings['enable-pcs-content-widget'] )
-				register_widget( 'pcs_content_widget' );
+				register_widget( 'PCS_Content_Widget' );
 		}
 		
 		/**
@@ -133,6 +133,12 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			 */
 			if( $id == $GLOBALS['post']->ID || empty( $id ) )
 				return;
+			
+			/**
+			 * Output a little debug info if necessary
+			 */
+			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || isset( $_REQUEST['pcs-debug'] ) )
+				error_log( '[PCS Debug]: Preparing to retrieve post content with the following args: ' . print_r( $atts, true ) );
 			
 			$p = $this->get_post_from_blog( $id, $blog_id );
 			if( empty( $p ) || is_wp_error( $p ) )
@@ -160,10 +166,27 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 				else
 					$image_size = array( intval( $image_width ), intval( $image_height ) );
 					
-				$content = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ) ) . $content;
+				$content = $this->get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ), $blog_id ) . $content;
 			}
 			
 			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content ), $p );
+		}
+		
+		/**
+		 * Retrieve the featured image HTML for the current post
+		 */
+		function get_the_post_thumbnail( $post_ID, $image_size = 'thumbnail', $attr = array(), $blog_id = 0 ) {
+			if ( empty( $blog_id ) || (int) $blog_id === (int) $GLOBALS['blog_id'] )
+				return get_the_post_thumbnail( $post_ID, $image_ise, $attr );
+			if ( ! is_numeric( $post_ID ) || ! is_numeric( $blog_id ) )
+				return '';
+			
+			global $wpdb;
+			$old = $wpdb->set_blog_id( $blog_id );
+			$post_thumbnail_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key=%s AND post_id=%d LIMIT 1", '_thumbnail_id', $post_ID ) );
+			$html = wp_get_attachment_image( $post_thumbnail_id, $image_size, false, $attr );
+			$wpdb->set_blog_id( $old );
+			return $html;
 		}
 		
 		function get_post_from_blog( $post_id=0, $blog_id=0 ) {
@@ -180,7 +203,7 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			$p = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE ID=%d", $post_id ) );
 			$wpdb->set_blog_id( $org_blog );
 			
-			set_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id, $p, 60 *60 );
+			set_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id, $p, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );
 			
 			return $p;
 		}
@@ -194,6 +217,12 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			$this->is_true( $atts['show_excerpt'] );
 			$this->is_true( $atts['show_image'] );
 			
+			/**
+			 * Output a little debug info if necessary
+			 */
+			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || isset( $_REQUEST['pcs-debug'] ) )
+				error_log( '[PCS Debug]: Preparing to retrieve post list with the following args: ' . print_r( $atts, true ) );
+				
 			$posts = $this->get_posts_from_blog( $atts, $atts['blog_id'] );
 			if( empty( $posts ) )
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
@@ -242,7 +271,7 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			if( $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || !is_numeric( $blog_id ) )
 				return get_posts( $args );
 			
-			if( false !== ( $p = get_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( $args ) ) ) )
+			if( false !== ( $p = get_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) ) ) )
 				return $p;
 			
 			global $wpdb;
@@ -250,7 +279,7 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			$p = get_posts( $args );
 			$wpdb->set_blog_id( $org_blog );
 			
-			set_transient( 'pcsc-list-blog'. $blog_id . '-args' . md5( $args ), $p, 60 * 60 );
+			set_transient( 'pcsc-list-blog'. $blog_id . '-args' . md5( maybe_serialize( $args ) ), $p, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );
 			return $p;
 		}
 		
@@ -298,6 +327,12 @@ if( !class_exists( 'post_content_shortcodes' ) ) {
 			$atts['orderby'] = str_replace( 'post_', '', $atts['orderby'] );
 			
 			unset( $atts['blog_id'], $atts['exclude_current'] );
+			
+			/**
+			 * Output a little debug info if necessary
+			 */
+			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || isset( $_REQUEST['pcs-debug'] ) )
+				error_log( '[PCS Debug]: Preparing to return filtered args: ' . print_r( $atts, true ) );
 			
 			return array_filter( $atts );
 		}

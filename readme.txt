@@ -196,6 +196,12 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 
 == Changelog ==
 
+= 0.3.2 =
+
+* Fix bug with the way post-list transients were stored (and therefore retrieved)
+* Update class names to better match [WP Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards)
+* Add `pcsc-transient-timeout` filter for transient timeout (to allow shorter or longer caching of data)
+
 = 0.3.1 =
 
 * Urgent bugfix (post-content shortcode wasn't showing content)
