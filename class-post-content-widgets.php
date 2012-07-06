@@ -5,16 +5,16 @@
  * @subpackage Post Content Shortcodes
  * @version 0.3
  */
-if( !class_exists( 'pcs_widget' ) ) {
+if( !class_exists( 'PCS_Widget' ) ) {
 	/**
-	 * Class definition for the generic pcs_widget parent class.
+	 * Class definition for the generic PCS_Widget parent class.
 	 * Must be overridden by either the list or content widget class.
 	 */
-	class pcs_widget extends WP_Widget {
+	class PCS_Widget extends WP_Widget {
 		var $defaults = array();
 		var $blog_list = false;
 		
-		function pcs_widget() {
+		function PCS_Widget() {
 		}
 		
 		function __construct() {
@@ -94,8 +94,8 @@ if( !class_exists( 'pcs_widget' ) ) {
 	/**
 	 * Class definition for the Post Content Shortcodes "Content" widget
 	 */
-	class pcs_content_widget extends pcs_widget {
-		function pcs_content_widget() {
+	class PCS_Content_Widget extends PCS_Widget {
+		function PCS_Content_Widget() {
 			return self::__construct();
 		}
 		
@@ -143,8 +143,8 @@ if( !class_exists( 'pcs_widget' ) ) {
 	/**
 	 * Class definition for the Post Content Shortcodes "List" widget
 	 */
-	class pcs_list_widget extends pcs_widget {
-		function pcs_list_widget() {
+	class PCS_List_Widget extends PCS_Widget {
+		function PCS_List_Widget() {
 			return self::__construct();
 		}
 		

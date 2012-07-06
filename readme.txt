@@ -3,7 +3,7 @@ Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 0.3
+Stable tag: 0.3.2
 
 Adds shortcodes to display the content of a post or a list of posts.
 
@@ -195,6 +195,12 @@ Yes. You can safely network-activate this plugin, or even use it as a mu-plugin.
 Yes. The way this plugin works, there is no distinction between multi-network & multisite. You can use the `blog_id` argument to pull posts from any site in the entire multi-network installation; regardless of which network they fall under.
 
 == Changelog ==
+
+= 0.3.2 =
+
+* Fix bug with the way post-list transients were stored (and therefore retrieved)
+* Update class names to better match [WP Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards)
+* Add `pcsc-transient-timeout` filter for transient timeout (to allow shorter or longer caching of data)
 
 = 0.3.1 =
 
