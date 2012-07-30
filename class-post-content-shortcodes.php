@@ -53,7 +53,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				'show_excerpt'	=> false,
 				'excerpt_length'=> 0,
 				'image_width'	=> 0,
-				'image_height'	=> 0,
+				'image_height'	=> 0, 
+				'show_title'    => false, 
 			) );
 			
 			add_shortcode( 'post-content', array( &$this, 'post_content' ) );
@@ -146,6 +147,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$this->is_true( $show_excerpt );
 			$this->is_true( $show_image );
+			$this->is_true( $show_title );
 			
 			$content = $p->post_content;
 			
@@ -168,6 +170,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					
 				$content = $this->get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ), $blog_id ) . $content;
 			}
+			
+			if ( $show_title )
+				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $post->post_title . '</h2>', $post->post_title ) . $content;
 			
 			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content ), $p );
 		}
@@ -216,6 +221,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->is_true( $atts['exclude_current'] );
 			$this->is_true( $atts['show_excerpt'] );
 			$this->is_true( $atts['show_image'] );
+			$this->is_true( $atts['show_title'] );
 			
 			/**
 			 * Output a little debug info if necessary

@@ -20,6 +20,7 @@ The first shortcode is the `[post-content]` shortcode. Using that shortcode will
 * excerpt_length => 0 - If you would like to limit the length of the content/excerpt shown on the page, specify the maximum number of words that should be shown (a read more link will automatically be appended to any entries that exceed that limit).
 * image_width => 0 - The width, in pixels, to which the featured image should be sized
 * image_height => 0 - The height, in pixels, to which the featured image should be sized
+* show_title => false - Whether or not to show the post title at the top of the content. By default, the title is wrapped in `<h2>` tags, but you can use the `post-content-shortcodes-title` filter to modify the title output.
 
 **Post List**
 
@@ -201,6 +202,7 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 * Fix bug with the way post-list transients were stored (and therefore retrieved)
 * Update class names to better match [WP Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards)
 * Add `pcsc-transient-timeout` filter for transient timeout (to allow shorter or longer caching of data)
+* Add ability to display title at top of `post-content` shortcode using the `show_title` attribute.
 
 = 0.3.1 =
 
