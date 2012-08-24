@@ -197,6 +197,11 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 
 == Changelog ==
 
+= 0.3.3 =
+
+* Fix bug with the number of posts returned by `post_list` shortcode
+* Attempt to add tax_query args to `post_list` shortcode
+
 = 0.3.2 =
 
 * Fix bug with the way post-list transients were stored (and therefore retrieved)

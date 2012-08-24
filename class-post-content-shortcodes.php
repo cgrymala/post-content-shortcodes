@@ -200,6 +200,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) )
 				return get_post( $post_id );
 			
+			if ( isset( $_GET['delete_transients'] ) )
+				delete_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id );
+			
 			if( false !== ( $p = get_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id ) ) )
 				return $p;
 			
@@ -217,7 +220,16 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Handle the shortcode to display a list of posts
 		 */
 		function post_list( $atts=array() ) {
+			$args = $atts;
 			$atts = shortcode_atts( $this->defaults, $atts );
+			$atts['posts_per_page'] = $atts['numberposts'];
+			
+			$args = array_diff_key( $args, $atts );
+			$atts['tax_query'] = array();
+			foreach ( $args as $k => $v ) {
+				$atts['tax_query'][] = array( 'taxonomy' => $k, 'field' => 'slug', 'terms' => $v );
+			}
+			
 			$this->is_true( $atts['exclude_current'] );
 			$this->is_true( $atts['show_excerpt'] );
 			$this->is_true( $atts['show_image'] );
@@ -277,11 +289,19 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || !is_numeric( $blog_id ) )
 				return get_posts( $args );
 			
+			if ( isset( $_GET['delete_transients'] ) )
+				delete_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) );
+			
 			if( false !== ( $p = get_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) ) ) )
 				return $p;
 			
 			global $wpdb;
 			$org_blog = $wpdb->set_blog_id( $blog_id );
+			if ( array_key_exists( 'tax_query', $args ) && is_array( $args['tax_query'] ) ) {
+				foreach ( $args['tax_query'] as $t ) {
+					register_taxonomy( $t['taxonomy'] );
+				}
+			}
 			$p = get_posts( $args );
 			$wpdb->set_blog_id( $org_blog );
 			
