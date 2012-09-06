@@ -55,6 +55,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				'image_width'	=> 0,
 				'image_height'	=> 0, 
 				'show_title'    => false, 
+				'show_author'   => false, 
+				'show_date'     => false, 
 			) );
 			
 			add_shortcode( 'post-content', array( &$this, 'post_content' ) );
@@ -148,6 +150,15 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->is_true( $show_excerpt );
 			$this->is_true( $show_image );
 			$this->is_true( $show_title );
+			$this->is_true( $show_author );
+			$this->is_true( $show_date );
+			
+			$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
+			$post_author = get_userdata( $p->post_author );
+			if ( empty( $post_author ) || ! is_object( $post_author ) || ! isset( $post_author->display_name ) ) {
+				$post_author = (object) array( 'display_name' => '' );
+				$show_author = false;
+			}
 			
 			$content = $p->post_content;
 			
@@ -170,6 +181,13 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					
 				$content = $this->get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ), $blog_id ) . $content;
 			}
+			
+			if ( $show_date && $show_author )
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p ) . $content;
+			elseif ( $show_date )
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on %2$s' ), $post_author->display_name, $post_date ) . '</p>', $p ) . $content;
+			elseif ( $show_author )
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by %s' ), $post_author->display_name, $post_date ) . '</p>', $p ) . $content;
 			
 			if ( $show_title )
 				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $post->post_title . '</h2>', $post->post_title ) . $content;
@@ -234,6 +252,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->is_true( $atts['show_excerpt'] );
 			$this->is_true( $atts['show_image'] );
 			$this->is_true( $atts['show_title'] );
+			$this->is_true( $atts['show_author'] );
+			$this->is_true( $atts['show_date'] );
 			
 			/**
 			 * Output a little debug info if necessary
@@ -247,10 +267,26 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">' );
 			foreach( $posts as $p ) {
+				$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
+				$post_author = get_userdata( $p->post_author );
+				$show_author = $atts['show_author'];
+				if ( empty( $post_author ) || ! is_object( $post_author ) || ! isset( $post_author->display_name ) ) {
+					$post_author = (object) array( 'display_name' => '' );
+					$show_author = false;
+				}
+				
 				$output .= apply_filters( 'post-content-shortcodes-open-item', '<li class="listed-post">' );
 				$output .= apply_filters( 'post-content-shortcodes-item-link-open', '<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">', apply_filters( 'the_permalink', get_permalink( $p->ID ) ), apply_filters( 'the_title_attribute', $p->post_title ) );
 				$output .= apply_filters( 'the_title', $p->post_title );
 				$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>' );
+				if ( $atts['show_author'] && $atts['show_date'] ) {
+					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p );
+				} elseif ( $atts['show_date'] ) {
+					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p );
+				} elseif ( $atts['show_author'] ) {
+					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>' ), $post_author->display_name, $post_date ) . '</p>', $p );
+				}
+				
 				if( $atts['show_excerpt'] ) {
 					$output .= '<div class="pcs-excerpt-wrapper">';
 				}
@@ -327,10 +363,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Determine whether a variable evaluates to boolean true
 		 */
 		function is_true( &$var ) {
-			if( in_array( $var, array( 'false', false, 0 ), true ) )
+			if( in_array( $var, array( 'false', false, 0, '0' ), true ) )
 				return $var = false;
-			if( in_array( $var, array( 'true', true, 1 ), true ) )
+			if( in_array( $var, array( 'true', true, 1, '1' ), true ) )
 				return $var = true;
+			
+			$var = false;
 		}
 		
 		/**
