@@ -177,7 +177,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		function get_the_post_thumbnail( $post_ID, $image_size = 'thumbnail', $attr = array(), $blog_id = 0 ) {
 			if ( empty( $blog_id ) || (int) $blog_id === (int) $GLOBALS['blog_id'] )
-				return get_the_post_thumbnail( $post_ID, $image_ise, $attr );
+				return get_the_post_thumbnail( $post_ID, $image_size, $attr );
 			if ( ! is_numeric( $post_ID ) || ! is_numeric( $blog_id ) )
 				return '';
 			

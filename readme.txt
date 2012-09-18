@@ -3,7 +3,7 @@ Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 0.3.2
+Stable tag: 0.3.2.1
 
 Adds shortcodes to display the content of a post or a list of posts.
 
@@ -196,6 +196,10 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 
 == Changelog ==
 
+= 0.3.2.1 =
+
+* Fix image size bug introduced in 0.3.2
+
 = 0.3.2 =
 
 * Fix bug with the way post-list transients were stored (and therefore retrieved)
@@ -226,6 +230,10 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 This is the first version of this plugin
 
 == Upgrade Notice ==
+
+= 0.3.2.1 =
+
+* Quick fix for image size bug
 
 = 0.3.1 =
 
