@@ -40,6 +40,11 @@ if( !class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * Perform any actions that should only occur in the admin area
 		 */
 		function admin_init() {
+			/**
+			 * Skip this step until we have the options page set up correctly
+			 */
+			return;
+			
 			register_setting( 'pcs-settings', $this->settings_section, array( $this, 'sanitize_settings' ) );
 			add_settings_section( $this->settings_section, __( 'Post Content Shortcodes' ), array( $this, 'settings_section' ), $this->settings_page );
 			add_settings_field( 'enable-pcs-content-widget', __( 'Enable the post content widget?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-content-widget' ) );
@@ -52,6 +57,11 @@ if( !class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * Add the options page to the appropriate menu in the admin area
 		 */
 		function admin_menu() {
+			/**
+			 * Skip this step until we have the options page set up correctly
+			 */
+			return;
+			
 			if( $this->is_multinetwork() )
 				add_submenu_page( 'index.php', __( 'Post Content Shortcodes Settings' ), __( 'Post Content Shortcodes' ), 'manage_network_plugins', $this->settings_page, array( $this, 'admin_page' ) );
 			elseif( $this->is_plugin_active_for_network() )

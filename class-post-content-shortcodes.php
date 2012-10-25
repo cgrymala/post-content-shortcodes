@@ -190,7 +190,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by %s' ), $post_author->display_name, $post_date ) . '</p>', $p ) . $content;
 			
 			if ( $show_title )
-				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $post->post_title . '</h2>', $post->post_title ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title ) . $content;
 			
 			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content ), $p );
 		}
@@ -239,6 +239,13 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		function post_list( $atts=array() ) {
 			$args = $atts;
+			
+			/** 
+			 * Set this shortcode to display the post title by default
+			 */
+			if ( ! array_key_exists( 'show_title', $atts ) )
+				$atts['show_title'] = true;
+			
 			$atts = shortcode_atts( $this->defaults, $atts );
 			$atts['posts_per_page'] = $atts['numberposts'];
 			
@@ -276,9 +283,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				}
 				
 				$output .= apply_filters( 'post-content-shortcodes-open-item', '<li class="listed-post">' );
-				$output .= apply_filters( 'post-content-shortcodes-item-link-open', '<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">', apply_filters( 'the_permalink', get_permalink( $p->ID ) ), apply_filters( 'the_title_attribute', $p->post_title ) );
-				$output .= apply_filters( 'the_title', $p->post_title );
-				$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>' );
+				if ( $atts['show_title'] ) {
+					$output .= apply_filters( 'post-content-shortcodes-item-link-open', '<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">', apply_filters( 'the_permalink', get_permalink( $p->ID ) ), apply_filters( 'the_title_attribute', $p->post_title ) );
+					$output .= apply_filters( 'the_title', $p->post_title );
+					$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>' );
+				}
 				if ( $atts['show_author'] && $atts['show_date'] ) {
 					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p );
 				} elseif ( $atts['show_date'] ) {
