@@ -316,7 +316,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 							$excerpt = force_balance_tags( $excerpt );
 						}
 					}
-					$output .= '<div class="pcs-excerpt">' . apply_filters( 'the_content', $excerpt ) . '</div></div>';
+					$output .= '<div class="pcs-excerpt">' . apply_filters( 'post-content-shortcodes-list-excerpt', apply_filters( 'the_content', $excerpt ), $p ) . '</div></div>';
 				}
 				$output .= apply_filters( 'post-content-shortcodes-close-item', '</li>' );
 			}
