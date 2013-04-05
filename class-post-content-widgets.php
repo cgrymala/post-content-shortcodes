@@ -14,9 +14,6 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		var $defaults = array();
 		var $blog_list = false;
 		
-		function PCS_Widget() {
-		}
-		
 		function __construct() {
 			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', array(
 				'id'			=> 0,
@@ -46,6 +43,8 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			
 			extract( $args );
 			$title = apply_filters( 'widget_title', $instance['title'] );
+			if ( 'content' == $instance['type'] && $instance['show_title'] )
+				$title = null;
 			
 			echo $before_widget;
 			if( $title )
@@ -57,6 +56,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 					echo $post_content_shortcodes_obj->post_content( $instance );
 					break;
 				case 'list':
+					unset( $instance['type'] );
 					echo $post_content_shortcodes_obj->post_list( $instance );
 					break;
 			}
@@ -110,6 +110,10 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
+?>
+<p><label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Widget Title:' ) ?></label> 
+	<input type="text" class="widefat" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/></p>
+<?php
 			if( $this->blog_list ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'Show post from which blog?' ) ?></label>
@@ -128,6 +132,18 @@ if( !class_exists( 'PCS_Widget' ) ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'id' ) ?>"><?php _e( 'Post ID:' ) ?></label>
 	<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'id' ) ?>" name="<?php echo $this->get_field_name( 'id' ) ?>" value="<?php echo $instance['id'] ?>"/></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_title' ) ?>"><?php _e( 'Display the post\'s title, rather than using the widget title specified above?' ) ?></label></p>
+<p><label for="<?php echo $this->get_field_id( 'excerpt_length' ) ?>"><?php _e( 'Excerpt Length (in words):' ) ?></label> 
+	<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'excerpt_length' ) ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ) ?>" value="<?php echo $instance['excerpt_length'] ?>"/></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ) ?>" id="<?php echo $this->get_field_id( 'show_image' ) ?>" value="1"<?php checked( $instance['show_image'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_image' ) ?>"><?php _e( 'Include featured image with content?' ) ?></label></p>
+<p><label for="<?php echo $this->get_field_id( 'image_width' ) ?>"><?php _e( 'Width:' ) ?></label> 
+	<input type="number" id="<?php echo $this->get_field_id( 'image_width' ) ?>" name="<?php echo $this->get_field_name( 'image_width' ) ?>" value="<?php echo intval( $instance['image_width'] ) ?>"/><br/>x<br/> 
+    <label for="<?php echo $this->get_field_id( 'image_height' ) ?>"><?php _e( 'Height:' ) ?></label> 
+	<input type="number" id="<?php echo $this->get_field_id( 'image_height' ) ?>" name="<?php echo $this->get_field_name( 'image_height' ) ?>" value="<?php echo intval( $instance['image_height'] ) ?>"/></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude this widget from the page/post that this widget displays?' ) ?></label></p>
 <?php
 		}
 		
@@ -136,6 +152,13 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$instance['id']		= isset( $new_instance['id'] ) ? absint( $new_instance['id'] ) : 0;
 			$instance['blog_id']= isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];
 			$instance['show_excerpt'] = true;
+			$instance['excerpt_length'] = isset( $new_instance['excerpt_length'] ) ? absint( $new_instance['excerpt_length'] ) : 0;
+			$instance['show_image'] = isset( $new_instance['show_image'] );
+			$instance['image_width'] = isset( $new_instance['image_width'] ) && is_numeric( $new_instance['image_width'] ) && ! empty( $new_instance['image_width'] ) ? intval( $new_instance['image_width'] ) : null;
+			$instance['image_height'] = isset( $new_instance['image_height'] ) && is_numeric( $new_instance['image_height'] ) && ! empty( $new_instance['image_height'] ) ? intval( $new_instance['image_height'] ) : null;
+			$instance['exclude_current'] = isset( $new_instance['exclude_current'] ) ? true : 'Do not exclude';
+			$instance['show_title'] = isset( $new_instance['show_title'] );
+			$instance['title'] = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
 			return $instance;
 		}
 	}
@@ -159,6 +182,10 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
+?>
+<p><label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Widget Title:' ) ?></label> 
+	<input type="text" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/></p>
+<?php
 			if( $this->blog_list ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'List posts from which blog?' ) ?></label>
@@ -225,21 +252,22 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			}
 ?>
     </select></p>
-<p><input type="checkbox" name="<?php $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"/>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
 	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude the post being viewed from the list of posts?' ) ?></label></p>
 <?php
 		}
 		
 		function update( $new_instance, $old_instance ) {
+			$instance['title']          = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
 			$instance['type'] 			= 'list';
 			$instance['blog_id']		= isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];
 			$instance['post_type']		= isset( $new_instance['post_type'] ) ? $new_instance['post_type'] : null;
-			$instance['post_parent']	= isset( $new_instance['post_parent'] ) ? absint( $new_instance['post_parent'] ) : 0;
+			$instance['post_parent']	= isset( $new_instance['post_parent'] ) && ! empty( $new_instance['post_parent'] ) ? absint( $new_instance['post_parent'] ) : null;
 			$instance['orderby']		= isset( $new_instance['orderby'] ) ? $new_instance['orderby'] : null;
 			$instance['order']			= isset( $new_instance['order'] ) ? $new_instance['order'] : 'ASC';
-			$instance['numberposts']	= isset( $new_instance['numberposts'] ) ? $new_instance['numberposts'] : 0;
+			$instance['numberposts']	= isset( $new_instance['numberposts'] ) ? intval( $new_instance['numberposts'] ) : 0;
 			$instance['post_status']	= isset( $new_instance['post_status'] ) ? $new_instance['post_status'] : 'publish';
-			$instance['exclude_current']= isset( $new_instance['exclude_current'] ) ? true : false;
+			$instance['exclude_current'] = isset( $new_instance['exclude_current'] );
 			
 			return $instance;
 		}

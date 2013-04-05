@@ -2,7 +2,7 @@
 Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
 Requires at least: 3.0
-Tested up to: 3.2.1
+Tested up to: 3.6
 Stable tag: 0.3.2.1
 
 Adds shortcodes to display the content of a post or a list of posts.
@@ -28,7 +28,7 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 
 * numberposts => -1
 * offset => 0
-* category => null
+* category => null (can accept category slug [with quotes] or category ID [without quotes])
 * orderby => title
 * order => asc
 * include => null
@@ -40,7 +40,7 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 * post_parent => null
 * post_status => 'publish'
 * exclude_current => true
-* blog_id => 0
+* blog_id => 0 (the numeric ID of the site from which to pull the posts)
 * show_image => false
 * show_excerpt => false
 * excerpt_length => 0
@@ -53,9 +53,9 @@ The `exclude_current` argument is not a standard argument for the `get_posts()` 
 
 The `blog_id` argument is also not standard. That argument allows you to pull a post from a site other than the current site when using WordPress multisite. Simply set that argument to the ID of the site from which you want to pull the post, and the post with the `id` you specify will be pulled from the blog/site with the `blog_id` you specify.
 
-The `show_image`, `image_width` and `image_height` arguments only apply to the `post-list` shortcode. They determine whether to display the featured image and how to display it for each post within the list. If the `image_width` and `image_height` arguments are both set to 0 (which is the default), the "thumbnail" size will be used (assuming the `show_image` argument is set to 1 or "true").
+The `show_image`, `image_width` and `image_height` arguments only apply to the `post-list` shortcode. They determine whether to display the featured image and how to display it for each post within the list. If the `image_width` and `image_height` arguments are both set to 0 (which is the default), the "thumbnail" size will be used (assuming the `show_image` argument is set to 1 or "true"). If only one of the `image_width` or `image_height` arguments are set, the other argument will be set to 999999 to ensure that the specified dimension is met.
 
-The 'show_excerpt` and `excerpt_length` arguments also apply only to the post-list shortcode. If you set `show_excerpt` to 1 or "true", the post excerpt will be shown if it exists. If it doesn't exist (or is empty), the post content will be shown (with HTML stripped out of it). You can truncate the length of the excerpts that are shown in the post list by setting the `excerpt_length` value. The `excerpt_length` is measured in words, so if you would like each excerpt to display no more than 50 words, you would set the `excerpt_length` parameter to 50. If you leave it set to 0 (which is the default), the entire excerpt or content will be shown in the post list.
+The 'show_excerpt` and `excerpt_length` arguments also apply to the post-list shortcode. If you set `show_excerpt` to 1 or "true", the post excerpt will be shown if it exists. If it doesn't exist (or is empty), the post content will be shown (with HTML stripped out of it). You can truncate the length of the excerpts that are shown in the post list by setting the `excerpt_length` value. The `excerpt_length` is measured in words, so if you would like each excerpt to display no more than 50 words, you would set the `excerpt_length` parameter to 50. If you leave it set to 0 (which is the default), the entire excerpt or content will be shown in the post list. In the `post-list` shortcode, if `show_excerpt` is set to 0 or false, no content will be shown in the list (as opposed to the behavior of the `show_excerpt` parameter in the `post-content` shortcode).
 
 To read more about the other arguments, please [visit the codex page for the `get_posts()` function](http://codex.wordpress.org/Function_Reference/get_posts).
 
@@ -195,12 +195,20 @@ Yes. You can safely network-activate this plugin, or even use it as a mu-plugin.
 
 Yes. The way this plugin works, there is no distinction between multi-network & multisite. You can use the `blog_id` argument to pull posts from any site in the entire multi-network installation; regardless of which network they fall under.
 
+= Why is my page getting all messed up when I use this? =
+
+There is a known issue where HTML (especially [caption] shortcodes) within the excerpt can break the entire page. In order to avoid this, be sure to place the <!-- more --> tag above the [caption] shortcode within the posts being pulled into the post-list shortcode.
+
 == Changelog ==
 
 = 0.3.3 =
 
 * Fix bug with the number of posts returned by `post_list` shortcode
 * Attempt to add tax_query args to `post_list` shortcode
+* Fix bug with category parameter
+* Test compatibility with 3.6
+* Fix image size bug when only width or height is defined (previously, the other dimension defaulted to 0; now, it defaults to 9999999px, instead, to ensure that the specified dimension is used)
+* Start to flesh out the widgets a little more
 
 = 0.3.2.1 =
 
