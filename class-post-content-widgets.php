@@ -3,7 +3,7 @@
  * Class definitions for the widgets made available by the post-content-shortcodes WordPress plugin
  * @package WordPress
  * @subpackage Post Content Shortcodes
- * @version 0.3
+ * @version 0.3.4
  */
 if( !class_exists( 'PCS_Widget' ) ) {
 	/**
@@ -32,6 +32,32 @@ if( !class_exists( 'PCS_Widget' ) ) {
 				'meta_key'		=> null,
 				'meta_value'	=> null,
 				'post_mime_type'=> null,
+				// Whether or not to display the featured image
+				'show_image'	=> false,
+				// The maximum width of the featured image to be displayed
+				'image_width'	=> 0,
+				// The maximum height of the featured image to be displayed
+				'image_height'	=> 0, 
+				// Whether or not to show the content/excerpt of the post(s)
+				'show_excerpt'	=> false,
+				// The maximum length (in words) of the excerpt
+				'excerpt_length'=> 0,
+				// Whether or not to show the title with the post(s)
+				'show_title'    => false, 
+				// Whether or not to show the author's name with the post(s)
+				'show_author'   => false, 
+				// Whether or not to show the date when the post was published
+				'show_date'     => false, 
+				/* Added 0.3.3 */
+				// Whether or not include the list of comments
+				'show_comments' => false, 
+				// Whether or not to show the "read more" link at the end of the excerpt
+				'read_more' => false, 
+				// Whether to include shortcodes in the post content/excerpt
+				'shortcodes' => false, 
+				/* Added 0.3.4 */
+				// Whether to strip out all HTML from the content/excerpt
+				'strip_html' => false, 
 			) );
 		}
 		
@@ -72,7 +98,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			
 			$this->blog_list = array();
 			global $wpdb;
-			$blogs = $wpdb->get_col( $wpdb->prepare( "SELECT blog_id FROM {$wpdb->blogs} ORDER BY blog_id" ) );
+			$blogs = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs} ORDER BY blog_id" );
 			foreach( $blogs as $blog ) {
 				if( empty( $org_blog ) )
 					$org_blog = $wpdb->set_blog_id( $blog );
@@ -89,6 +115,56 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		
 		function update() {
 		}
+		
+		function common_fields( $instance=array() ) {
+?>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_title' ) ?>"><?php _e( 'Display the post title?' ) ?></label></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ) ?>" id="<?php echo $this->get_field_id( 'show_image' ) ?>" value="1"<?php checked( $instance['show_image'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_image' ) ?>"><?php _e( 'Display the featured image with the post?' ) ?></label></p>
+<p><?php _e( 'Image Dimensions' ) ?><br/>
+	<label for="<?php echo $this->get_field_id( 'image_width' ) ?>"><?php _e( 'Width: ' ) ?></label>
+		<input type="number" value="<?php echo intval( $instance['image_width'] ) ?>" name="<?php echo $this->get_field_name( 'image_width' ) ?>" id="<?php echo $this->get_field_id( 'image_width' ) ?>"/><?php _e( 'px' ) ?>
+	<?php _e( ' x ' ) ?>
+	<label for="<?php echo $this->get_field_id( 'image_height' ) ?>"><?php _e( 'Height: ' ) ?></label> 
+		<input type="number" value="<?php echo intval( $instance['image_height'] ) ?>" name="<?php echo $this->get_field_name( 'image_height' ) ?>" id="<?php echo $this->get_field_id( 'image_height' ) ?>"/><?php _e( 'px' ) ?></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_excerpt' ) ?>" id="<?php echo $this->get_field_id( 'show_excerpt' ) ?>" value="1"<?php checked( $instance['show_excerpt'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'show_excerpt' ) ?>"><?php _e( 'Display an excerpt of the post content?' ) ?></label></p>
+<p><label for="<?php echo $this->get_field_id( 'excerpt_length' ) ?>"><?php _e( 'Limit the excerpt to how many words?' ) ?></label> 
+	<input type="number" value="<?php echo $instance['excerpt_length'] ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ) ?>" id="<?php echo $this->get_field_id( 'excerpt_length' ) ?>"/><br/>
+	<em><?php _e( 'Leave set to 0 if you do not want the excerpts limited.' ) ?></em></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'read_more' ) ?>" id="<?php echo $this->get_field_id( 'read_more' ) ?>" value="1"<?php checked( $instance['read_more'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'read_more' ) ?>"><?php _e( 'Include a "Read more" link?' ) ?></label></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'shortcodes' ) ?>" id="<?php echo $this->get_field_id( 'shortcodes' ) ?>" value="1"<?php checked( $instance['shortcodes'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'shortcodes' ) ?>"><?php _e( 'Allow shortcodes inside of the excerpt?' ) ?></label></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'strip_html' ) ?>" id="<?php echo $this->get_field_id( 'strip_html' ) ?>" value="1"<?php checked( $instance['strip_html'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'strip_html' ) ?>"><?php _e( 'Attempt to strip all HTML out of the excerpt?' ) ?></label></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_author' ) ?>" id="<?php echo $this->get_field_id( 'show_author' ) ?>" value="1"<?php checked( $instance['show_author'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_author' ) ?>"><?php _e( 'Display the author\'s name?' ) ?></label></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_date' ) ?>" id="<?php echo $this->get_field_id( 'show_date' ) ?>" value="1"<?php checked( $instance['show_date'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_date' ) ?>"><?php _e( 'Display the publication date?' ) ?></label></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_comments' ) ?>" id="<?php echo $this->get_field_id( 'show_comments' ) ?>" value="1"<?php checked( $instance['show_comments'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_comments' ) ?>"><?php _e( 'Display comments with the post?' ) ?></label></p>
+<?php
+		}
+		
+		function get_common_values( $new_instance=array() ) {
+			$instance = array();
+			$instance['show_title'] = array_key_exists( 'show_title', $new_instance ) ? true : false;
+			$instance['show_image'] = array_key_exists( 'show_image', $new_instance ) ? true : false;
+			$instance['show_excerpt'] = array_key_exists( 'show_excerpt', $new_instance ) ? true : false;
+			$instance['read_more'] = array_key_exists( 'read_more', $new_instance ) ? true : false;
+			$instance['shortcodes'] = array_key_exists( 'shortcodes', $new_instance ) ? true : false;
+			$instance['strip_html'] = array_key_exists( 'strip_html', $new_instance ) ? true : false;
+			$instance['show_author'] = array_key_exists( 'show_author', $new_instance ) ? true : false;
+			$instance['show_date'] = array_key_exists( 'show_date', $new_instance ) ? true : false;
+			$instance['show_comments'] = array_key_exists( 'show_comments', $new_instance ) ? true : false;
+			$instance['excerpt_length'] = array_key_exists( 'excerpt_length', $new_instance ) && is_numeric( $new_instance['excerpt_length'] ) ? intval( $new_instance['excerpt_length'] ) : 0;
+			$instance['image_width'] = array_key_exists( 'image_width', $new_instance ) && is_numeric( $new_instance['image_width'] ) ? intval( $new_instance['image_width'] ) : 0;
+			$instance['image_height'] = array_key_exists( 'image_height', $new_instance ) && is_numeric( $new_instance['image_height'] ) ? intval( $new_instance['image_height'] ) : 0;
+			
+			return $instance;
+		}
 	}
 	
 	/**
@@ -103,7 +179,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			parent::__construct();
 			
 			$widget_ops = array( 'classname' => 'pcs-content-widget', 'description' => 'Display the content of a single post.' );
-			$control_ops = array( 'id_base' => 'pcs-content-widget' );
+			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-content-widget' );
 			parent::WP_Widget( 'pcs-content-widget', 'Post Content Widget', $widget_ops, $control_ops );
 		}
 		
@@ -132,32 +208,18 @@ if( !class_exists( 'PCS_Widget' ) ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'id' ) ?>"><?php _e( 'Post ID:' ) ?></label>
 	<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'id' ) ?>" name="<?php echo $this->get_field_name( 'id' ) ?>" value="<?php echo $instance['id'] ?>"/></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_title' ) ?>"><?php _e( 'Display the post\'s title, rather than using the widget title specified above?' ) ?></label></p>
-<p><label for="<?php echo $this->get_field_id( 'excerpt_length' ) ?>"><?php _e( 'Excerpt Length (in words):' ) ?></label> 
-	<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'excerpt_length' ) ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ) ?>" value="<?php echo $instance['excerpt_length'] ?>"/></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ) ?>" id="<?php echo $this->get_field_id( 'show_image' ) ?>" value="1"<?php checked( $instance['show_image'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_image' ) ?>"><?php _e( 'Include featured image with content?' ) ?></label></p>
-<p><label for="<?php echo $this->get_field_id( 'image_width' ) ?>"><?php _e( 'Width:' ) ?></label> 
-	<input type="number" id="<?php echo $this->get_field_id( 'image_width' ) ?>" name="<?php echo $this->get_field_name( 'image_width' ) ?>" value="<?php echo intval( $instance['image_width'] ) ?>"/><br/>x<br/> 
-    <label for="<?php echo $this->get_field_id( 'image_height' ) ?>"><?php _e( 'Height:' ) ?></label> 
-	<input type="number" id="<?php echo $this->get_field_id( 'image_height' ) ?>" name="<?php echo $this->get_field_name( 'image_height' ) ?>" value="<?php echo intval( $instance['image_height'] ) ?>"/></p>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/> 
 	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude this widget from the page/post that this widget displays?' ) ?></label></p>
 <?php
+			$this->common_fields( $instance );
 		}
 		
 		function update( $new_instance, $old_instance ) {
+			$instance = $this->get_common_values( $new_instance );
 			$instance['type']	= 'content';
 			$instance['id']		= isset( $new_instance['id'] ) ? absint( $new_instance['id'] ) : 0;
 			$instance['blog_id']= isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];
-			$instance['show_excerpt'] = true;
-			$instance['excerpt_length'] = isset( $new_instance['excerpt_length'] ) ? absint( $new_instance['excerpt_length'] ) : 0;
-			$instance['show_image'] = isset( $new_instance['show_image'] );
-			$instance['image_width'] = isset( $new_instance['image_width'] ) && is_numeric( $new_instance['image_width'] ) && ! empty( $new_instance['image_width'] ) ? intval( $new_instance['image_width'] ) : null;
-			$instance['image_height'] = isset( $new_instance['image_height'] ) && is_numeric( $new_instance['image_height'] ) && ! empty( $new_instance['image_height'] ) ? intval( $new_instance['image_height'] ) : null;
 			$instance['exclude_current'] = isset( $new_instance['exclude_current'] ) ? true : 'Do not exclude';
-			$instance['show_title'] = isset( $new_instance['show_title'] );
 			$instance['title'] = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
 			return $instance;
 		}
@@ -175,7 +237,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			parent::__construct();
 			
 			$widget_ops = array( 'classname' => 'pcs-list-widget', 'description' => 'Display a filtered list of posts/pages.' );
-			$control_ops = array( 'id_base' => 'pcs-list-widget' );
+			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-list-widget' );
 			parent::WP_Widget( 'pcs-list-widget', 'Post List Widget', $widget_ops, $control_ops );
 		}
 		
@@ -255,9 +317,12 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
 	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude the post being viewed from the list of posts?' ) ?></label></p>
 <?php
+			$this->common_fields( $instance );
 		}
 		
 		function update( $new_instance, $old_instance ) {
+			$instance = $this->get_common_values( $new_instance );
+			
 			$instance['title']          = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
 			$instance['type'] 			= 'list';
 			$instance['blog_id']		= isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];

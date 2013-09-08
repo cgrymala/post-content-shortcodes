@@ -3,7 +3,7 @@
 Plugin Name: Post Content Shortcodes
 Plugin URI: http://plugins.ten-321.com/post-content-shortcodes/
 Description: Adds shortcodes to show the content of another post or to show a list of posts
-Version: 0.3.3
+Version: 0.3.4
 Author: cgrymala
 Author URI: http://ten-321.com/
 License: GPL2
@@ -11,9 +11,9 @@ License: GPL2
 /**
  * Pull in the post_content_shortcodes class definition file
  */
-if( !class_exists( 'Post_Content_Shortcodes' ) )
+if( ! class_exists( 'Post_Content_Shortcodes' ) )
 	require_once( 'class-post-content-shortcodes-admin.php' );
-if( !class_exists( 'PCS_Widget' ) )
+if( ! class_exists( 'PCS_Widget' ) )
 	require_once( 'class-post-content-widgets.php' );
 
 /**

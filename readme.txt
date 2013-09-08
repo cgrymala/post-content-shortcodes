@@ -15,6 +15,7 @@ This plugin adds two shortcodes that allow you to display either the content of 
 
 The first shortcode is the `[post-content]` shortcode. Using that shortcode will allow you to display the content of one post within another post. This shortcode requires a single attribute with a key of "id". To use this shortcode to display the content of a post or page with an ID of 25, you would use this shortcode like `[post-content id=25]`. This shortcode also accepts the following optional arguments:
 
+* post_name => null - The slug of the post that you want to pull. This can be used in place of the `id` attribute
 * show_image => false - Determines whether or not to display the featured image (if so, this appears before the content)
 * show_excerpt => false - Determines whether to default to showing the post excerpt instead of the post content (still falls back to post content if the excerpt is not set)
 * excerpt_length => 0 - If you would like to limit the length of the content/excerpt shown on the page, specify the maximum number of words that should be shown (a read more link will automatically be appended to any entries that exceed that limit).
@@ -40,7 +41,8 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 * post_parent => null
 * post_status => 'publish'
 * exclude_current => true
-* blog_id => 0 (the numeric ID of the site from which to pull the posts)
+* ~~blog_id => 0 (the numeric ID of the site from which to pull the posts)~~
+* blog => null (can be set to the numeric ID or the blog name [slug] of the site from which to pull the posts - this replaces the old blog_id attribute)
 * show_image => false
 * show_excerpt => false
 * excerpt_length => 0
@@ -123,10 +125,16 @@ If you would like to **force** this plugin to be active (generally only useful f
 
 = How do I use this plugin? =
 
-To display the content of a single post within another post, you want to use the `[post-content]` shortcode. To display the content of the post with an ID of 25, the usage would look like:
+To display the content of a single post within another post, you want to use the `[post-content]` shortcode. To display the content of the post with an ID of 25 and a slug of 'this-is-my-cool-post', the usage would look like:
 
 `
 [post-content id=25]
+`
+
+or
+
+`
+[post-content post_name="this-is-my-cool-post"]
 `
 
 To display a list of posts within another post, you want to use the `[post-list]` shortcode. To display a list of all pages (post_type=page) on this site, the usage would look like:
@@ -185,11 +193,21 @@ By default, the `[post-list]` shortcode excludes the current post (since that wo
 
 = How do I pull posts from another blog in the network? =
 
-Use the `blog_id` argument in the shortcode to indicate from which blog the posts should be pulled. This plugin does not have to be active on the source blog (the one from which you're pulling the post/list), it only needs to be active on the blog on which you're using the shortcode.
+Use the `blog` attribute to specify which site/blog the post should be pulled from. The `blog` attribute can accept a blog ID (numeric) or a blog name (the slug of the blog).
 
 = Will this plugin work in a multisite environment? =
 
-Yes. You can safely network-activate this plugin, or even use it as a mu-plugin.
+Yes. You can safely network-activate this plugin, or even use it as a mu-plugin. To pull a post with a slug of 'this-is-my-cool-post' from a blog with an ID of 10 and a slug of 'mycoolsite', the usage would look something like:
+
+`
+[post-content post_name="this-is-my-cool-post" blog=10]
+`
+
+or
+
+`
+[post-content post_name="this-is-my-cool-post" blog="mycoolsite"]
+`
 
 = Will this plugin work with multinetwork? =
 
@@ -200,6 +218,21 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 There is a known issue where HTML (especially [caption] shortcodes) within the excerpt can break the entire page. In order to avoid this, be sure to place the <!-- more --> tag above the [caption] shortcode within the posts being pulled into the post-list shortcode.
 
 == Changelog ==
+
+= 0.3.4 =
+
+* Implement admin options for plugin
+* Implement post content widget
+* Implement post list widget
+* Allow disabling default styles
+* Attempt to fix issue with unbalanced shortcodes and HTML tags in post excerpts
+* Add shortcode option to strip all HTML from post excerpts
+* Begin implementing option to show comments with posts
+* Remove manual database calls in favor of new, optimized `switch_to_blog()`
+* Improve performance
+* Fix bug that stopped images from being displayed on cross-site post lists
+* Added ability to specify blog name (slug) rather than blog ID to pull posts from another site
+* Added ability to specify post slug rather than post ID to pull post
 
 = 0.3.3 =
 
@@ -245,6 +278,11 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 This is the first version of this plugin
 
 == Upgrade Notice ==
+
+= 0.3.4 =
+
+* Implemented post content and post list widgets
+* Added feature to allow choosing blog and post by slug, rather than ID
 
 = 0.3.2.1 =
 
