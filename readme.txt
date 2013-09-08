@@ -281,6 +281,7 @@ This is the first version of this plugin
 
 = 0.3.4 =
 
+* Added plugin settings, allowing users to disable default style sheet
 * Implemented post content and post list widgets
 * Added feature to allow choosing blog and post by slug, rather than ID
 
