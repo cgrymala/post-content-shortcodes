@@ -58,6 +58,9 @@ if( !class_exists( 'PCS_Widget' ) ) {
 				/* Added 0.3.4 */
 				// Whether to strip out all HTML from the content/excerpt
 				'strip_html' => false, 
+				/* Added 0.3.4 */
+				// Allow the specification of a post name instead of ID
+				'post_name' => null
 			) );
 		}
 		
@@ -206,8 +209,13 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <?php
 			}
 ?>
-<p><label for="<?php echo $this->get_field_id( 'id' ) ?>"><?php _e( 'Post ID:' ) ?></label>
-	<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'id' ) ?>" name="<?php echo $this->get_field_name( 'id' ) ?>" value="<?php echo $instance['id'] ?>"/></p>
+<fieldset style="padding: 5px; margin: 5px; border: 1px solid #999">
+	<p><label for="<?php echo $this->get_field_id( 'id' ) ?>"><?php _e( 'Post ID:' ) ?></label>
+		<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'id' ) ?>" name="<?php echo $this->get_field_name( 'id' ) ?>" value="<?php echo $instance['id'] ?>"/></p>
+		<p><?php _e( 'OR' ) ?></p>
+	<p><label for="<?php echo $this->get_field_id( 'post_name' ) ?>"><?php _e( 'Post Name (slug):' ) ?></label> 
+		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'post_name' ) ?>" name="<?php echo $this->get_field_name( 'post_name' ) ?>" value="<?php echo $instance['post_name'] ?>"/></p>
+</fieldset>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/> 
 	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude this widget from the page/post that this widget displays?' ) ?></label></p>
 <?php
@@ -216,11 +224,12 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		
 		function update( $new_instance, $old_instance ) {
 			$instance = $this->get_common_values( $new_instance );
-			$instance['type']	= 'content';
-			$instance['id']		= isset( $new_instance['id'] ) ? absint( $new_instance['id'] ) : 0;
-			$instance['blog_id']= isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];
+			$instance['type']	 = 'content';
+			$instance['id']		 = isset( $new_instance['id'] ) ? absint( $new_instance['id'] ) : 0;
+			$instance['post_name'] = isset( $new_instance['post_name'] ) ? esc_attr( $new_instance['post_name'] ) : null;
+			$instance['blog_id'] = isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];
 			$instance['exclude_current'] = isset( $new_instance['exclude_current'] ) ? true : 'Do not exclude';
-			$instance['title'] = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
+			$instance['title']   = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
 			return $instance;
 		}
 	}
