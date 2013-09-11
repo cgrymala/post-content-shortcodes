@@ -1,7 +1,7 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.3.4
+ * @version 0.3.4.1
  */
 if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 	/**
@@ -449,7 +449,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$args = array_diff_key( $args, $atts );
 			$atts['tax_query'] = array();
 			foreach ( $args as $k => $v ) {
-				$atts['tax_query'][] = array( 'taxonomy' => $k, 'field' => 'slug', 'terms' => $v );
+				if ( is_numeric( $v ) )
+					$atts['tax_query'][] = array( 'taxonomy' => $k, 'field' => 'id', 'terms' => intval( $v ) );
+				else
+					$atts['tax_query'][] = array( 'taxonomy' => $k, 'field' => 'slug', 'terms' => $v );
 			}
 			
 			if ( isset( $atts['category'] ) ) {
@@ -658,7 +661,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( false !== ( $p = get_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) ) ) )
 				return $p;
 			
+			$args['cache_results'] = false;
+			
 			$org_blog = switch_to_blog( $blog_id );
+			$this->check_taxonomies( $args['tax_query'], $atts['post_type'] );
 			$posts = get_posts( $args );
 			
 			if ( false !== $this->shortcode_atts['show_image'] ) {
@@ -673,18 +679,33 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			restore_current_blog();
 			
-			/*global $wpdb;
-			$org_blog = $wpdb->set_blog_id( $blog_id );
-			if ( array_key_exists( 'tax_query', $args ) && is_array( $args['tax_query'] ) ) {
-				foreach ( $args['tax_query'] as $t ) {
-					register_taxonomy( $t['taxonomy'] );
-				}
-			}
-			$p = get_posts( $args );
-			$wpdb->set_blog_id( $org_blog );*/
-			
 			set_transient( 'pcsc-list-blog'. $blog_id . '-args' . md5( maybe_serialize( $args ) ), $posts, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );
 			return $posts;
+		}
+		
+		/**
+		 * Check to make sure necessary taxonomies exist
+		 * If we've switched blogs, and the query needs to retrieve items associated 
+		 * 		with a specific taxonomy and/or term, we need to make sure that 
+		 * 		taxonomy is registered on the new blog before the query will work
+		 * @param array $tax_query the tax_query argument for the query
+		 * @param string $post_type the type of post/object being queried
+		 * @return void
+		 * @since 0.3.4.1
+		 */
+		function check_taxonomies( $tax_query=null, $post_type=null ) {
+			if ( empty( $tax_query ) )
+				return;
+			if ( empty( $post_type ) )
+				$post_type = 'post';
+			
+			foreach ( $tax_query as $tq ) {
+				$taxes = get_taxonomies( array( 'name' => $tq['taxonomy'] ), 'names' );
+				if ( ! empty( $taxes ) && ! is_wp_error( $taxes ) )
+					continue;
+				
+				register_taxonomy( $tq['taxonomy'], $post_type );
+			}
 		}
 		
 		/**

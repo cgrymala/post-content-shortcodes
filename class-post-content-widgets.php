@@ -3,7 +3,7 @@
  * Class definitions for the widgets made available by the post-content-shortcodes WordPress plugin
  * @package WordPress
  * @subpackage Post Content Shortcodes
- * @version 0.3.4
+ * @version 0.3.4.1
  */
 if( !class_exists( 'PCS_Widget' ) ) {
 	/**

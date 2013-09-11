@@ -219,6 +219,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 
 == Changelog ==
 
+= 0.3.4.1 =
+
+* Minor bug fix: On multisite, when pulling items with a custom taxonomy from another blog, an empty list would be returned because the taxonomy wasn't registered
+
 = 0.3.4 =
 
 * Implement admin options for plugin
@@ -278,6 +282,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 This is the first version of this plugin
 
 == Upgrade Notice ==
+
+= 0.3.4.1 =
+
+* Multisite bug fix: Custom taxonomies stopped working when pulling from another blog
 
 = 0.3.4 =
 
