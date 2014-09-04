@@ -1,7 +1,7 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.3.4.1
+ * @version 0.4
  */
 if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 	/**
@@ -19,6 +19,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		var $stock_settings	= array( 'enable-network-settings' => true, 'enable-site-settings' => true, 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false, 'use-styles' => true );
 		var $use_styles = true;
 		var $shortcode_atts = array();
+		var $current_post_id = null;
+		var $current_blog_id = null;
 		
 		/**
 		 * Build the post_content_shortcodes object
@@ -28,6 +30,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
 			
 			global $blog_id;
+			$this->current_blog_id = $blog_id;
+			$this->current_post_id = is_singular() ? get_the_ID() : false;
+			
 			/**
 			 * Set up the default values for our shortcode attributes
 			 * These attributes are used for both shortcodes
@@ -227,7 +232,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		function _get_attributes( $atts=array() ) {
 			global $blog_id;
-			if ( array_key_exists( 'blog', $atts ) ) {
+			if ( is_array( $atts ) && array_key_exists( 'blog', $atts ) ) {
 				if ( is_numeric( $atts['blog'] ) ) {
 					$atts['blog_id'] = $atts['blog'];
 				} else {
@@ -236,7 +241,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						$atts['blog_id'] = $tmp;
 				}
 			}
-			if ( array_key_exists( 'post_name', $atts ) ) {
+			if ( is_array( $atts ) && array_key_exists( 'post_name', $atts ) ) {
 				$tmp = $this->get_id_from_post_name( $atts['post_name'], $atts['blog_id'] );
 				if ( false !== $tmp )
 					$atts['id'] = $tmp;
@@ -318,7 +323,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			/**
 			 * Attempt to avoid an endless loop
 			 */
-			if( $atts['exclude_current'] !== 'Do not exclude' && ( $id == $GLOBALS['post']->ID || empty( $id ) ) )
+			if( ( is_array( $atts ) && array_key_exists( 'exclude_current', $atts ) && 'Do not exclude' !== $atts['exclude_current'] ) && ( $id == $GLOBALS['post']->ID || empty( $id ) ) )
 				return;
 			
 			/**
@@ -344,8 +349,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			if ( $strip_html ) {
-				$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content ) );
-				$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt ) );
+				$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
+				$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
 			}
 			
 			$content = $p->post_content;
@@ -358,12 +363,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$content = explode( ' ', $content );
 				$content = implode( ' ', array_slice( $content, 0, ( intval( $excerpt_length ) - 1 ) ) );
 				$content = force_balance_tags( $content );
-				$content .= apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more' ) . '</a></span>' );
+				$content .= apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title, $p, $atts ) . '">' . __( 'Read more' ) . '</a></span>', $p, $atts );
 			}
 			
 			if ( $show_image ) {
 				if ( empty( $image_height ) && empty( $image_width ) ) {
-					$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail' );
+					$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail', $p, $atts );
 				} else {
 					if ( empty( $image_height ) )
 						$image_height = 9999999;
@@ -372,8 +377,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$image_size = array( intval( $image_width ), intval( $image_height ) );
 				}
 				
-				/*$content = $this->get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ), $blog_id ) . $content;*/
-				$content = $p->post_thumbnail . $content;
+				$content = apply_filters( 'post-content-shortcodes-include-thumbnail', $p->post_thumbnail . $content, $p->post_thumbnail, $content, $p, $atts );
 			}
 			
 			if ( $show_comments ) {
@@ -381,16 +385,16 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			if ( $show_date && $show_author )
-				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
 			elseif ( $show_date )
-				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on %2$s' ), $post_author->display_name, $post_date ) . '</p>', $p ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on %2$s' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
 			elseif ( $show_author )
-				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by %s' ), $post_author->display_name, $post_date ) . '</p>', $p ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by %s' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
 			
 			if ( $show_title )
-				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title, $p, $atts ) . $content;
 			
-			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content ), $p );
+			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content, $p, $atts ), $p, $atts );
 		}
 		
 		/**
@@ -472,11 +476,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( empty( $posts ) )
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
 			
-			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">' );
+			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">', $atts );
 			foreach( $posts as $p ) {
 				if ( $atts['strip_html'] ) {
-					$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content ) );
-					$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt ) );
+					$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
+					$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
 				}
 				
 				$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
@@ -487,18 +491,48 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$show_author = false;
 				}
 				
-				$output .= apply_filters( 'post-content-shortcodes-open-item', '<li class="listed-post">' );
+				$li_classes = 'listed-post';
+				if ( $this->current_blog_id == $atts['blog_id'] && $this->current_post_id == $p->ID ) {
+					$li_classes .= ' current-post-item';
+				}
+				$output .= apply_filters( 'post-content-shortcodes-open-item', sprintf( '<li class="%s">', $li_classes ), $p->ID, $atts );
 				if ( $atts['show_title'] ) {
-					$output .= apply_filters( 'post-content-shortcodes-item-link-open', '<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">', apply_filters( 'the_permalink', get_permalink( $p->ID ) ), apply_filters( 'the_title_attribute', $p->post_title ) );
-					$output .= apply_filters( 'the_title', $p->post_title );
-					$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>' );
+					/** 
+					 * Applying filters to the link opening tag
+					 * @uses apply_filters() to filter the title attribute
+					 * @uses apply_filters() to filter the permalink
+					 * @uses apply_filters() to filter the title attribute again?
+					 * This portion of code probably applies filters too many times, but
+					 * 		it is being left the way it is in order to preserve backward-compatibility
+					 */
+					$output .= apply_filters( 
+						'post-content-shortcodes-item-link-open', 
+						'<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . 
+						apply_filters( 
+							'the_title_attribute', 
+							$p->post_title 
+						) . 
+						'">', 
+						apply_filters( 
+							'the_permalink', 
+							get_permalink( $p->ID ) 
+						), 
+						apply_filters( 
+							'the_title_attribute', 
+							$p->post_title 
+						), 
+						$p, 
+						$atts 
+					);
+					$output .= apply_filters( 'the_title', $p->post_title, $p, $atts );
+					$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>', $atts );
 				}
 				if ( $atts['show_author'] && $atts['show_date'] ) {
-					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p );
+					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				} elseif ( $atts['show_date'] ) {
-					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p );
+					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				} elseif ( $atts['show_author'] ) {
-					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>' ), $post_author->display_name, $post_date ) . '</p>', $p );
+					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				}
 				
 				if( $atts['show_excerpt'] ) {
@@ -507,11 +541,6 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						$p->post_content = force_balance_tags( substr( $p->post_content, 0, stripos( $p->post_content, '<!--more-->' ) ) );
 				}
 				if( $atts['show_image'] ) {
-					/*if( empty( $atts['image_height'] ) && empty( $atts['image_width'] ) )
-						$image_size = 'thumbnail';
-					else
-						$image_size = array( $atts['image_width'], $atts['image_height'] );
-					$output .= $this->get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => 'pcs-featured-image' ), $atts['blog_id'] );*/
 					$output .= $p->post_thumbnail;
 				}
 				if( $atts['show_excerpt'] ) {
@@ -528,16 +557,16 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						}
 					}
 					$read_more = $atts['read_more'] ? 
-						apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more' ) . '</a></span>' ) : 
+						apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more' ) . '</a></span>', $p, $atts ) : 
 						'';
-					$output .= '<div class="pcs-excerpt">' . apply_filters( 'post-content-shortcodes-list-excerpt', apply_filters( 'the_content', $excerpt . $read_more ), $p ) . '</div></div>';
+					$output .= '<div class="pcs-excerpt">' . apply_filters( 'post-content-shortcodes-list-excerpt', apply_filters( 'the_content', $excerpt . $read_more ), $p, $atts ) . '</div></div>';
 				}
 				if ( $atts['show_comments'] ) {
 					$output .= $p->post_comments;
 				}
-				$output .= apply_filters( 'post-content-shortcodes-close-item', '</li>' );
+				$output .= apply_filters( 'post-content-shortcodes-close-item', '</li>', $atts );
 			}
-			$output .= apply_filters( 'post-content-shortcodes-close-list', '</ul>' );
+			$output .= apply_filters( 'post-content-shortcodes-close-list', '</ul>', $atts );
 			
 			return $output;
 		}
@@ -560,7 +589,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		function get_post_from_blog( $post_id=0, $blog_id=0 ) {
 			if ( empty( $this->shortcode_atts['image_height'] ) && empty( $this->shortcode_atts['image_width'] ) ) {
-				$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail' );
+				$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail', $this->shortcode_atts );
 			} else {
 				if ( empty( $this->shortcode_atts['image_height'] ) )
 					$this->shortcode_atts['image_height'] = 9999999;
@@ -574,7 +603,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) ) {
 				$p = get_post( $post_id );
 				if ( has_post_thumbnail( $post_id ) )
-					$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ) );
+					$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $p, $this->shortcode_atts ) ) );
 				else
 					$p->post_thumbnail = '';
 				
@@ -592,18 +621,13 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$org_blog = switch_to_blog( $blog_id );
 			$p = get_post( $post_id );
 			if ( has_post_thumbnail( $post_id ) && $this->shortcode_atts['show_image'] ) {
-				$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ) );
+				$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $p, $this->shortcode_atts ) ) );
 			} else {
 				$p->post_thumbnail = '';
 			}
 			
 			$p->post_comments = $this->do_comments( $p );
 			restore_current_blog();
-			
-			/*global $wpdb;
-			$org_blog = $wpdb->set_blog_id( $blog_id );
-			$p = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE ID=%d", $post_id ) );
-			$wpdb->set_blog_id( $org_blog );*/
 			
 			set_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id, $p, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );
 			
@@ -627,7 +651,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		function get_posts_from_blog( $atts=array(), $blog_id=0 ) {
 			if ( empty( $this->shortcode_atts['image_height'] ) && empty( $this->shortcode_atts['image_width'] ) ) {
-				$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail' );
+				$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail', $this->shortcode_atts );
 			} else {
 				if ( empty( $this->shortcode_atts['image_height'] ) )
 					$this->shortcode_atts['image_height'] = 9999999;
@@ -645,7 +669,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				
 				foreach ( $posts as $key => $p ) {
 					if ( has_post_thumbnail( $p->ID ) )
-						$posts[$key]->post_thumbnail = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ) );
+						$posts[$key]->post_thumbnail = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $posts[$key], $this->shortcode_atts ) ) );
 					else
 						$posts[$key]->post_thumbnail = '';
 						
@@ -670,7 +694,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if ( false !== $this->shortcode_atts['show_image'] ) {
 				foreach ( $posts as $key => $p ) {
 					if ( has_post_thumbnail( $p->ID ) )
-						$posts[$key]->post_thumbnail = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image' ) ) );
+						$posts[$key]->post_thumbnail = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $posts[$key], $this->shortcode_atts ) ) );
 					else
 						$posts[$key]->post_thumbnail = '';
 						
@@ -808,7 +832,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @param array $atts the array of attributes to evaluate
 		 * @return array the parsed array of attributes
 		 */
-		function get_args( $atts ) {
+		function get_args( $atts=array() ) {
+			if ( ! is_array( $atts ) )
+				$atts = maybe_unserialize( $atts );
+			if ( ! is_array( $atts ) )
+				return $atts;
+			
 			unset( $atts['id'] );
 			
 			if( $atts['exclude_current'] && $GLOBALS['blog_id'] != $atts['blog_id'] ) {

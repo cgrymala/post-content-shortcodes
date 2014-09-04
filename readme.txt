@@ -1,9 +1,9 @@
 === Post Content Shortcodes ===
 Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
-Requires at least: 3.0
-Tested up to: 3.6
-Stable tag: 0.3.4.1
+Requires at least: 3.8
+Tested up to: 4.0
+Stable tag: 0.4
 
 Adds shortcodes to display the content of a post or a list of posts.
 
@@ -218,6 +218,15 @@ Yes. The way this plugin works, there is no distinction between multi-network & 
 There is a known issue where HTML (especially [caption] shortcodes) within the excerpt can break the entire page. In order to avoid this, be sure to place the <!-- more --> tag above the [caption] shortcode within the posts being pulled into the post-list shortcode.
 
 == Changelog ==
+
+= 0.4 =
+
+* Test for 4.0 compatibility
+* Minor bug fixes
+* Add "current-post-item" CSS class to the appropriate post within the post-list in response to [request from thomas.mery](http://wordpress.org/support/topic/how-to-add-active-class-to-listed-post-li-output?replies=1)
+* Add post ID and shortcode attributes to items that can be sent through the `post-content-shortcodes-open-item` filter
+* Add post object and shortcode attributes to items sent through most filters
+* Add new `post-content-shortcodes-include-thumbnail` filter to change the way the thumbnail is included in post content (if desired)
 
 = 0.3.4.1 =
 
