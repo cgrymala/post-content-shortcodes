@@ -3,7 +3,7 @@
  * Class definitions for the widgets made available by the post-content-shortcodes WordPress plugin
  * @package WordPress
  * @subpackage Post Content Shortcodes
- * @version 0.4
+ * @version 0.4.1
  */
 if( !class_exists( 'PCS_Widget' ) ) {
 	/**
@@ -113,10 +113,10 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$wpdb->set_blog_id( $org_blog );
 		}
 		
-		function form() {
+		function form( $instance ) {
 		}
 		
-		function update() {
+		function update( $new_instance, $old_instance ) {
 		}
 		
 		function common_fields( $instance=array() ) {
