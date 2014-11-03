@@ -174,16 +174,16 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	 * Class definition for the Post Content Shortcodes "Content" widget
 	 */
 	class PCS_Content_Widget extends PCS_Widget {
-		function PCS_Content_Widget() {
-			return self::__construct();
-		}
-		
 		function __construct() {
 			parent::__construct();
 			
 			$widget_ops = array( 'classname' => 'pcs-content-widget', 'description' => 'Display the content of a single post.' );
 			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-content-widget' );
 			parent::WP_Widget( 'pcs-content-widget', 'Post Content Widget', $widget_ops, $control_ops );
+		}
+		
+		function PCS_Content_Widget() {
+			return self::__construct();
 		}
 		
 		function form( $instance ) {
@@ -238,16 +238,16 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	 * Class definition for the Post Content Shortcodes "List" widget
 	 */
 	class PCS_List_Widget extends PCS_Widget {
-		function PCS_List_Widget() {
-			return self::__construct();
-		}
-		
 		function __construct() {
 			parent::__construct();
 			
 			$widget_ops = array( 'classname' => 'pcs-list-widget', 'description' => 'Display a filtered list of posts/pages.' );
 			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-list-widget' );
 			parent::WP_Widget( 'pcs-list-widget', 'Post List Widget', $widget_ops, $control_ops );
+		}
+		
+		function PCS_List_Widget() {
+			return self::__construct();
 		}
 		
 		function form( $instance ) {

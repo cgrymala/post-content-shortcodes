@@ -222,6 +222,7 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 = 0.4.1 =
 
 * Fix [strict standards warning](https://wordpress.org/support/topic/many-strict-standards-errors) about widget methods - h/t [ux4341](https://wordpress.org/support/profile/ux4341)
+* Special thanks also to [spivurno](https://wordpress.org/support/profile/spivurno) for assistance in identifying the strict standards warnings
 
 = 0.4 =
 
