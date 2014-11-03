@@ -297,6 +297,11 @@ This is the first version of this plugin
 
 == Upgrade Notice ==
 
+= 0.4.1 =
+
+* Fixes warnings that appear when PHP is in strict standards mode
+* No new functionality added
+
 = 0.3.4.1 =
 
 * Multisite bug fix: Custom taxonomies stopped working when pulling from another blog
