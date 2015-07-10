@@ -1,7 +1,7 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.4.1
+ * @version 0.5
  */
 if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 	/**
@@ -530,9 +530,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				if ( $atts['show_author'] && $atts['show_date'] ) {
 					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				} elseif ( $atts['show_date'] ) {
-					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
+					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				} elseif ( $atts['show_author'] ) {
-					apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
+					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				}
 				
 				if( $atts['show_excerpt'] ) {
@@ -600,7 +600,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			if( empty( $post_id ) )
 				return;
-			if( $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) ) {
+			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) ) {
 				$p = get_post( $post_id );
 				if ( has_post_thumbnail( $post_id ) )
 					$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $p, $this->shortcode_atts ) ) );
@@ -662,7 +662,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$args = $this->get_args( $atts );
 			
-			if( $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || !is_numeric( $blog_id ) ) {
+			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || !is_numeric( $blog_id ) ) {
 				$posts = get_posts( $args );
 				if ( false === $this->shortcode_atts['show_image'] )
 					return $posts;

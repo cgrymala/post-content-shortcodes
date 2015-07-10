@@ -1,9 +1,9 @@
 === Post Content Shortcodes ===
 Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
-Requires at least: 3.8
-Tested up to: 4.0
-Stable tag: 0.4
+Requires at least: 4.0
+Tested up to: 4.3
+Stable tag: 0.5
 
 Adds shortcodes to display the content of a post or a list of posts.
 
@@ -219,6 +219,13 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 
 == Changelog ==
 
+= 0.5 =
+
+* Fixes error when used in some multisite/non-multisite instances, due to improper checking for multisite
+* Fixes bug that stopped the date from showing up in the Post List shortcode/widget
+* Remove calls to old-style widget constructor
+* Update compatibility
+
 = 0.4.1 =
 
 * Fix [strict standards warning](https://wordpress.org/support/topic/many-strict-standards-errors) about widget methods - h/t [ux4341](https://wordpress.org/support/profile/ux4341)
@@ -296,6 +303,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 This is the first version of this plugin
 
 == Upgrade Notice ==
+
+= 0.5 =
+
+* Finally fixes stupid bug that stopped dates from showing up in Post List shortcode/widget
 
 = 0.4.1 =
 
