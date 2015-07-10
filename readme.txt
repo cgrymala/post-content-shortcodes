@@ -48,6 +48,7 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 * excerpt_length => 0
 * image_width => 0
 * image_height => 0
+* shortcodes => false (determines whether the plugin should attempt to allow shortcodes to be processed within the excerpt/content)
 
 The first 13 arguments are standard arguments for the `get_posts()` function.
 
@@ -338,3 +339,5 @@ This is the first version of this plugin
 == To Do ==
 
 * Add AJAX features to allow user to choose from a list of posts/sites, instead of requiring them to manually enter the ID
+* Add ability to wrap featured images with a link
+* Add ability to paginate the [post-list] shortcode
