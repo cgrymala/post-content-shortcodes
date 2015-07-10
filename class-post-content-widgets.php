@@ -64,6 +64,10 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			) );
 		}
 		
+		function WP_Widget_construct( $id, $name, $widget_ops=array(), $control_ops=array() ) {
+			parent::__construct( $id, $name, $widget_ops, $control_ops );
+		}
+		
 		function widget( $args, $instance ) {
 			if( !isset( $instance['type'] ) )
 				return;
@@ -179,7 +183,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			
 			$widget_ops = array( 'classname' => 'pcs-content-widget', 'description' => 'Display the content of a single post.' );
 			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-content-widget' );
-			parent::WP_Widget( 'pcs-content-widget', 'Post Content Widget', $widget_ops, $control_ops );
+			parent::WP_Widget_construct( 'pcs-content-widget', 'Post Content Widget', $widget_ops, $control_ops );
 		}
 		
 		function PCS_Content_Widget() {
@@ -243,7 +247,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			
 			$widget_ops = array( 'classname' => 'pcs-list-widget', 'description' => 'Display a filtered list of posts/pages.' );
 			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-list-widget' );
-			parent::WP_Widget( 'pcs-list-widget', 'Post List Widget', $widget_ops, $control_ops );
+			parent::WP_Widget_construct( 'pcs-list-widget', 'Post List Widget', $widget_ops, $control_ops );
 		}
 		
 		function PCS_List_Widget() {

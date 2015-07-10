@@ -1,7 +1,7 @@
 <?php
 /**
  * Admin functions for the post_content_shortcodes class
- * @version 0.4.1
+ * @version 0.5
  */
 
 if( !class_exists( 'Post_Content_Shortcodes' ) )
