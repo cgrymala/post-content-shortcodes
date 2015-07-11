@@ -1,7 +1,7 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.5
+ * @version 0.5.1
  */
 if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 	/**
@@ -319,7 +319,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		function post_content( $atts=array() ) {
 			global $wpdb;
-			extract( $this->_get_attributes( $atts ) );
+			$this->shortcode_atts = $this->_get_attributes( $atts );
+			extract( $this->shortcode_atts );
 			/**
 			 * Attempt to avoid an endless loop
 			 */
@@ -449,6 +450,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$atts = $this->_get_attributes( $atts );
 			$atts['posts_per_page'] = $atts['numberposts'];
+			$this->shortcode_atts = $atts;
 			
 			$args = array_diff_key( $args, $atts );
 			$atts['tax_query'] = array();
@@ -697,7 +699,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						$posts[$key]->post_thumbnail = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $posts[$key], $this->shortcode_atts ) ) );
 					else
 						$posts[$key]->post_thumbnail = '';
-						
+				}
+			}
+			if ( false !== $this->shortcode_atts['show_comments'] ) {
+				foreach ( $posts as $key => $p ) {
 					$posts[$key]->post_comments = $this->do_comments( $p );
 				}
 			}
