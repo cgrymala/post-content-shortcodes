@@ -45,6 +45,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 * 		doesn't work properly through Views
 			 */
 			add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
+			add_shortcode( 'pcs-post-url', array( $this, 'do_post_permalink' ) );
 			
 			/**
 			 * Prepare to register the two widgets
@@ -532,9 +533,13 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 */
 			if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
 				$output = '<div class="post-list">';
+				add_filter( 'post_thumbnail_html', array( $this, 'do_post_thumbnail' ), 99 );
+				add_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
 				foreach ( $posts as $p ) {
 					$output .= $this->do_view_template( $p );
 				}
+				remove_filter( 'post_thumbnail_html', array( $this->do_post_thumbnail() ), 99 );
+				remove_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
 				$output .= '</div>';
 				return $output;
 			}
@@ -930,8 +935,18 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			return array_filter( $atts );
 		}
 		
-		function do_post_thumbnail() {
+		function do_post_thumbnail( $html=null ) {
+			if ( $GLOBALS['blog_id'] == $this->shortcode_atts['blog_id'] && ! empty( $html ) )
+				return $html;
+			
 			return $GLOBALS['post']->post_thumbnail;
+		}
+		
+		function do_post_permalink( $link ) {
+			if ( $GLOBALS['blog_id'] == $this->shortcode_atts['blog_id'] && ! empty( $link ) )
+				return $link;
+			
+			return $this->get_shortlink_from_blog( $GLOBALS['post']->ID, $this->shortcode_atts['blog_id'] );
 		}
 	}
 }
