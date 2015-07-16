@@ -3,7 +3,7 @@
  * Class definitions for the widgets made available by the post-content-shortcodes WordPress plugin
  * @package WordPress
  * @subpackage Post Content Shortcodes
- * @version 0.4.1
+ * @version 0.6.0.1
  */
 if( !class_exists( 'PCS_Widget' ) ) {
 	/**
@@ -15,7 +15,14 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		var $blog_list = false;
 		
 		function __construct() {
-			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', array(
+			$this->_setup_defaults();
+		}
+		
+		function _setup_defaults() {
+			if ( ! empty( $this->defaults ) )
+				return;
+			
+			$args = array(
 				'id'			=> 0,
 				'post_type'		=> 'post',
 				'order'			=> 'asc',
@@ -60,8 +67,17 @@ if( !class_exists( 'PCS_Widget' ) ) {
 				'strip_html' => false, 
 				/* Added 0.3.4 */
 				// Allow the specification of a post name instead of ID
-				'post_name' => null
-			) );
+				'post_name' => null, 
+			);
+			/**
+			 * If this site is using the WP Views plugin, add support for a 
+			 * 		completely custom layout using a Views Content Template
+			 * @since 0.6
+			 */
+			if ( class_exists( 'WP_Views_plugin' ) ) {
+				$args['view_template'] = null;
+			}
+			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', $args );
 		}
 		
 		function WP_Widget_construct( $id, $name, $widget_ops=array(), $control_ops=array() ) {
@@ -124,9 +140,27 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 		
 		function common_fields( $instance=array() ) {
+			$has_templates = false;
+			if ( array_key_exists( 'view_template', $this->defaults ) ) {
+				$templates = $this->get_view_templates();
+				if ( is_array( $templates ) && ! empty( $templates ) && ! is_wp_error( $templates ) ) {
+					$has_templates = true;
 ?>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_title' ) ?>"><?php _e( 'Display the post title?' ) ?></label></p>
+<p><label for="<?php echo $this->get_field_id( 'view_template' ) ?>"><?php _e( 'Views Content Template', 'post-content-shortcodes' ) ?></label> 
+	<select name="<?php echo $this->get_field_name( 'view_template' ) ?>" id="<?php echo $this->get_field_id( 'view_template' ) ?>">
+		<option value=""><?php _e( '-- Do Not Use a Content Template --' ) ?></option>
+<?php
+					foreach ( $templates as $t ) {
+?>
+		<option value="<?php echo $t->ID ?>"<?php selected( $instance['view_template'], $t->ID ) ?>><?php echo $t->post_title ?></option>
+<?php
+					}
+?>
+	</select></p>
+<?php
+				}
+			}
+?>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ) ?>" id="<?php echo $this->get_field_id( 'show_image' ) ?>" value="1"<?php checked( $instance['show_image'] ) ?>/> 
 	<label for="<?php echo $this->get_field_id( 'show_image' ) ?>"><?php _e( 'Display the featured image with the post?' ) ?></label></p>
 <p><?php _e( 'Image Dimensions' ) ?><br/>
@@ -135,6 +169,15 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	<?php _e( ' x ' ) ?>
 	<label for="<?php echo $this->get_field_id( 'image_height' ) ?>"><?php _e( 'Height: ' ) ?></label> 
 		<input type="number" value="<?php echo intval( $instance['image_height'] ) ?>" name="<?php echo $this->get_field_name( 'image_height' ) ?>" id="<?php echo $this->get_field_id( 'image_height' ) ?>"/><?php _e( 'px' ) ?></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_comments' ) ?>" id="<?php echo $this->get_field_id( 'show_comments' ) ?>" value="1"<?php checked( $instance['show_comments'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_comments' ) ?>"><?php _e( 'Display comments with the post?' ) ?></label></p>
+<?php
+			if ( $has_templates ) {
+				_e( '<p>If you are using a Views Content Template to display your results, you do not need to configure any of the options below.' );
+			}
+?>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'show_title' ) ?>"><?php _e( 'Display the post title?' ) ?></label></p>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_excerpt' ) ?>" id="<?php echo $this->get_field_id( 'show_excerpt' ) ?>" value="1"<?php checked( $instance['show_excerpt'] ) ?>/>
 	<label for="<?php echo $this->get_field_id( 'show_excerpt' ) ?>"><?php _e( 'Display an excerpt of the post content?' ) ?></label></p>
 <p><label for="<?php echo $this->get_field_id( 'excerpt_length' ) ?>"><?php _e( 'Limit the excerpt to how many words?' ) ?></label> 
@@ -150,9 +193,24 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	<label for="<?php echo $this->get_field_id( 'show_author' ) ?>"><?php _e( 'Display the author\'s name?' ) ?></label></p>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_date' ) ?>" id="<?php echo $this->get_field_id( 'show_date' ) ?>" value="1"<?php checked( $instance['show_date'] ) ?>/> 
 	<label for="<?php echo $this->get_field_id( 'show_date' ) ?>"><?php _e( 'Display the publication date?' ) ?></label></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_comments' ) ?>" id="<?php echo $this->get_field_id( 'show_comments' ) ?>" value="1"<?php checked( $instance['show_comments'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_comments' ) ?>"><?php _e( 'Display comments with the post?' ) ?></label></p>
 <?php
+		}
+		
+		function get_view_templates() {
+			return get_posts( array( 
+				'post_type'   => 'view-template', 
+				'orderby'     => 'title', 
+				'order'       => 'asc', 
+				'post_status' => 'publish', 
+				'posts_per_page' => -1, 
+				'meta_query'  => array( 
+					array(
+						'key'   => '_view_loop_id', 
+						'value' => 0, 
+						'compare' => '='
+					), 
+				), 
+			) );
 		}
 		
 		function get_common_values( $new_instance=array() ) {
@@ -169,6 +227,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$instance['excerpt_length'] = array_key_exists( 'excerpt_length', $new_instance ) && is_numeric( $new_instance['excerpt_length'] ) ? intval( $new_instance['excerpt_length'] ) : 0;
 			$instance['image_width'] = array_key_exists( 'image_width', $new_instance ) && is_numeric( $new_instance['image_width'] ) ? intval( $new_instance['image_width'] ) : 0;
 			$instance['image_height'] = array_key_exists( 'image_height', $new_instance ) && is_numeric( $new_instance['image_height'] ) ? intval( $new_instance['image_height'] ) : 0;
+			$instance['view_template'] = array_key_exists( 'view_template', $new_instance ) && array_key_exists( 'view_template', $this->defaults ) && ! empty( $new_instance['view_template'] ) && is_numeric( $new_instance['view_template'] ) ? intval( $new_instance['view_template'] ) : null;
 			
 			return $instance;
 		}

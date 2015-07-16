@@ -1,7 +1,7 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.5.1
+ * @version 0.6.0.1
  */
 if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 	/**
@@ -33,12 +33,45 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->current_blog_id = $blog_id;
 			$this->current_post_id = is_singular() ? get_the_ID() : false;
 			
+			$this->_setup_defaults();
+			
 			/**
-			 * Set up the default values for our shortcode attributes
-			 * These attributes are used for both shortcodes
-			 * @uses apply_filters() to allow filtering the list with the post-content-shortcodes-defaults filter
+			 * Register the two shortcodes
 			 */
-			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', array(
+			add_shortcode( 'post-content', array( &$this, 'post_content' ) );
+			add_shortcode( 'post-list', array( &$this, 'post_list' ) );
+			/**
+			 * Register a shortcode to be used by Views, since the featured image 
+			 * 		doesn't work properly through Views
+			 */
+			add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
+			
+			/**
+			 * Prepare to register the two widgets
+			 */
+			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+			/**
+			 * Prepare to register the default stylesheet
+			 */
+			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
+			
+			/**
+			 * Set up the various admin options items
+			 */
+			add_action( 'admin_init', array( &$this, 'admin_init' ) );
+			
+			if( $this->is_plugin_active_for_network() )
+				add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
+			add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		}
+		
+		/**
+		 * Set up the default values for our shortcode attributes
+		 * These attributes are used for both shortcodes
+		 * @uses apply_filters() to allow filtering the list with the post-content-shortcodes-defaults filter
+		 */
+		function _setup_defaults() {
+			$args = array(
 				'id'			=> 0,
 				'post_type'		=> 'post',
 				'order'			=> 'asc',
@@ -90,30 +123,16 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				/* Added 0.3.4 */
 				// A post slug that can be used in place of the post ID
 				'post_name' => null, 
-			) );
-			
+			);
 			/**
-			 * Register the two shortcodes
+			 * If this site is using the WP Views plugin, add support for a 
+			 * 		completely custom layout using a Views Content Template
+			 * @since 0.6
 			 */
-			add_shortcode( 'post-content', array( &$this, 'post_content' ) );
-			add_shortcode( 'post-list', array( &$this, 'post_list' ) );
-			/**
-			 * Prepare to register the two widgets
-			 */
-			add_action( 'widgets_init', array( $this, 'register_widgets' ) );
-			/**
-			 * Prepare to register the default stylesheet
-			 */
-			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
-			
-			/**
-			 * Set up the various admin options items
-			 */
-			add_action( 'admin_init', array( &$this, 'admin_init' ) );
-			
-			if( $this->is_plugin_active_for_network() )
-				add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
-			add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+			if ( class_exists( 'WP_Views_plugin' ) ) {
+				$args['view_template'] = null;
+			}
+			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', $args );
 		}
 		
 		/**
@@ -320,6 +339,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		function post_content( $atts=array() ) {
 			global $wpdb;
 			$this->shortcode_atts = $this->_get_attributes( $atts );
+			
 			extract( $this->shortcode_atts );
 			/**
 			 * Attempt to avoid an endless loop
@@ -336,6 +356,14 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$p = $this->get_post_from_blog( $id, $blog_id );
 			if( empty( $p ) || is_wp_error( $p ) )
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
+			
+			/**
+			 * If Views is active, and the user has chosen to use a Content Template, 
+			 * 		render that instead of the default layout
+			 */
+			if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
+				return $this->do_view_template( $p );
+			}
 			
 			$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
 			$post_author = get_userdata( $p->post_author );
@@ -396,6 +424,25 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title, $p, $atts ) . $content;
 			
 			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content, $p, $atts ), $p, $atts );
+		}
+		
+		/**
+		 * Output the post content using a specified Content Template
+		 * @param $p object the Post object
+		 * @since 0.6
+		 */
+		function do_view_template( $p=null ) {
+			if ( empty( $p ) )
+				return;
+			
+			global $post;
+			setup_postdata( $p );
+			
+			$rt = render_view_template( $this->shortcode_atts['view_template'], $p );
+			
+			wp_reset_postdata();
+			
+			return $rt;
 		}
 		
 		/**
@@ -477,6 +524,20 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$posts = $this->get_posts_from_blog( $atts, $atts['blog_id'] );
 			if( empty( $posts ) )
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
+			
+			/**
+			 * If the user is using the WP Views plugin and specified a Content Template 
+			 * 		to use for the results, use that instead of the default layout
+			 * @since 0.6
+			 */
+			if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
+				$output = '<div class="post-list">';
+				foreach ( $posts as $p ) {
+					$output .= $this->do_view_template( $p );
+				}
+				$output .= '</div>';
+				return $output;
+			}
 			
 			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">', $atts );
 			foreach( $posts as $p ) {
@@ -867,6 +928,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				error_log( '[PCS Debug]: Preparing to return filtered args: ' . print_r( $atts, true ) );
 			
 			return array_filter( $atts );
+		}
+		
+		function do_post_thumbnail() {
+			return $GLOBALS['post']->post_thumbnail;
 		}
 	}
 }
