@@ -45,8 +45,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 * 		doesn't work properly through Views
 			 */
 			add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
-			add_shortcode( 'pcs-post-url', array( $this, 'do_post_permalink' ) );
-			add_shortcode( 'pcs-entry-classes', array( $this, 'do_entry_classes' ) );
+			add_shortcode( 'pcs-post-url', array( &$this, 'do_post_permalink' ) );
+			add_shortcode( 'pcs-entry-classes', array( &$this, 'do_entry_classes' ) );
 			
 			/**
 			 * Prepare to register the two widgets
@@ -953,6 +953,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		}
 		
 		function do_entry_classes( $atts=array() ) {
+			print( '<pre><code>' );
+			var_dump( $atts );
+			print( '</code></pre>' );
+			
 			$atts = shortcode_atts( $atts, array( 'classes' => '', 'columns' => 0 ) );
 			$classes = explode( ' ', $atts['classes'] );
 			if ( is_numeric( $atts['columns'] ) && $atts['columns'] > 0 ) {
