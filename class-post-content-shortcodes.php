@@ -46,6 +46,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 */
 			add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
 			add_shortcode( 'pcs-post-url', array( $this, 'do_post_permalink' ) );
+			add_shortcode( 'pcs-entry-classes', array( $this, 'do_entry_classes' ) );
 			
 			/**
 			 * Prepare to register the two widgets
@@ -947,6 +948,22 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				return $link;
 			
 			return $this->get_shortlink_from_blog( $GLOBALS['post']->ID, $this->shortcode_atts['blog_id'] );
+		}
+		
+		function do_entry_classes( $atts=array() ) {
+			$atts = shortcode_atts( $atts, array( 'classes' => '', 'columns' => 0 ) );
+			$classes = explode( ' ', $atts['classes'] );
+			if ( is_numeric( $atts['columns'] ) && $atts['columns'] > 0 ) {
+				$col = $this->shortcode_atts['post_number'] % $atts['columns'];
+				
+				if ( 1 == $col ) {
+					$classes[] = 'first';
+				}
+				
+				$classes[] = $col > 0 ? sprintf( 'column-%d', $col ) : sprintf( 'column-%d', $atts['columns'] );
+			}
+			
+			return implode( ' ', $classes );
 		}
 	}
 }
