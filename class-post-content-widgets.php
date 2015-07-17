@@ -173,7 +173,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	<label for="<?php echo $this->get_field_id( 'show_comments' ) ?>"><?php _e( 'Display comments with the post?' ) ?></label></p>
 <?php
 			if ( $has_templates ) {
-				_e( '<p>If you are using a Views Content Template to display your results, you do not need to configure any of the options below.' );
+				_e( '<hr/> <p style="font-style: italic">If you are using a Views Content Template to display your results, you do not need to configure any of the options below.</p>' );
 			}
 ?>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/> 
@@ -341,6 +341,12 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <p><label for="<?php echo $this->get_field_id( 'post_parent' ) ?>"><?php _e( 'Post parent ID:' ) ?></label>
 	<input type="number" class="widefat" id="<?php echo $this->get_field_id( 'post_parent' ) ?>" name="<?php echo $this->get_field_name( 'post_parent' ) ?>" value="<?php echo $instance['post_parent'] ?>"/><br>
 	<span class="note"><?php _e( 'Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.' ) ?></span></p>
+<p><label for="<?php echo $this->get_field_id( 'tax_name' ) ?>"><?php _e( 'Taxonomy Slug:' ) ?></label> 
+	<input type="text" name="<?php echo $this->get_field_name( 'tax_name' ) ?>" id="<?php echo $this->get_field_id( 'tax_name' ) ?>" value="<?php echo $instance['tax_name'] ?>"/> <br/> 
+	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)</span>' ) ?></p>
+<p><label for="<?php echo $this->get_field_id( 'tax_term' ) ?>"><?php _e( 'Term Slugs:' ) ?></label> 
+	<input type="text" name="<?php echo $this->get_field_name( 'tax_term' ) ?>" id="<?php echo $this->get_field_id( 'tax_term' ) ?>" value="<?php echo $instance['tax_term'] ?>"/> <br/> 
+	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs</span>' ) ?></p>
 <p><label for="<?php echo $this->get_field_id( 'orderby' ) ?>"><?php _e( 'Sort posts by:' ) ?></label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'orderby' ) ?>" id="<?php echo $this->get_field_id( 'orderby' ) ?>">
 <?php
@@ -405,6 +411,8 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$instance['numberposts']	= isset( $new_instance['numberposts'] ) ? intval( $new_instance['numberposts'] ) : 0;
 			$instance['post_status']	= isset( $new_instance['post_status'] ) ? $new_instance['post_status'] : 'publish';
 			$instance['exclude_current'] = isset( $new_instance['exclude_current'] );
+			$instance['tax_name']       = isset( $new_instance['tax_name'] ) ? esc_attr( $new_instance['tax_name'] ) : null;
+			$instance['tax_term']       = isset( $new_instance['tax_term'] ) ? esc_attr( $new_instance['tax_term'] ) : null;
 			
 			return $instance;
 		}
