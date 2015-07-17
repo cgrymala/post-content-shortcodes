@@ -965,7 +965,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$atts['orderby'] = str_replace( 'post_', '', $atts['orderby'] );
 			
-			unset( $atts['blog_id'], $atts['exclude_current'] );
+			unset( $atts['blog_id'], $atts['exclude_current'], $atts['tax_name'], $atts['tax_term'], $atts['view_template'] );
 			
 			/**
 			 * Output a little debug info if necessary
