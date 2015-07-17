@@ -957,7 +957,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			var_dump( $atts );
 			print( '</code></pre>' );
 			
-			$atts = shortcode_atts( $atts, array( 'classes' => '', 'columns' => 0 ) );
+			$atts = shortcode_atts( array( 'classes' => '', 'columns' => 0 ), $atts );
 			$classes = explode( ' ', $atts['classes'] );
 			if ( is_numeric( $atts['columns'] ) && $atts['columns'] > 0 ) {
 				$col = $this->shortcode_atts['post_number'] % $atts['columns'];
