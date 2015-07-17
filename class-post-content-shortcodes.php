@@ -533,15 +533,17 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 * @since 0.6
 			 */
 			if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
-				$output = '<div class="post-list">';
+				$output = apply_filters( 'post-content-shortcodes-views-template-opening', '<div class="post-list">' );
 				add_filter( 'post_thumbnail_html', array( $this, 'do_post_thumbnail' ), 99 );
 				add_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
+				$this->shortcode_atts['post_number'] = 1;
 				foreach ( $posts as $p ) {
 					$output .= $this->do_view_template( $p );
+					$this->shortcode_atts['post_number']++;
 				}
 				remove_filter( 'post_thumbnail_html', array( $this->do_post_thumbnail() ), 99 );
 				remove_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
-				$output .= '</div>';
+				$output .= apply_filters( 'post-content-shortcodes-views-template-closing', '</div>' );
 				return $output;
 			}
 			
