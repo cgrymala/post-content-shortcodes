@@ -969,6 +969,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$classes[] = $col > 0 ? sprintf( 'column-%d', $col ) : sprintf( 'column-%d', $atts['columns'] );
 			}
 			
+			print( '<pre><code>' );
+			var_dump( $classes );
+			print( '</code></pre>' );
+			
 			return implode( ' ', $classes );
 		}
 	}
