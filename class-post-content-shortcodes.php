@@ -752,11 +752,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$args['cache_results'] = false;
 			
-			/*if ( isset( $_GET['delete_transients'] ) )
+			if ( isset( $_GET['delete_transients'] ) )
 				delete_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) );
 			
 			if( false !== ( $p = get_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) ) ) )
-				return $p;*/
+				return $p;
 			
 			$org_blog = switch_to_blog( $blog_id );
 			$this->check_taxonomies( $args['tax_query'], $atts['post_type'] );
@@ -777,7 +777,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			restore_current_blog();
 			
-			/*set_transient( 'pcsc-list-blog'. $blog_id . '-args' . md5( maybe_serialize( $args ) ), $posts, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );*/
+			set_transient( 'pcsc-list-blog'. $blog_id . '-args' . md5( maybe_serialize( $args ) ), $posts, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );
 			return $posts;
 		}
 		
@@ -953,10 +953,6 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		}
 		
 		function do_entry_classes( $atts=array() ) {
-			print( '<pre><code>' );
-			var_dump( $atts );
-			print( '</code></pre>' );
-			
 			$atts = shortcode_atts( array( 'classes' => '', 'columns' => 0 ), $atts );
 			$classes = explode( ' ', $atts['classes'] );
 			if ( is_numeric( $atts['columns'] ) && $atts['columns'] > 0 ) {
@@ -968,10 +964,6 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				
 				$classes[] = $col > 0 ? sprintf( 'column-%d', $col ) : sprintf( 'column-%d', $atts['columns'] );
 			}
-			
-			print( '<pre><code>' );
-			var_dump( $classes );
-			print( '</code></pre>' );
 			
 			return implode( ' ', $classes );
 		}
