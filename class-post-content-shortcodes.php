@@ -750,13 +750,13 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				return $posts;
 			}
 			
+			$args['cache_results'] = false;
+			
 			if ( isset( $_GET['delete_transients'] ) )
 				delete_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) );
 			
 			if( false !== ( $p = get_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) ) ) )
 				return $p;
-			
-			$args['cache_results'] = false;
 			
 			$org_blog = switch_to_blog( $blog_id );
 			$this->check_taxonomies( $args['tax_query'], $atts['post_type'] );
