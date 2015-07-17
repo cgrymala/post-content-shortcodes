@@ -125,6 +125,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				/* Added 0.3.4 */
 				// A post slug that can be used in place of the post ID
 				'post_name' => null, 
+				/* Added 0.6 */
+				// A taxonomy name to limit content by
+				'tax_name' => null, 
+				// A list of taxonomy term slugs or IDs to limit content by
+				'tax_term' => null, 
 			);
 			/**
 			 * If this site is using the WP Views plugin, add support for a 
@@ -503,6 +508,21 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$args = array_diff_key( $args, $atts );
 			$atts['tax_query'] = array();
+			
+			if ( isset( $atts['tax_term'] ) && ! empty( $atts['tax_term'] ) && isset( $atts['tax_name'] ) && ! empty( $atts['tax_name'] ) ) {
+				$terms = explode( ' ', $atts['tax_name'] );
+				if ( count( $terms ) > 0 ) {
+					if ( is_numeric( $terms[0] ) ) {
+						$field = 'id';
+						$terms = array_map( 'absint', $terms );
+					} else {
+						$field = 'slug';
+					}
+						
+					$atts['tax_query'][] = array( 'taxonomy' => $atts['tax_term'], 'field' => $field, 'terms' => $terms );
+				}
+			}
+			
 			foreach ( $args as $k => $v ) {
 				if ( is_numeric( $v ) )
 					$atts['tax_query'][] = array( 'taxonomy' => $k, 'field' => 'id', 'terms' => intval( $v ) );
