@@ -512,14 +512,28 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if ( isset( $atts['tax_term'] ) && ! empty( $atts['tax_term'] ) && isset( $atts['tax_name'] ) && ! empty( $atts['tax_name'] ) ) {
 				$terms = explode( ' ', $atts['tax_name'] );
 				if ( count( $terms ) > 0 ) {
-					if ( is_numeric( $terms[0] ) ) {
-						$field = 'id';
-						$terms = array_map( 'absint', $terms );
+					if ( 'tag' == $atts['tax_name'] ) {
+						if ( is_numeric( $terms[0] ) ) {
+							$atts['tag__in'] = $terms;
+						} else {
+							$atts['tag_slug__in'] = $terms;
+						}
+					} else if ( 'category' == $atts['tax_name'] ) {
+						if ( is_numeric( $terms[0] ) ) {
+							$atts['cat'] = implode( ',', $terms );
+						} else {
+							$atts['category_name'] = implode( ',', $terms );
+						}
 					} else {
-						$field = 'slug';
+						if ( is_numeric( $terms[0] ) ) {
+							$field = 'id';
+							$terms = array_map( 'absint', $terms );
+						} else {
+							$field = 'slug';
+						}
+							
+						$atts['tax_query'][] = array( 'taxonomy' => $atts['tax_term'], 'field' => $field, 'terms' => $terms );
 					}
-						
-					$atts['tax_query'][] = array( 'taxonomy' => $atts['tax_term'], 'field' => $field, 'terms' => $terms );
 				}
 			}
 			
