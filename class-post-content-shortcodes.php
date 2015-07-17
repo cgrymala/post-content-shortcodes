@@ -767,6 +767,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$args = $this->get_args( $atts );
 			
+			print( '<pre><code>' );
+			var_dump( $args );
+			print( '</code></pre>' );
+			
 			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || !is_numeric( $blog_id ) ) {
 				$posts = get_posts( $args );
 				if ( false === $this->shortcode_atts['show_image'] )
