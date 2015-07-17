@@ -510,7 +510,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$atts['tax_query'] = array();
 			
 			if ( isset( $atts['tax_term'] ) && ! empty( $atts['tax_term'] ) && isset( $atts['tax_name'] ) && ! empty( $atts['tax_name'] ) ) {
-				$terms = explode( ' ', $atts['tax_name'] );
+				$terms = explode( ' ', $atts['tax_term'] );
 				if ( count( $terms ) > 0 ) {
 					if ( 'tag' == $atts['tax_name'] ) {
 						if ( is_numeric( $terms[0] ) ) {
@@ -965,7 +965,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$atts['orderby'] = str_replace( 'post_', '', $atts['orderby'] );
 			
-			unset( $atts['blog_id'], $atts['exclude_current'], $atts['tax_name'], $atts['tax_term'], $atts['view_template'] );
+			unset( $atts['blog_id'], $atts['exclude_current'], $atts['tax_name'], $atts['tax_term'], $atts['view_template'], $atts['show_image'], $atts['image_width'], $atts['image_height'] );
 			
 			/**
 			 * Output a little debug info if necessary
