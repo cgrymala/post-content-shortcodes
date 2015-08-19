@@ -3,7 +3,7 @@ Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
 Requires at least: 4.0
 Tested up to: 4.3
-Stable tag: 0.5
+Stable tag: 0.5.5
 
 Adds shortcodes to display the content of a post or a list of posts.
 
@@ -219,6 +219,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 
 == Changelog ==
 
+= 0.5.5 =
+
+* Fixes issue that stopped widgets from working in WordPress 4.3
+
 = 0.5 =
 
 * Fixes error when used in some multisite/non-multisite instances, due to improper checking for multisite
@@ -303,6 +307,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 This is the first version of this plugin
 
 == Upgrade Notice ==
+
+= 0.5.5 =
+
+* Fixes issue that stopped widgets from working in WordPress 4.3
 
 = 0.5 =
 
