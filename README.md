@@ -7,7 +7,7 @@
 
 **Tested up to:** 4.3
 
-**Stable tag:** 0.5
+**Stable tag:** 0.5.5
 
 
 Adds shortcodes to display the content of a post or a list of posts.
@@ -53,7 +53,6 @@ The second shortcode is the `[post-list]` shortcode. This shortcode does not req
 * excerpt_length => 0
 * image_width => 0
 * image_height => 0
-* shortcodes => false (determines whether the plugin should attempt to allow shortcodes to be processed within the excerpt/content)
 
 The first 13 arguments are standard arguments for the `get_posts()` function.
 
@@ -225,6 +224,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 
 ## Changelog ##
 
+### 0.5.5 ###
+
+* Fixes issue that stopped widgets from working in WordPress 4.3
+
 ### 0.5 ###
 
 * Fixes error when used in some multisite/non-multisite instances, due to improper checking for multisite
@@ -310,6 +313,10 @@ This is the first version of this plugin
 
 ## Upgrade Notice ##
 
+### 0.5.5 ###
+
+* Fixes issue that stopped widgets from working in WordPress 4.3
+
 ### 0.5 ###
 
 * Finally fixes stupid bug that stopped dates from showing up in Post List shortcode/widget
@@ -344,5 +351,3 @@ This is the first version of this plugin
 ## To Do ##
 
 * Add AJAX features to allow user to choose from a list of posts/sites, instead of requiring them to manually enter the ID
-* Add ability to wrap featured images with a link
-* Add ability to paginate the [post-list] shortcode
