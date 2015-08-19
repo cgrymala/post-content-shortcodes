@@ -81,7 +81,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 		
 		function WP_Widget_construct( $id, $name, $widget_ops=array(), $control_ops=array() ) {
-			parent::__construct( $id, $name, $widget_ops, $control_ops );
+			WP_Widget::__construct( $id, $name, $widget_ops, $control_ops );
 		}
 		
 		function widget( $args, $instance ) {
