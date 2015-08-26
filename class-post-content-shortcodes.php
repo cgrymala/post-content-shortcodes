@@ -1,7 +1,7 @@
 <?php
 /**
  * The class setup for post-content-shortcodes plugin
- * @version 0.5.1
+ * @version 0.5.6
  */
 if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 	/**

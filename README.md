@@ -225,6 +225,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 
 ## Changelog ##
 
+### 0.5.6 ###
+
+* Fixes issue with widgets disappearing in 4.3
+
 ### 0.5 ###
 
 * Fixes error when used in some multisite/non-multisite instances, due to improper checking for multisite
@@ -309,6 +313,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 This is the first version of this plugin
 
 ## Upgrade Notice ##
+
+### 0.5.6 ###
+
+* Fixes issue with widgets disappearing in WP 4.3
 
 ### 0.5 ###
 

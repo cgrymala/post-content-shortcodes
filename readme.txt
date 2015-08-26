@@ -3,7 +3,7 @@ Contributors: cgrymala
 Tags: shortcode, clone, syndication, post content, post list
 Requires at least: 4.0
 Tested up to: 4.3
-Stable tag: 0.5
+Stable tag: 0.5.6
 
 Adds shortcodes to display the content of a post or a list of posts.
 
