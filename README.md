@@ -7,7 +7,7 @@
 
 **Tested up to:** 4.3
 
-**Stable tag:** 0.5.5
+**Stable tag:** 1.0
 
 
 Adds shortcodes to display the content of a post or a list of posts.
