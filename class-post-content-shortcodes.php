@@ -130,6 +130,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				'tax_name' => null, 
 				// A list of taxonomy term slugs or IDs to limit content by
 				'tax_term' => null, 
+				// Whether to wrap the featured image in a link to the post
+				'link_image' => false, 
+				// Whether to ignore password-protected posts in post list
+				'ignore_protected' => false, 
 			);
 			/**
 			 * If this site is using the WP Views plugin, add support for a 
@@ -284,6 +288,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->is_true( $this->shortcode_atts['strip_html'] );
 			$this->is_true( $this->shortcode_atts['exclude_current'] );
 			$this->is_true( $this->shortcode_atts['shortcodes'] );
+			$this->is_true( $this->shortcode_atts['link_image'] );
+			$this->is_true( $this->shortcode_atts['ignore_protected'] );
 			
 			return $this->shortcode_atts;
 		}
@@ -344,6 +350,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return string the final HTML for the post
 		 */
 		function post_content( $atts=array() ) {
+			do_action( 'pcs_starting_post_content' );
+			
 			global $wpdb;
 			$this->shortcode_atts = $this->_get_attributes( $atts );
 			
@@ -351,8 +359,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			/**
 			 * Attempt to avoid an endless loop
 			 */
-			if( ( is_array( $atts ) && array_key_exists( 'exclude_current', $atts ) && 'Do not exclude' !== $atts['exclude_current'] ) && ( $id == $GLOBALS['post']->ID || empty( $id ) ) )
+			if( ( is_array( $atts ) && array_key_exists( 'exclude_current', $atts ) && 'Do not exclude' !== $atts['exclude_current'] ) && ( $id == $GLOBALS['post']->ID || empty( $id ) ) ) {
+				do_action( 'pcs_ending_post_content' );
 				return;
+			}
 			
 			/**
 			 * Output a little debug info if necessary
@@ -361,14 +371,17 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				error_log( '[PCS Debug]: Preparing to retrieve post content with the following args: ' . print_r( $atts, true ) );
 			
 			$p = $this->get_post_from_blog( $id, $blog_id );
-			if( empty( $p ) || is_wp_error( $p ) )
+			if( empty( $p ) || is_wp_error( $p ) ) {
+				do_action( 'pcs_ending_post_content' );
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
+			}
 			
 			/**
 			 * If Views is active, and the user has chosen to use a Content Template, 
 			 * 		render that instead of the default layout
 			 */
 			if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
+				do_action( 'pcs_ending_post_content' );
 				return $this->do_view_template( $p );
 			}
 			
@@ -413,7 +426,14 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$image_size = array( intval( $image_width ), intval( $image_height ) );
 				}
 				
-				$content = apply_filters( 'post-content-shortcodes-include-thumbnail', $p->post_thumbnail . $content, $p->post_thumbnail, $content, $p, $atts );
+				if ( $link_image ) {
+					$link = get_permalink( $p->ID );
+					$p->post_thumbnail_linked = sprintf( '<a href="%s">%s</a>', $link, $p->post_thumbnail );
+					
+					$content = apply_filters( 'post-content-shortcodes-include-thumbnail', $p->post_thumbnail_linked . $content, $p->post_thumbnail, $content, $p, $atts );
+				} else {
+					$content = apply_filters( 'post-content-shortcodes-include-thumbnail', $p->post_thumbnail . $content, $p->post_thumbnail, $content, $p, $atts );
+				}
 			}
 			
 			if ( $show_comments ) {
@@ -429,6 +449,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			if ( $show_title )
 				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title, $p, $atts ) . $content;
+			
+			do_action( 'pcs_ending_post_content' );
 			
 			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content, $p, $atts ), $p, $atts );
 		}
@@ -491,6 +513,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return string the final HTML output for the list
 		 */
 		function post_list( $atts=array() ) {
+			do_action( 'pcs_starting_post_list' );
+			
 			if ( ! is_array( $atts ) )
 				$atts = array();
 			
@@ -558,8 +582,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				error_log( '[PCS Debug]: Preparing to retrieve post list with the following args: ' . print_r( $atts, true ) );
 				
 			$posts = $this->get_posts_from_blog( $atts, $atts['blog_id'] );
-			if( empty( $posts ) )
+			if( empty( $posts ) ) {
+				do_action( 'pcs_ending_post_list' );
 				return apply_filters( 'post-content-shortcodes-no-posts-error', '<p>No posts could be found that matched the specified criteria.</p>', $this->get_args( $atts ) );
+			}
 			
 			/**
 			 * If the user is using the WP Views plugin and specified a Content Template 
@@ -578,11 +604,15 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				remove_filter( 'post_thumbnail_html', array( $this->do_post_thumbnail() ), 99 );
 				remove_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
 				$output .= apply_filters( 'post-content-shortcodes-views-template-closing', '</div>' );
+				do_action( 'pcs_ending_post_list' );
 				return $output;
 			}
 			
 			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">', $atts );
 			foreach( $posts as $p ) {
+				if ( ! is_object( $p ) )
+					continue;
+				
 				if ( $atts['strip_html'] ) {
 					$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
 					$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
@@ -646,7 +676,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						$p->post_content = force_balance_tags( substr( $p->post_content, 0, stripos( $p->post_content, '<!--more-->' ) ) );
 				}
 				if( $atts['show_image'] ) {
-					$output .= $p->post_thumbnail;
+					if ( $atts['link_image'] ) {
+						$output .= '<a href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '">' . $p->post_thumbnail . '</a>';
+					} else {
+						$output .= $p->post_thumbnail;
+					}
 				}
 				if( $atts['show_excerpt'] ) {
 					$excerpt = empty( $p->post_excerpt ) ? $p->post_content : $p->post_excerpt;
@@ -672,6 +706,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$output .= apply_filters( 'post-content-shortcodes-close-item', '</li>', $atts );
 			}
 			$output .= apply_filters( 'post-content-shortcodes-close-list', '</ul>', $atts );
+			
+			do_action( 'pcs_ending_post_list' );
 			
 			return $output;
 		}
@@ -960,6 +996,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			$atts['orderby'] = str_replace( 'post_', '', $atts['orderby'] );
+			
+			if ( true === $atts['ignore_protected'] ) {
+				$atts['has_password'] = false;
+			}
 			
 			unset( $atts['blog_id'], $atts['exclude_current'], $atts['tax_name'], $atts['tax_term'], $atts['view_template'], $atts['show_image'], $atts['image_width'], $atts['image_height'] );
 			

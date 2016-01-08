@@ -68,6 +68,15 @@ if( !class_exists( 'PCS_Widget' ) ) {
 				/* Added 0.3.4 */
 				// Allow the specification of a post name instead of ID
 				'post_name' => null, 
+				/* Added 0.6 */
+				// A taxonomy name to limit content by
+				'tax_name' => null, 
+				// A list of taxonomy term slugs or IDs to limit content by
+				'tax_term' => null, 
+				// Whether to wrap the featured image in a link to the post
+				'link_image' => false, 
+				// Whether to ignore password-protected posts in post list
+				'ignore_protected' => false, 
 			);
 			/**
 			 * If this site is using the WP Views plugin, add support for a 
@@ -194,6 +203,13 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_date' ) ?>" id="<?php echo $this->get_field_id( 'show_date' ) ?>" value="1"<?php checked( $instance['show_date'] ) ?>/> 
 	<label for="<?php echo $this->get_field_id( 'show_date' ) ?>"><?php _e( 'Display the publication date?' ) ?></label></p>
 <?php
+/**
+ * Options added in 0.6
+ */
+?<
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'link_image' ) ?>" id="<?php echo $this->get_field_id( 'link_image' ) ?>" value="1"<?php checked( $instance['link_image'] ) ?>/> 
+	<label for="<?php echo $this->get_field_id( 'link_image' ) ?>"><?php _e( 'Wrap the thumbnail in a link to the post?' ) ?></label></p>
+<?php
 		}
 		
 		function get_view_templates() {
@@ -228,6 +244,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$instance['image_width'] = array_key_exists( 'image_width', $new_instance ) && is_numeric( $new_instance['image_width'] ) ? intval( $new_instance['image_width'] ) : 0;
 			$instance['image_height'] = array_key_exists( 'image_height', $new_instance ) && is_numeric( $new_instance['image_height'] ) ? intval( $new_instance['image_height'] ) : 0;
 			$instance['view_template'] = array_key_exists( 'view_template', $new_instance ) && array_key_exists( 'view_template', $this->defaults ) && ! empty( $new_instance['view_template'] ) && is_numeric( $new_instance['view_template'] ) ? intval( $new_instance['view_template'] ) : null;
+			$instance['link_image'] = array_key_exists( 'link_image', $new_instance ) ? true : false;
 			
 			return $instance;
 		}
@@ -392,6 +409,8 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			}
 ?>
     </select></p>
+<p><input type="checkbox" name="<?php echo $this->get_field_name( 'ignore_protected' ) ?>" id="<?php echo $this->get_field_id( 'ignore_protected' ) ?>" value="1"<?php checked( $instance['ignore_protected'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'ignore_protected' ) ?>"><?php _e( 'Exclude password-protected posts from the list?' ) ?></label></p>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
 	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude the post being viewed from the list of posts?' ) ?></label></p>
 <?php
@@ -413,6 +432,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$instance['exclude_current'] = isset( $new_instance['exclude_current'] );
 			$instance['tax_name']       = isset( $new_instance['tax_name'] ) ? esc_attr( $new_instance['tax_name'] ) : null;
 			$instance['tax_term']       = isset( $new_instance['tax_term'] ) ? esc_attr( $new_instance['tax_term'] ) : null;
+			$instance['ignore_protected'] = isset( $new_instance['ignore_protected'] ) ? true : false;
 			
 			return $instance;
 		}
