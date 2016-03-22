@@ -385,8 +385,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			if ( $strip_html ) {
-				$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
-				$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
+				if ( $p->post_content ) {
+					$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
+				}
+				if ( $p->post_excerpt ) {
+					$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
+				}
 			}
 			
 			$content = $p->post_content;
