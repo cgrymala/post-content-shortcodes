@@ -206,7 +206,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 /**
  * Options added in 0.6
  */
-?<
+?>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'link_image' ) ?>" id="<?php echo $this->get_field_id( 'link_image' ) ?>" value="1"<?php checked( $instance['link_image'] ) ?>/> 
 	<label for="<?php echo $this->get_field_id( 'link_image' ) ?>"><?php _e( 'Wrap the thumbnail in a link to the post?' ) ?></label></p>
 <?php
