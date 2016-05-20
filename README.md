@@ -29,6 +29,7 @@ The first shortcode is the `[post-content]` shortcode. Using that shortcode will
 * show_title => false - Whether or not to show the post title at the top of the content. By default, the title is wrapped in `<h2>` tags, but you can use the `post-content-shortcodes-title` filter to modify the title output.
 * link_image => false (set this to true/1 if you would like to wrap the featured image in a link to the post) - Added in 0.6
 * view_template => null (if you are using the [Views](https://wp-types.com/) plugin, you can set the ID of an existing Content Template to be used in-place of the default list item output) - Added in 0.6
+* shortcodes => false - By default, this plugin strips shortcodes out of the post content/excerpt. If you would like to attempt to process/render shortcodes in the content, set this flag to true.
 
 **Post List**
 
@@ -69,7 +70,7 @@ The `blog_id` argument is also not standard. That argument allows you to pull a 
 
 The `show_image`, `image_width` and `image_height` arguments only apply to the `post-list` shortcode. They determine whether to display the featured image and how to display it for each post within the list. If the `image_width` and `image_height` arguments are both set to 0 (which is the default), the "thumbnail" size will be used (assuming the `show_image` argument is set to 1 or "true"). If only one of the `image_width` or `image_height` arguments are set, the other argument will be set to 999999 to ensure that the specified dimension is met.
 
-The 'show_excerpt` and `excerpt_length` arguments also apply to the post-list shortcode. If you set `show_excerpt` to 1 or "true", the post excerpt will be shown if it exists. If it doesn't exist (or is empty), the post content will be shown (with HTML stripped out of it). You can truncate the length of the excerpts that are shown in the post list by setting the `excerpt_length` value. The `excerpt_length` is measured in words, so if you would like each excerpt to display no more than 50 words, you would set the `excerpt_length` parameter to 50. If you leave it set to 0 (which is the default), the entire excerpt or content will be shown in the post list. In the `post-list` shortcode, if `show_excerpt` is set to 0 or false, no content will be shown in the list (as opposed to the behavior of the `show_excerpt` parameter in the `post-content` shortcode).
+The `show_excerpt` and `excerpt_length` arguments also apply to the post-list shortcode. If you set `show_excerpt` to 1 or "true", the post excerpt will be shown if it exists. If it doesn't exist (or is empty), the post content will be shown (with HTML stripped out of it). You can truncate the length of the excerpts that are shown in the post list by setting the `excerpt_length` value. The `excerpt_length` is measured in words, so if you would like each excerpt to display no more than 50 words, you would set the `excerpt_length` parameter to 50. If you leave it set to 0 (which is the default), the entire excerpt or content will be shown in the post list. In the `post-list` shortcode, if `show_excerpt` is set to 0 or false, no content will be shown in the list (as opposed to the behavior of the `show_excerpt` parameter in the `post-content` shortcode).
 
 The `view_template` argument can be a bit complicated to get working properly, and is still a bit *experimental*. Please use it at your own risk. Unfortunately, the standard [wpv-post-featured-image] and [wpv-post-url] shortcodes (and, by extension, the [wpv-post-link] shortcode) do not work properly, especially when trying to display content from another site in the network. There are three extra shortcodes created for use in your Content Template, the first two of which replace the [wpv-post-featured-image] and [wpv-post-url] shortcodes:
 
@@ -251,6 +252,10 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 Unfortunately, because of the way the Views plugin processes posts, the [wpv-post-url], [wpv-post-link] and [wpv-post-featured-image] shortcodes do not work properly. Instead, you will need to use the [pcs-post-url] and [pcs-thumbnail] shortcodes.
 
 ## Changelog ##
+
+### 1.0 ###
+* Fixes PHP fatal error thanks to GitHub user [@stefanogualdi](https://github.com/stefanogualdi)
+* Fixes other minor warnings and errors
 
 ### 0.6 ###
 

@@ -22,6 +22,9 @@ The first shortcode is the `[post-content]` shortcode. Using that shortcode will
 * image_width => 0 - The width, in pixels, to which the featured image should be sized
 * image_height => 0 - The height, in pixels, to which the featured image should be sized
 * show_title => false - Whether or not to show the post title at the top of the content. By default, the title is wrapped in `<h2>` tags, but you can use the `post-content-shortcodes-title` filter to modify the title output.
+* link_image => false (set this to true/1 if you would like to wrap the featured image in a link to the post) - Added in 0.6
+* view_template => null (if you are using the [Views](https://wp-types.com/) plugin, you can set the ID of an existing Content Template to be used in-place of the default list item output) - Added in 0.6
+* shortcodes => false - By default, this plugin strips shortcodes out of the post content/excerpt. If you would like to attempt to process/render shortcodes in the content, set this flag to true.
 
 **Post List**
 
@@ -189,7 +192,7 @@ There are some filters available within the plugin that can alter the HTML gener
 
 = Are there any other filters in the plugin? =
 
-Yes. 
+Yes.
 
 * If the `[post-list]` shortcode retrieves an empty list of posts/pages, it will normally return an empty string (so as not to disrupt the flow of the page). However, you can have the shortcode output a custom error message by hooking into the `post-content-shortcodes-no-posts-error` filter.
 * If you would like to use a different set of default values for the shortcode arguments, you can hook into the `post-content-shortcodes-defaults` filter. The array of default arguments is passed to that filter before it gets used.
@@ -244,6 +247,11 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 Unfortunately, because of the way the Views plugin processes posts, the [wpv-post-url], [wpv-post-link] and [wpv-post-featured-image] shortcodes do not work properly. Instead, you will need to use the [pcs-post-url] and [pcs-thumbnail] shortcodes.
 
 == Changelog ==
+
+= 1.0 =
+
+* Fixes PHP fatal error thanks to GitHub user [@stefanogualdi](https://github.com/stefanogualdi)
+* Fixes other minor warnings and errors
 
 = 0.6 =
 
