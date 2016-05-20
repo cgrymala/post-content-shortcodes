@@ -402,8 +402,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			if ( $strip_html ) {
-				$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
-				$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
+				if ( property_exists( $p, 'post_content' ) && ! empty( $p->post_content ) )
+					$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
+				if ( property_exists( $p, 'post_excerpt' ) && ! empty( $p->post_excerpt ) )
+					$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
 			}
 			
 			$content = $p->post_content;
@@ -618,8 +620,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					continue;
 				
 				if ( $atts['strip_html'] ) {
-					$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
-					$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
+					if ( property_exists( $p, 'post_content' ) && ! empty( $p->post_content ) ) 
+						$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
+					if ( property_exists( $p, 'post_excerpt' ) && ! empty( $p->post_excerpt ) )
+						$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
 				}
 				
 				$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
