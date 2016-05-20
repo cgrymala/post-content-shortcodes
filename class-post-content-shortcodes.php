@@ -73,6 +73,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses apply_filters() to allow filtering the list with the post-content-shortcodes-defaults filter
 		 */
 		function _setup_defaults() {
+			global $blog_id;
 			$args = array(
 				'id'			=> 0,
 				'post_type'		=> 'post',
