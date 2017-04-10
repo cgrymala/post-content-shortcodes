@@ -29,18 +29,47 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		private static $instance;
 		/**
-		 * A container to hold our default shortcode attributes
+		 * @since   0.1
+		 * @access  public
+		 * @var     array() the array of default shortcode attributes
 		 */
-		var $defaults	= array();
+		public $defaults	= array();
 		/**
-		 * A container to hold our global plugin settings
+		 * @since   0.1
+		 * @access  public
+		 * @var     array() the array of global plugin settings
 		 */
-		var $settings 	= array();
-		var $stock_settings	= array( 'enable-network-settings' => true, 'enable-site-settings' => true, 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false, 'use-styles' => true );
-		var $use_styles = true;
-		var $shortcode_atts = array();
-		var $current_post_id = null;
-		var $current_blog_id = null;
+		public $settings 	= array();
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    array the array of default plugin settings
+		 */
+		public $stock_settings	= array( 'enable-network-settings' => true, 'enable-site-settings' => true, 'enable-pcs-content-widget' => true, 'enable-pcs-list-widget' => true, 'enable-pcs-ajax' => false, 'use-styles' => true );
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    bool whether to use the built-in plugin style sheet
+		 */
+		public $use_styles = true;
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    array the array of attributes for the current shortcode
+		 */
+		public $shortcode_atts = array();
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    null|int the ID of the post currently being processed
+		 */
+		public $current_post_id = null;
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    null|int the ID of the blog from which the post/list is being retrieved
+		 */
+		public $current_blog_id = null;
 		
 		/**
 		 * Returns the instance of this class.
@@ -119,8 +148,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Set up the default values for our shortcode attributes
 		 * These attributes are used for both shortcodes
 		 * @uses apply_filters() to allow filtering the list with the post-content-shortcodes-defaults filter
+		 *
+		 * @access private
+		 * @since  0.1
+		 * @return void
 		 */
-		function _setup_defaults() {
+		private function _setup_defaults() {
 			global $blog_id;
 			$args = array(
 				'id'			=> 0,
@@ -198,9 +231,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		/**
 		 * Enqueue the default stylesheet
 		 * Only enqueues the stylesheet if the option is set to do so
+		 *
+		 * @access public
+		 * @since  0.1
 		 * @return void
 		 */
-		function print_styles() {
+		public function print_styles() {
 			$this->_get_options();
 			if( $this->settings['use-styles'] )
 				wp_enqueue_style( 'pcs-styles', plugins_url( '/styles/default-styles.css', dirname( __FILE__ ) ), array(), $this->version, 'screen' );
@@ -209,9 +245,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		/**
 		 * Determine whether this is a multinetwork install or not
 		 * Will only return true if the is_multinetwork() & the add_mnetwork_option() functions exist
+		 *
+		 * @access protected
+		 * @since  0.1
 		 * @return bool whether this is a multi-network install capable of handling multi-network options
 		 */
-		function is_multinetwork() {
+		protected function is_multinetwork() {
 			return function_exists( 'is_multinetwork' ) && function_exists( 'add_mnetwork_option' ) && is_multinetwork();
 		}
 		
@@ -219,21 +258,27 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Determine whether this plugin is network active in a multisite install
 		 * @uses is_plugin_active_for_network()
 		 * @uses is_multisite()
+		 *
+		 * @access protected
+		 * @since  0.1
 		 * @return bool whether this is a multisite install with the plugin activated network-wide
 		 */
-		function is_plugin_active_for_network() {
+		protected function is_plugin_active_for_network() {
 			return function_exists( 'is_plugin_active_for_network' ) && is_multisite() && is_plugin_active_for_network( $this->plugin_dir_name );
 		}
 		
 		/**
 		 * Retrieve our options from the database
 		 *
-		 * @uses Post_Content_Shortcodes::is_multinetwork()
+		 * @uses \Post_Content_Shortcodes::is_multinetwork()
 		 * @uses get_mnetwork_option() if this is multinetwork
 		 * @uses get_site_option() if this is network activated in multisite
 		 * @uses get_option() if this is active on a single site
-		 * @uses Post_Content_Shortcodes::$stock_settings
-		 * @uses Post_Content_Shortcodes::$settings
+		 * @uses \Post_Content_Shortcodes::$stock_settings
+		 * @uses \Post_Content_Shortcodes::$settings
+		 *
+		 * @access protected
+		 * @since  0.1
 		 * @return void
 		 */
 		protected function _get_options() {
@@ -295,8 +340,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Register the two widgets
 		 * @uses Post_Content_Shortcodes::$settings
 		 * @uses register_widget()
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
-		function register_widgets() {
+		public function register_widgets() {
 			$this->_get_options();
 			if( 'on' == $this->settings['enable-pcs-list-widget'] )
 				register_widget( 'PCS_List_Widget' );
@@ -307,9 +356,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		/**
 		 * Set the shortcode attributes to a class variable for access in other methods
 		 * @param array $atts the array of attributes to store
+		 *
+		 * @access private
+		 * @since  0.1
 		 * @return array the parsed list of attributes
 		 */
-		function _get_attributes( $atts=array() ) {
+		private function _get_attributes( $atts=array() ) {
 			global $blog_id;
 			if ( is_array( $atts ) && array_key_exists( 'blog', $atts ) ) {
 				if ( is_numeric( $atts['blog'] ) ) {
@@ -349,9 +401,13 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		/**
 		 * Retrieve a post ID based on its slug
 		 * @param string $post_name the slug of the post being retrieved
-		 * @param int $blog the ID of the site from which to pull the post
+		 * @param int    $blog the ID of the site from which to pull the post
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return bool|int false if not found; the ID of the appropriate post if it is found
 		 */
-		function get_id_from_post_name( $post_name, $blog=0 ) {
+		public function get_id_from_post_name( $post_name, $blog=0 ) {
 			global $blog_id, $wpdb;
 			if ( empty( $blog ) || $blog == $blog_id ) {
 				$ID = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name=%s LIMIT 1", $post_name ) );
@@ -362,7 +418,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			switch_to_blog( $blog );
 			$ID = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name=%s LIMIT 1", $post_name ) );
-			restore_current_blog( $blog );
+			restore_current_blog();
 			if ( is_numeric( $ID ) )
 				return $ID;
 			else
@@ -399,9 +455,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses apply_filters() to filter the final HTML output with the 
 		 * 		post-content-shortcodes-content filter
 		 *
+		 * @access public
+		 * @since  0.1
 		 * @return string the final HTML for the post
 		 */
-		function post_content( $atts=array() ) {
+		public function post_content( $atts=array() ) {
 			do_action( 'pcs_starting_post_content' );
 			
 			global $wpdb;
@@ -413,7 +471,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 */
 			if( ( is_array( $atts ) && array_key_exists( 'exclude_current', $atts ) && 'Do not exclude' !== $atts['exclude_current'] ) && ( $id == $GLOBALS['post']->ID || empty( $id ) ) ) {
 				do_action( 'pcs_ending_post_content' );
-				return;
+				return '';
 			}
 			
 			/**
@@ -432,9 +490,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 * If Views is active, and the user has chosen to use a Content Template, 
 			 * 		render that instead of the default layout
 			 */
-			if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
-				do_action( 'pcs_ending_post_content' );
-				return $this->do_view_template( $p );
+			if ( function_exists( 'render_view_template' ) ) {
+				if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
+					do_action( 'pcs_ending_post_content' );
+					return $this->do_view_template( $p );
+				}
 			}
 			
 			$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
@@ -512,11 +572,18 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		/**
 		 * Output the post content using a specified Content Template
 		 * @param $p object the Post object
-		 * @since 0.6
+		 *
+		 * @access public
+		 * @since  0.6
+		 * @return string the rendered View content template
 		 */
-		function do_view_template( $p=null ) {
-			if ( empty( $p ) )
-				return;
+		public function do_view_template( $p=null ) {
+			if ( ! function_exists( 'render_view_template' ) ) {
+				return '';
+			}
+			if ( empty( $p ) ) {
+				return '';
+			}
 			
 			global $post;
 			setup_postdata( $p );
@@ -564,9 +631,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses apply_filters() to filter the HTML element that's used to close the list with the 
 		 * 		post-content-shortcodes-close-list filter
 		 *
+		 * @access public
+		 * @since  0.1
 		 * @return string the final HTML output for the list
 		 */
-		function post_list( $atts=array() ) {
+		public function post_list( $atts=array() ) {
 			do_action( 'pcs_starting_post_list' );
 			
 			if ( ! is_array( $atts ) )
@@ -646,20 +715,23 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 * 		to use for the results, use that instead of the default layout
 			 * @since 0.6
 			 */
-			if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
-				$output = apply_filters( 'post-content-shortcodes-views-template-opening', '<div class="post-list">' );
-				add_filter( 'post_thumbnail_html', array( $this, 'do_post_thumbnail' ), 99 );
-				add_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
-				$this->shortcode_atts['post_number'] = 1;
-				foreach ( $posts as $p ) {
-					$output .= $this->do_view_template( $p );
-					$this->shortcode_atts['post_number']++;
+			if ( function_exists( 'render_view_template' ) ) {
+				if ( array_key_exists( 'view_template', $this->shortcode_atts ) && ! empty( $this->shortcode_atts['view_template'] ) ) {
+					$output = apply_filters( 'post-content-shortcodes-views-template-opening', '<div class="post-list">' );
+					add_filter( 'post_thumbnail_html', array( $this, 'do_post_thumbnail' ), 99 );
+					add_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
+					$this->shortcode_atts['post_number'] = 1;
+					foreach ( $posts as $p ) {
+						$output .= $this->do_view_template( $p );
+						$this->shortcode_atts['post_number'] ++;
+					}
+					remove_filter( 'post_thumbnail_html', array( $this->do_post_thumbnail() ), 99 );
+					remove_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
+					$output .= apply_filters( 'post-content-shortcodes-views-template-closing', '</div>' );
+					do_action( 'pcs_ending_post_list' );
+					
+					return $output;
 				}
-				remove_filter( 'post_thumbnail_html', array( $this->do_post_thumbnail() ), 99 );
-				remove_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
-				$output .= apply_filters( 'post-content-shortcodes-views-template-closing', '</div>' );
-				do_action( 'pcs_ending_post_list' );
-				return $output;
 			}
 			
 			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">', $atts );
@@ -782,9 +854,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses apply_filters() to filter the amount of time the transient is valid with the 
 		 * 		pcsc-transient-timeout filter
 		 *
-		 * @return object the post object
+		 * @access public
+		 * @since  0.1
+		 * @return null|\WP_Post the post object
 		 */
-		function get_post_from_blog( $post_id=0, $blog_id=0 ) {
+		public function get_post_from_blog( $post_id=0, $blog_id=0 ) {
 			if ( empty( $this->shortcode_atts['image_height'] ) && empty( $this->shortcode_atts['image_width'] ) ) {
 				$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail', $this->shortcode_atts );
 			} else {
@@ -796,7 +870,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			if( empty( $post_id ) )
-				return;
+				return null;
+			
 			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) ) {
 				$p = get_post( $post_id );
 				if ( has_post_thumbnail( $post_id ) )
@@ -844,9 +919,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses apply_filters() to filter the amount of time the transient is cached with 
 		 * 		the pcsc-transient-timeout filter
 		 *
-		 * @return array the array of post objects
+		 * @access public
+		 * @since  0.1
+		 * @return \WP_Post[] the array of post objects
 		 */
-		function get_posts_from_blog( $atts=array(), $blog_id=0 ) {
+		public function get_posts_from_blog( $atts=array(), $blog_id=0 ) {
 			if ( empty( $this->shortcode_atts['image_height'] ) && empty( $this->shortcode_atts['image_width'] ) ) {
 				$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail', $this->shortcode_atts );
 			} else {
@@ -914,10 +991,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * 		taxonomy is registered on the new blog before the query will work
 		 * @param array $tax_query the tax_query argument for the query
 		 * @param string $post_type the type of post/object being queried
+		 *
+		 * @access public
+		 * @since  0.3.4.1
 		 * @return void
-		 * @since 0.3.4.1
 		 */
-		function check_taxonomies( $tax_query=null, $post_type=null ) {
+		public function check_taxonomies( $tax_query=null, $post_type=null ) {
 			if ( empty( $tax_query ) )
 				return;
 			if ( empty( $post_type ) )
@@ -946,11 +1025,16 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses WPDB::get_var() to retrieve the thumbnail ID
 		 * @uses wp_get_attachment_image() to retrieve the HTML for the featured image
 		 *
-		 * @deprecated v0.3.4
+		 * @deprecated since 0.3.4
 		 *
+		 * @access public
+		 * @since  0.1
 		 * @return string the HTML for the image element
 		 */
 		function get_the_post_thumbnail( $post_ID, $image_size = 'thumbnail', $attr = array(), $blog_id = 0 ) {
+			_deprecated_function( '\Post_Content_Shortcodes::get_the_post_thumbnail', '0.3.4', '' );
+			return '';
+			
 			if ( empty( $blog_id ) || (int) $blog_id === (int) $GLOBALS['blog_id'] )
 				return get_the_post_thumbnail( $post_ID, $image_size, $attr );
 			if ( ! is_numeric( $post_ID ) || ! is_numeric( $blog_id ) )
@@ -978,9 +1062,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Output any comments on a post
 		 * @param post $newpost the post object for which to display comments
 		 * @uses comments_template() to output the comment template
+		 *
+		 * @access public
+		 * @since  0.1
 		 * @return string the HTML for the comments
 		 */
-		function do_comments( $newpost ) {
+		public function do_comments( $newpost ) {
 			global $post;
 			if ( is_object( $post ) )
 				$tmpp = clone $post;
@@ -1000,11 +1087,14 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @param int $blog_id the ID of the blog/site from which to retrieve the post
 		 * @uses $wpdb
 		 * @uses WPDB::get_row()
+		 *
+		 * @access public
+		 * @since  0.1
 		 * @return string the URL to the post
 		 */
-		function get_shortlink_from_blog( $post_id=0, $blog_id=0 ) {
+		public function get_shortlink_from_blog( $post_id=0, $blog_id=0 ) {
 			if( empty( $post_id ) )
-				return;
+				return '';
 			if( empty( $blog_id ) || $blog_id == $GLOBALS['blog_id'] || !is_numeric( $blog_id ) )
 				return apply_filters( 'the_permalink', get_permalink( $post_id ) );
 			
@@ -1016,23 +1106,30 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		/**
 		 * Determine whether a variable evaluates to boolean true
 		 * @param mixed &$var the variable to be evaluated
+		 *
+		 * @access public
+		 * @since  0.1
 		 * @return void
 		 */
 		function is_true( &$var ) {
-			if( in_array( $var, array( 'false', false, 0, '0' ), true ) )
-				return $var = false;
-			if( in_array( $var, array( 'true', true, 1, '1' ), true ) )
-				return $var = true;
+			if( in_array( $var, array( 'true', true, 1, '1' ), true ) ) {
+				$var = true;
+			} else {
+				$var = false;
+			}
 			
-			$var = false;
+			return;
 		}
 		
 		/**
 		 * Build the list of get_posts() args
 		 * @param array $atts the array of attributes to evaluate
+		 *
+		 * @access public
+		 * @since  0.1
 		 * @return array the parsed array of attributes
 		 */
-		function get_args( $atts=array() ) {
+		public function get_args( $atts=array() ) {
 			if ( ! is_array( $atts ) )
 				$atts = maybe_unserialize( $atts );
 			if ( ! is_array( $atts ) )
@@ -1068,21 +1165,45 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			return array_filter( $atts );
 		}
 		
-		function do_post_thumbnail( $html=null ) {
+		/**
+		 * Build and return the featured image for the current post
+		 * @param null|string $html the current HTML for the post
+		 *
+		 * @access public
+		 * @since  0.6
+		 * @return null|string
+		 */
+		public function do_post_thumbnail( $html=null ) {
 			if ( $GLOBALS['blog_id'] == $this->shortcode_atts['blog_id'] && ! empty( $html ) )
 				return $html;
 			
 			return $GLOBALS['post']->post_thumbnail;
 		}
 		
-		function do_post_permalink( $link ) {
+		/**
+		 * Attempt to build the URL for the post being output
+		 * @param string $link the current URL for the post
+		 *
+		 * @access public
+		 * @since  0.5
+		 * @return string
+		 */
+		public function do_post_permalink( $link ) {
 			if ( $GLOBALS['blog_id'] == $this->shortcode_atts['blog_id'] && ! empty( $link ) )
 				return $link;
 			
 			return $this->get_shortlink_from_blog( $GLOBALS['post']->ID, $this->shortcode_atts['blog_id'] );
 		}
 		
-		function do_entry_classes( $atts=array() ) {
+		/**
+		 * Compile and return the list of CSS classes for the specific entry being displayed
+		 * @param array $atts the attributes for the current shortcode being processed
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return string the full list of CSS classes
+		 */
+		public function do_entry_classes( $atts=array() ) {
 			$atts = shortcode_atts( array( 'classes' => '', 'columns' => 0 ), $atts );
 			$classes = explode( ' ', $atts['classes'] );
 			if ( is_numeric( $atts['columns'] ) && $atts['columns'] > 0 ) {
