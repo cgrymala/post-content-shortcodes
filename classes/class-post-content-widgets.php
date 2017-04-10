@@ -5,7 +5,7 @@
  * @subpackage Post Content Shortcodes
  * @version 1.0
  */
-if( !class_exists( 'PCS_Widget' ) ) {
+if ( ! class_exists( 'PCS_Widget' ) ) {
 	/**
 	 * Class definition for the generic PCS_Widget parent class.
 	 * Must be overridden by either the list or content widget class.
@@ -19,15 +19,24 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		 * @var    string
 		 */
 		public $version = '0.9.9.1';
-		
-		var $defaults = array();
-		var $blog_list = false;
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    array the array of default attributes
+		 */
+		public $defaults = array();
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    bool|array() the list of blogs/sites within this install
+		 */
+		public $blog_list = false;
 		
 		/**
 		 * Construct our object
-         *
-         * @access public
-         * @since  0.1
+		 *
+		 * @access public
+		 * @since  0.1
 		 */
 		public function __construct() {
 			$this->_setup_defaults();
@@ -35,10 +44,10 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		
 		/**
 		 * Set up the default options for this widget
-         *
-         * @access private
-         * @since  0.1
-         * @return void
+		 *
+		 * @access private
+		 * @since  0.1
+		 * @return void
 		 */
 		private function _setup_defaults() {
 			if ( ! empty( $this->defaults ) )
@@ -112,33 +121,33 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 		
 		/**
-         * Construct the actual Widget object
-         *
+		 * Construct the actual Widget object
+		 *
 		 * @param string $id the unique ID for this widget
 		 * @param string $name the name of this widget
 		 * @param array  $widget_ops the array of options for this widget
 		 * @param array  $control_ops the array of options for the admin control box
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
-		function WP_Widget_construct( $id, $name, $widget_ops=array(), $control_ops=array() ) {
+		public function WP_Widget_construct( $id, $name, $widget_ops=array(), $control_ops=array() ) {
 			WP_Widget::__construct( $id, $name, $widget_ops, $control_ops );
 		}
 		
 		/**
-         * Output the actual widget
-         *
+		 * Output the actual widget
+		 *
 		 * @param array $args the array of options for the display of this widget
 		 * @param array $instance the array of options for this specific widget
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
-		function widget( $args, $instance ) {
-			if( !isset( $instance['type'] ) )
+		public function widget( $args, $instance ) {
+			if ( !isset( $instance['type'] ) )
 				return;
 			
 			global $post_content_shortcodes_obj;
@@ -149,11 +158,12 @@ if( !class_exists( 'PCS_Widget' ) ) {
 				$title = null;
 			
 			echo $before_widget;
-			if( $title )
+			if ( $title )
 				echo $before_title . $title . $after_title;
+			
 			unset( $instance['title'] );
 			
-			switch( $instance['type'] ) {
+			switch ( $instance['type'] ) {
 				case 'content':
 					echo $post_content_shortcodes_obj->post_content( $instance );
 					break;
@@ -167,67 +177,71 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 		
 		/**
-         * Retrieve a list of blogs/sites in this installation
-         *
-         * @access public
-         * @since  0.1
+		 * Retrieve a list of blogs/sites in this installation
+		 *
+		 * @access public
+		 * @since  0.1
 		 * @return bool
 		 */
-		function get_blogs() {
-			if( !is_multisite() ) {
+		public function get_blogs() {
+			if ( !is_multisite() ) {
 				error_log( '[PCS Notice]: This site does not appear to be multisite-enabled.' );
 				return $this->blog_list = false;
 			}
 			
 			$this->blog_list = array();
+			
 			global $wpdb;
 			$blogs = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs} ORDER BY blog_id" );
-			foreach( $blogs as $blog ) {
-				if( empty( $org_blog ) )
+			$org_blog = $GLOBALS['blog_id'];
+			
+			foreach ( $blogs as $blog ) {
+				if ( empty( $org_blog ) )
 					$org_blog = $wpdb->set_blog_id( $blog );
 				else
 					$wpdb->set_blog_id( $blog );
 				
 				$this->blog_list[$blog] = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name=%s", 'blogname' ) );
 			}
+			
 			$wpdb->set_blog_id( $org_blog );
 		}
 		
 		/**
-         * Pseudo-Abstract method that builds the admin form for this widget
-         *
+		 * Pseudo-Abstract method that builds the admin form for this widget
+		 *
 		 * @param array $instance the current options for this instance of the widget
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
-		function form( $instance ) {
+		public function form( $instance ) {
 		}
 		
 		/**
-         * Pseudo-Abstract method that saves the options for this instance of the widget
-         *
+		 * Pseudo-Abstract method that saves the options for this instance of the widget
+		 *
 		 * @param array $new_instance
 		 * @param array $old_instance
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
-		function update( $new_instance, $old_instance ) {
+		public function update( $new_instance, $old_instance ) {
 		}
 		
 		/**
-         * Outputs the fields that are common between the two types of widgets
-         *
+		 * Outputs the fields that are common between the two types of widgets
+		 *
 		 * @param array $instance the current options for this instance of the widget
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
-		function common_fields( $instance=array() ) {
+		public function common_fields( $instance=array() ) {
 			$has_templates = false;
 			if ( array_key_exists( 'view_template', $this->defaults ) ) {
 				$templates = $this->get_view_templates();
@@ -292,13 +306,13 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 		
 		/**
-         * Retrieve a list of the current Views content templates
-         *
-         * @access public
-         * @since  0.1
-		 * @return array the list of Views templates
+		 * Retrieve a list of the current Views content templates
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return \WP_Post[] the list of Views templates
 		 */
-		function get_view_templates() {
+		public function get_view_templates() {
 			return get_posts( array( 
 				'post_type'   => 'view-template', 
 				'orderby'     => 'title', 
@@ -316,15 +330,15 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 		
 		/**
-         * Retrieve the values for the options that are common between the two types of widgets before updating
-         *
+		 * Retrieve the values for the options that are common between the two types of widgets before updating
+		 *
 		 * @param array $new_instance the options that were set before the Save button was pressed
 		 *
-         * @access public
-         * @since  0.1
+		 * @access public
+		 * @since  0.1
 		 * @return array the updated/sanitized array of options
 		 */
-		function get_common_values( $new_instance=array() ) {
+		public function get_common_values( $new_instance=array() ) {
 			$instance = array();
 			$instance['show_title'] = array_key_exists( 'show_title', $new_instance ) ? true : false;
 			$instance['show_image'] = array_key_exists( 'show_image', $new_instance ) ? true : false;
@@ -351,11 +365,11 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	class PCS_Content_Widget extends PCS_Widget {
 		/**
 		 * Construct the actual widget object
-         *
-         * @access public
-         * @since  0.1
+		 *
+		 * @access public
+		 * @since  0.1
 		 */
-		function __construct() {
+		public function __construct() {
 			parent::__construct();
 			
 			$widget_ops = array( 'classname' => 'pcs-content-widget', 'description' => 'Display the content of a single post.' );
@@ -364,40 +378,40 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 		
 		/**
-         * Old-style constructor method
-         *
-         * @deprecated since 0.9
-         * @access public
-         * @since  0.1
+		 * Old-style constructor method
+		 *
+		 * @deprecated since 0.9
+		 * @access public
+		 * @since  0.1
 		 * @return \PCS_Content_Widget
 		 */
-		function PCS_Content_Widget() {
+		public function PCS_Content_Widget() {
 			return self::__construct();
 		}
 		
 		/**
-         * Output the actual form used to create the widget in the admin
-         *
+		 * Output the actual form used to create the widget in the admin
+		 *
 		 * @param array $instance the current settings for this instance of the widget
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
-		function form( $instance ) {
+		public function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
 ?>
 <p><label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Widget Title:' ) ?></label> 
 	<input type="text" class="widefat" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/></p>
 <?php
-			if( $this->blog_list ) {
+			if ( $this->blog_list ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'Show post from which blog?' ) ?></label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'blog_id' ) ?>" id="<?php echo $this->get_field_id( 'blog_id' ) ?>">
 		<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
 <?php
-				foreach( $this->blog_list as $id=>$name ) {
+				foreach ( $this->blog_list as $id=>$name ) {
 ?>
 		<option value="<?php echo $id ?>"<?php selected( $instance['blog_id'], $id ) ?>><?php echo $name ?></option>
 <?php
@@ -426,11 +440,11 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		 * @param array $new_instance the new settings for this instance of the widget
 		 * @param array $old_instance the original settings for this instance of the widget
 		 *
-         * @access public
-         * @since  0.1
+		 * @access public
+		 * @since  0.1
 		 * @return array the sanitized settings for this instance of the widget
 		 */
-		function update( $new_instance, $old_instance ) {
+		public function update( $new_instance, $old_instance ) {
 			$instance = $this->get_common_values( $new_instance );
 			$instance['type']	 = 'content';
 			$instance['id']		 = isset( $new_instance['id'] ) ? absint( $new_instance['id'] ) : 0;
@@ -438,6 +452,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$instance['blog_id'] = isset( $new_instance['blog_id'] ) ? $new_instance['blog_id'] : $GLOBALS['blog_id'];
 			$instance['exclude_current'] = isset( $new_instance['exclude_current'] ) ? true : 'Do not exclude';
 			$instance['title']   = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
+			
 			return $instance;
 		}
 	}
@@ -452,7 +467,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		 * @access public
 		 * @since  0.1
 		 */
-		function __construct() {
+		public function __construct() {
 			parent::__construct();
 			
 			$widget_ops = array( 'classname' => 'pcs-list-widget', 'description' => 'Display a filtered list of posts/pages.' );
@@ -468,7 +483,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		 * @since  0.1
 		 * @return \PCS_List_Widget
 		 */
-		function PCS_List_Widget() {
+		public function PCS_List_Widget() {
 			return self::__construct();
 		}
 		
@@ -481,20 +496,20 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		 * @since  0.1
 		 * @return void
 		 */
-		function form( $instance ) {
+		public function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
 ?>
 <p><label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Widget Title:' ) ?></label> 
 	<input type="text" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/></p>
 <?php
-			if( $this->blog_list ) {
+			if ( $this->blog_list ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'List posts from which blog?' ) ?></label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'blog_id' ) ?>" id="<?php echo $this->get_field_id( 'blog_id' ) ?>">
 		<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
 <?php
-				foreach( $this->blog_list as $id=>$name ) {
+				foreach ( $this->blog_list as $id=>$name ) {
 ?>
 		<option value="<?php echo $id ?>"<?php selected( $instance['blog_id'], $id ) ?>><?php echo $name ?></option>
 <?php
@@ -529,7 +544,8 @@ if( !class_exists( 'PCS_Widget' ) ) {
 				'comment_count'	=> __( 'Number of Comments' ),
 				'rand'			=> __( 'Random' ),
 			);
-			foreach( $sortfields as $val=>$lbl ) {
+			
+			foreach ( $sortfields as $val=>$lbl ) {
 ?>
 		<option value="<?php echo $val ?>"<?php selected( $val, $instance['orderby'] ) ?>><?php echo $lbl ?></option>
 <?php
@@ -553,7 +569,8 @@ if( !class_exists( 'PCS_Widget' ) ) {
 				'pending' 	=> __( 'Pending Review' ),
 				'inherit' 	=> __( 'Inherited' ),
 			);
-			foreach( $stati as $val=>$lbl ) {
+			
+			foreach ( $stati as $val=>$lbl ) {
 ?>
 		<option value="<?php echo $val ?>"<?php selected( $val, $instance['post_status'] ) ?>><?php echo $lbl ?></option>
 <?php
@@ -565,6 +582,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
 	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude the post being viewed from the list of posts?' ) ?></label></p>
 <?php
+   
 			$this->common_fields( $instance );
 		}
 		
@@ -578,7 +596,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		 * @since  0.1
 		 * @return array the sanitized settings for this instance of the widget
 		 */
-		function update( $new_instance, $old_instance ) {
+		public function update( $new_instance, $old_instance ) {
 			$instance = $this->get_common_values( $new_instance );
 			
 			$instance['title']          = isset( $new_instance['title'] ) ? esc_attr( $new_instance['title'] ) : null;
