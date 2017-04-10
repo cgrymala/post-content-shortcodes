@@ -12,20 +12,13 @@ License: GPL2
  * Pull in the post_content_shortcodes class definition file
  */
 if( ! class_exists( 'Post_Content_Shortcodes' ) )
-	require_once( 'class-post-content-shortcodes-admin.php' );
+	require_once( plugin_dir_path( __FILE__ ) . '/classes/class-post-content-shortcodes-admin.php' );
 if( ! class_exists( 'PCS_Widget' ) )
-	require_once( 'class-post-content-widgets.php' );
+	require_once( plugin_dir_path( __FILE__ ) . '/classes/class-post-content-widgets.php' );
 
-/**
- * Initiate the post_content_shortcodes object
- */
-add_action( 'after_setup_theme', 'init_post_content_shortcodes' );
-
-function init_post_content_shortcodes() {
-	global $post_content_shortcodes_obj;
-	if( is_admin() )
-		return $post_content_shortcodes_obj = new Post_Content_Shortcodes_Admin;
-	else
-		return $post_content_shortcodes_obj = new Post_Content_Shortcodes;
+global $post_content_shortcodes_obj;
+if ( is_admin() ) {
+	$post_content_shortcodes_obj = Post_Content_Shortcodes_Admin::instance();
+} else {
+	$post_content_shortcodes_obj = Post_Content_Shortcodes::instance();
 }
-?>

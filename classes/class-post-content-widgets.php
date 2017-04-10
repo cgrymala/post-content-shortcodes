@@ -11,14 +11,36 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	 * Must be overridden by either the list or content widget class.
 	 */
 	class PCS_Widget extends WP_Widget {
+		/**
+		 * Holds the version number for use with various assets
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @var    string
+		 */
+		public $version = '0.9.9.1';
+		
 		var $defaults = array();
 		var $blog_list = false;
 		
-		function __construct() {
+		/**
+		 * Construct our object
+         *
+         * @access public
+         * @since  0.1
+		 */
+		public function __construct() {
 			$this->_setup_defaults();
 		}
 		
-		function _setup_defaults() {
+		/**
+		 * Set up the default options for this widget
+         *
+         * @access private
+         * @since  0.1
+         * @return void
+		 */
+		private function _setup_defaults() {
 			if ( ! empty( $this->defaults ) )
 				return;
 			
@@ -89,10 +111,32 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', $args );
 		}
 		
+		/**
+         * Construct the actual Widget object
+         *
+		 * @param string $id the unique ID for this widget
+		 * @param string $name the name of this widget
+		 * @param array  $widget_ops the array of options for this widget
+		 * @param array  $control_ops the array of options for the admin control box
+         *
+         * @access public
+         * @since  0.1
+         * @return void
+		 */
 		function WP_Widget_construct( $id, $name, $widget_ops=array(), $control_ops=array() ) {
 			WP_Widget::__construct( $id, $name, $widget_ops, $control_ops );
 		}
 		
+		/**
+         * Output the actual widget
+         *
+		 * @param array $args the array of options for the display of this widget
+		 * @param array $instance the array of options for this specific widget
+         *
+         * @access public
+         * @since  0.1
+         * @return void
+		 */
 		function widget( $args, $instance ) {
 			if( !isset( $instance['type'] ) )
 				return;
@@ -122,6 +166,13 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			echo $after_widget;
 		}
 		
+		/**
+         * Retrieve a list of blogs/sites in this installation
+         *
+         * @access public
+         * @since  0.1
+		 * @return bool
+		 */
 		function get_blogs() {
 			if( !is_multisite() ) {
 				error_log( '[PCS Notice]: This site does not appear to be multisite-enabled.' );
@@ -142,12 +193,40 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$wpdb->set_blog_id( $org_blog );
 		}
 		
+		/**
+         * Pseudo-Abstract method that builds the admin form for this widget
+         *
+		 * @param array $instance the current options for this instance of the widget
+         *
+         * @access public
+         * @since  0.1
+         * @return void
+		 */
 		function form( $instance ) {
 		}
 		
+		/**
+         * Pseudo-Abstract method that saves the options for this instance of the widget
+         *
+		 * @param array $new_instance
+		 * @param array $old_instance
+         *
+         * @access public
+         * @since  0.1
+         * @return void
+		 */
 		function update( $new_instance, $old_instance ) {
 		}
 		
+		/**
+         * Outputs the fields that are common between the two types of widgets
+         *
+		 * @param array $instance the current options for this instance of the widget
+         *
+         * @access public
+         * @since  0.1
+         * @return void
+		 */
 		function common_fields( $instance=array() ) {
 			$has_templates = false;
 			if ( array_key_exists( 'view_template', $this->defaults ) ) {
@@ -212,6 +291,13 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <?php
 		}
 		
+		/**
+         * Retrieve a list of the current Views content templates
+         *
+         * @access public
+         * @since  0.1
+		 * @return array the list of Views templates
+		 */
 		function get_view_templates() {
 			return get_posts( array( 
 				'post_type'   => 'view-template', 
@@ -229,6 +315,15 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			) );
 		}
 		
+		/**
+         * Retrieve the values for the options that are common between the two types of widgets before updating
+         *
+		 * @param array $new_instance the options that were set before the Save button was pressed
+		 *
+         * @access public
+         * @since  0.1
+		 * @return array the updated/sanitized array of options
+		 */
 		function get_common_values( $new_instance=array() ) {
 			$instance = array();
 			$instance['show_title'] = array_key_exists( 'show_title', $new_instance ) ? true : false;
@@ -254,6 +349,12 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	 * Class definition for the Post Content Shortcodes "Content" widget
 	 */
 	class PCS_Content_Widget extends PCS_Widget {
+		/**
+		 * Construct the actual widget object
+         *
+         * @access public
+         * @since  0.1
+		 */
 		function __construct() {
 			parent::__construct();
 			
@@ -262,10 +363,27 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			parent::WP_Widget_construct( 'pcs-content-widget', 'Post Content Widget', $widget_ops, $control_ops );
 		}
 		
+		/**
+         * Old-style constructor method
+         *
+         * @deprecated since 0.9
+         * @access public
+         * @since  0.1
+		 * @return \PCS_Content_Widget
+		 */
 		function PCS_Content_Widget() {
 			return self::__construct();
 		}
 		
+		/**
+         * Output the actual form used to create the widget in the admin
+         *
+		 * @param array $instance the current settings for this instance of the widget
+         *
+         * @access public
+         * @since  0.1
+         * @return void
+		 */
 		function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
@@ -277,7 +395,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'Show post from which blog?' ) ?></label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'blog_id' ) ?>" id="<?php echo $this->get_field_id( 'blog_id' ) ?>">
-    	<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
+		<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
 <?php
 				foreach( $this->blog_list as $id=>$name ) {
 ?>
@@ -285,7 +403,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <?php
 				}
 ?>
-    </select></p>
+	</select></p>
 <?php
 			}
 ?>
@@ -302,6 +420,16 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$this->common_fields( $instance );
 		}
 		
+		/**
+		 * Save and sanitize the settings for this instance of the widget
+		 *
+		 * @param array $new_instance the new settings for this instance of the widget
+		 * @param array $old_instance the original settings for this instance of the widget
+		 *
+         * @access public
+         * @since  0.1
+		 * @return array the sanitized settings for this instance of the widget
+		 */
 		function update( $new_instance, $old_instance ) {
 			$instance = $this->get_common_values( $new_instance );
 			$instance['type']	 = 'content';
@@ -318,6 +446,12 @@ if( !class_exists( 'PCS_Widget' ) ) {
 	 * Class definition for the Post Content Shortcodes "List" widget
 	 */
 	class PCS_List_Widget extends PCS_Widget {
+		/**
+		 * Construct the actual widget object
+		 *
+		 * @access public
+		 * @since  0.1
+		 */
 		function __construct() {
 			parent::__construct();
 			
@@ -326,10 +460,27 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			parent::WP_Widget_construct( 'pcs-list-widget', 'Post List Widget', $widget_ops, $control_ops );
 		}
 		
+		/**
+		 * Old-style constructor method
+		 *
+		 * @deprecated since 0.9
+		 * @access public
+		 * @since  0.1
+		 * @return \PCS_List_Widget
+		 */
 		function PCS_List_Widget() {
 			return self::__construct();
 		}
 		
+		/**
+		 * Output the actual form used to create the widget in the admin
+		 *
+		 * @param array $instance the current settings for this instance of the widget
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
+		 */
 		function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
@@ -341,7 +492,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 ?>
 <p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'List posts from which blog?' ) ?></label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'blog_id' ) ?>" id="<?php echo $this->get_field_id( 'blog_id' ) ?>">
-    	<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
+		<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
 <?php
 				foreach( $this->blog_list as $id=>$name ) {
 ?>
@@ -349,7 +500,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <?php
 				}
 ?>
-    </select></p>
+	</select></p>
 <?php
 			}
 ?>
@@ -384,12 +535,12 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <?php
 			}
 ?>
-    </select></p>
+	</select></p>
 <p><label for="<?php echo $this->get_field_id( 'order' ) ?>"><?php _e( 'In which order?' ) ?></label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'order' ) ?>" id="<?php echo $this->get_field_id( 'order' ) ?>">
-    	<option value="asc"<?php selected( 'asc', strtolower( $instance['order'] ) ) ?>>Ascending</option>
-        <option value="desc"<?php selected( 'desc', strtolower( $instance['order'] ) ) ?>>Descending</option>
-    </select></p>
+		<option value="asc"<?php selected( 'asc', strtolower( $instance['order'] ) ) ?>>Ascending</option>
+		<option value="desc"<?php selected( 'desc', strtolower( $instance['order'] ) ) ?>>Descending</option>
+	</select></p>
 <p><label for="<?php echo $this->get_field_id( 'numberposts' ) ?>"><?php _e( 'How many posts should be shown?' ) ?></label>
 	<input type="number" class="widefat" name="<?php echo $this->get_field_name( 'numberposts' ) ?>" id="<?php echo $this->get_field_id( 'numberposts' ) ?>" value="<?php echo $instance['numberposts'] ?>"/><br>
 	<span class="note"><?php _e( 'Leave this set to -1 if you would like all posts to be retrieved and displayed.' ) ?></span></p>
@@ -408,7 +559,7 @@ if( !class_exists( 'PCS_Widget' ) ) {
 <?php
 			}
 ?>
-    </select></p>
+	</select></p>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'ignore_protected' ) ?>" id="<?php echo $this->get_field_id( 'ignore_protected' ) ?>" value="1"<?php checked( $instance['ignore_protected'] ) ?>/>
 	<label for="<?php echo $this->get_field_id( 'ignore_protected' ) ?>"><?php _e( 'Exclude password-protected posts from the list?' ) ?></label></p>
 <p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
@@ -417,6 +568,16 @@ if( !class_exists( 'PCS_Widget' ) ) {
 			$this->common_fields( $instance );
 		}
 		
+		/**
+		 * Save and sanitize the settings for this instance of the widget
+		 *
+		 * @param array $new_instance the new settings for this instance of the widget
+		 * @param array $old_instance the original settings for this instance of the widget
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return array the sanitized settings for this instance of the widget
+		 */
 		function update( $new_instance, $old_instance ) {
 			$instance = $this->get_common_values( $new_instance );
 			
@@ -438,4 +599,3 @@ if( !class_exists( 'PCS_Widget' ) ) {
 		}
 	}
 }
-?>
