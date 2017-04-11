@@ -23,90 +23,90 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 	 * Define the admin child class for post_content_shortcodes
 	 */
 	class Post_Content_Shortcodes_Admin extends Post_Content_Shortcodes {
-        /**
-         * Holds the version number for use with various assets
-         *
-         * @since  1.0
-         * @access public
-         * @var    string
-         */
-        public $version = '0.9.9.1';
-        /**
-         * Holds the class instance.
-         *
-         * @since   0.1
-         * @access	private
-         * @var		\Post_Content_Shortcodes_Admin
-         */
-        private static $instance;
-        /**
-         * @since  0.1
-         * @access public
-         * @var    string the handle for the admin settings page
-         */
-        public $settings_page = 'post-content-shortcodes';
-        /**
-         * @since  0.1
-         * @access public
-         * @var    string the handle for the admin settings section
-         */
+		/**
+		 * Holds the version number for use with various assets
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @var    string
+		 */
+		public $version = '0.9.9.1';
+		/**
+		 * Holds the class instance.
+		 *
+		 * @since   0.1
+		 * @access	private
+		 * @var		\Post_Content_Shortcodes_Admin
+		 */
+		private static $instance;
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    string the handle for the admin settings page
+		 */
+		public $settings_page = 'post-content-shortcodes';
+		/**
+		 * @since  0.1
+		 * @access public
+		 * @var    string the handle for the admin settings section
+		 */
 		public $settings_section = 'post-content-shortcodes';
 
-        /**
-         * Returns the instance of this class.
-         *
-         * @access  public
-         * @since   1.0
-         * @return	\Post_Content_Shortcodes_Admin
-         */
-        public static function instance() {
-            if ( ! isset( self::$instance ) ) {
-                $className = __CLASS__;
-                self::$instance = new $className;
-            }
-            
-            return self::$instance;
-        }
-        
-        /**
+		/**
+		 * Returns the instance of this class.
+		 *
+		 * @access  public
+		 * @since   1.0
+		 * @return	\Post_Content_Shortcodes_Admin
+		 */
+		public static function instance() {
+			if ( ! isset( self::$instance ) ) {
+				$className = __CLASS__;
+				self::$instance = new $className;
+			}
+			
+			return self::$instance;
+		}
+		
+		/**
 		 * Save any options that have been modified
 		 * Only used in network admin and multinetwork settings. The Settings API handles saving options
 		 * 		in the regular site admin area.
 		 *
 		 * @param  array $opt the array of options being saved/updated
-         *
-         * @access protected
-         * @since  0.1
+		 *
+		 * @access protected
+		 * @since  0.1
 		 * @return array|bool the output from each save action
 		 */
 		protected function _set_options( $opt ) {
-		    if ( ! is_multisite() ) {
-		        return false;
-		    }
-		    
+			if ( ! is_multisite() ) {
+				return false;
+			}
+			
 			if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], $this->settings_page . '-options' ) ) {
-			    wp_die( 'The nonce could not be verified' );
+				wp_die( 'The nonce could not be verified' );
 			}
 			
 			if ( ! is_network_admin() ) {
-			    return false;
+				return false;
 			}
 			
 			$opt = $this->sanitize_settings( $opt );
 			
 			if ( $this->is_multinetwork() && function_exists( 'update_mnetwork_option' ) ) {
-			    return update_mnetwork_option( 'pcs-settings', $opt );
+				return update_mnetwork_option( 'pcs-settings', $opt );
 			} else {
-			    return update_site_option( 'pcs-settings', $opt );
+				return update_site_option( 'pcs-settings', $opt );
 			}
 		}
 		
 		/**
 		 * Perform any actions that should only occur in the admin area
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
 		public function admin_init() {
 			add_settings_section( $this->settings_section, __( 'Post Content Shortcodes' ), array( $this, 'settings_section' ), $this->settings_page );
@@ -115,13 +115,13 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 			 * Add a setting field to enable/disable network settings in a multi-network environment
 			 */
 			if ( $this->is_multinetwork() && isset( $_REQUEST['page'] ) && 'mn-post-content-shortcodes' == $_REQUEST['page'] ) {
-			    add_settings_field( 'enable-network-settings', __( 'Allow network admins to override these settings on an individual network?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-network-settings' ) );
+				add_settings_field( 'enable-network-settings', __( 'Allow network admins to override these settings on an individual network?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-network-settings' ) );
 			}
 			/**
 			 * Add a setting field to enable/disable site settings in a multisite environment
 			 */
 			if ( $this->is_plugin_active_for_network() && is_network_admin() ) {
-			    add_settings_field( 'enable-site-settings', __( 'Allow individual administrators to override these settings on their invidual sites/blogs?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-site-settings' ) );
+				add_settings_field( 'enable-site-settings', __( 'Allow individual administrators to override these settings on their invidual sites/blogs?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-site-settings' ) );
 			}
 			
 			add_settings_field( 'enable-pcs-content-widget', __( 'Enable the post content widget?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-content-widget' ) );
@@ -134,10 +134,10 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		
 		/**
 		 * Add the options page to the appropriate menu in the admin area
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
 		public function admin_menu() {
 			$this->_get_options();
@@ -145,27 +145,27 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 			if ( $this->is_multinetwork() ) {
 				add_submenu_page( 'index.php', __( 'Multi-Network Post Content Shortcodes Settings' ), __( 'Multi-Network Post Content Shortcodes' ), 'manage_network_plugins', 'mn-' . $this->settings_page, array( $this, 'admin_page' ) );
 				if ( false === $this->settings['enable-network-settings'] && false == $this->settings['enable-site-settings'] ) {
-				    return;
+					return;
 				}
 			}
 				
 			if ( $this->is_plugin_active_for_network() ) {
 				if ( ! $this->is_multinetwork() || true === $this->settings['enable-network-settings'] ) {
-				    add_submenu_page( 'settings.php', __( 'Network Post Content Shortcodes Settings' ), __( 'Post Content Shortcodes' ), 'manage_network_plugins', $this->settings_page, array( $this, 'admin_page' ) );
+					add_submenu_page( 'settings.php', __( 'Network Post Content Shortcodes Settings' ), __( 'Post Content Shortcodes' ), 'manage_network_plugins', $this->settings_page, array( $this, 'admin_page' ) );
 				}
 			}
 			
 			if ( ( ! $this->is_multinetwork() && ! $this->is_plugin_active_for_network() ) || true === $this->settings['enable-site-settings'] ) {
-			    add_options_page( __( 'Post Content Shortcodes Settings' ), __( 'Post Content Shortcodes' ), 'manage_options', $this->settings_page, array( $this, 'admin_page' ) );
+				add_options_page( __( 'Post Content Shortcodes Settings' ), __( 'Post Content Shortcodes' ), 'manage_options', $this->settings_page, array( $this, 'admin_page' ) );
 			}
 		}
 		
 		/**
 		 * Output any content that needs to appear in the header section of the options page
-         *
-         * @access public
-         * @since  0.1
-         * @return void
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
 		public function settings_section() {
 ?>
@@ -175,6 +175,11 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		
 		/**
 		 * Generic function to build each settings field
+		 * @param array $args the array of attributes for the specific field
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return void
 		 */
 		function settings_field( $args ) {
 ?>
@@ -208,18 +213,19 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * Clean up and format the array of global plugin options
 		 * Loops through the list of post_content_shortocdes::$settings to ensure all settings are set
 		 * At this time, all of our options are true/false, so this function only handles those
-         *
-         * @access public
-         * @since  0.1
-         * @return array() the sanitized settings
+		 * @param array $input the pre-sanitized options
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return array() the sanitized settings
 		 */
 		public function sanitize_settings( $input ) {
 			$sanitized = array();
 			foreach ( $this->settings as $k=>$v ) {
 				if ( isset( $input[$k] ) && ( 'on' == $input[$k] || true === $input[$k] ) ) {
-				    $sanitized[$k] = true;
+					$sanitized[$k] = true;
 				} else {
-				    $sanitized[$k] = false;
+					$sanitized[$k] = false;
 				}
 			}
 			
@@ -233,14 +239,14 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * @uses post_content_shortcodes_admin::_set_options()
 		 * @uses post_content_shortcodes_admin::options_updated_message()
 		 * @uses post_content_shortcodes::_get_options()
-         *
-         * @access public
-         * @since  0.1
-         * @return string
+		 *
+		 * @access public
+		 * @since  0.1
+		 * @return string
 		 */
 		public function admin_page() {
 			if ( ( is_network_admin() && ! current_user_can( 'manage_network_options' ) ) || ( is_admin() && ! current_user_can( 'manage_options' ) ) ) {
-			    return $this->_no_permissions();
+				return $this->_no_permissions();
 			}
 			
 			if ( is_network_admin() && isset( $_REQUEST['action'] ) && $this->settings_page == $_REQUEST['page'] ) {
@@ -275,15 +281,16 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 	</form>
 </div>
 <?php
-            return '';
+			return '';
 		}
 		
 		/**
 		 * Output a message indicating whether or not the options were updated
-         *
-         * @access protected
-         * @since  0.1
-         * @return void
+		 * @param string $msg the message to be output
+		 *
+		 * @access protected
+		 * @since  0.1
+		 * @return void
 		 */
 		protected function options_updated_message( $msg ) {
 ?>
@@ -297,10 +304,10 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		
 		/**
 		 * Output the appropriate error message about the user not having the right permissions
-         *
-         * @access protected
-         * @since  0.1
-         * @return void
+		 *
+		 * @access protected
+		 * @since  0.1
+		 * @return void
 		 */
 		protected function _no_permissions() {
 ?>

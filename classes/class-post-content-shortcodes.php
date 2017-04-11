@@ -90,10 +90,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Build the post_content_shortcodes object
 		 * Set up default options for the plugin, register the shortcodes and widgets
 		 *
-		 * @access private
+		 * @access protected
 		 * @since  0.1
 		 */
-		private function __construct() {
+		protected function __construct() {
 			$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
 			add_action( 'after_setup_theme', array( $this, 'startup' ) );
 		}
@@ -685,6 +685,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			foreach ( $args as $k => $v ) {
+				if ( 'view_template' == $k ) {
+					continue;
+				}
 				if ( is_numeric( $v ) )
 					$atts['tax_query'][] = array( 'taxonomy' => $k, 'field' => 'id', 'terms' => intval( $v ) );
 				else
@@ -725,7 +728,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						$output .= $this->do_view_template( $p );
 						$this->shortcode_atts['post_number'] ++;
 					}
-					remove_filter( 'post_thumbnail_html', array( $this->do_post_thumbnail() ), 99 );
+					remove_filter( 'post_thumbnail_html', array( $this, 'do_post_thumbnail' ), 99 );
 					remove_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
 					$output .= apply_filters( 'post-content-shortcodes-views-template-closing', '</div>' );
 					do_action( 'pcs_ending_post_list' );
@@ -936,7 +939,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			$args = $this->get_args( $atts );
 			
-			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || !is_numeric( $blog_id ) ) {
+			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || ! is_numeric( $blog_id ) ) {
 				$posts = get_posts( $args );
 				if ( false === $this->shortcode_atts['show_image'] )
 					return $posts;
@@ -1137,9 +1140,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			unset( $atts['id'] );
 			
-			if( $atts['exclude_current'] && $GLOBALS['blog_id'] != $atts['blog_id'] ) {
-				if( !empty( $atts['exclude'] ) ) {
-					if( !is_array( $atts['exclude'] ) )
+			if ( $atts['exclude_current'] && $GLOBALS['blog_id'] != $atts['blog_id'] ) {
+				if ( ! empty( $atts['exclude'] ) ) {
+					if ( ! is_array( $atts['exclude'] ) )
 						$atts['exclude'] = array_map( 'trim', explode( ',', $atts['exclude'] ) );
 					
 					$atts['exclude'][] = $GLOBALS['post']->ID;
@@ -1156,13 +1159,15 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			unset( $atts['blog_id'], $atts['exclude_current'], $atts['tax_name'], $atts['tax_term'], $atts['view_template'], $atts['show_image'], $atts['image_width'], $atts['image_height'] );
 			
+			$atts = array_filter( $atts );
+			
 			/**
 			 * Output a little debug info if necessary
 			 */
 			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || isset( $_REQUEST['pcs-debug'] ) )
 				error_log( '[PCS Debug]: Preparing to return filtered args: ' . print_r( $atts, true ) );
 			
-			return array_filter( $atts );
+			return $atts;
 		}
 		
 		/**
