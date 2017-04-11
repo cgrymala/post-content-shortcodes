@@ -429,6 +429,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * Handle the shortcode to display another post's content
 		 * @param array $atts the array of shortcode attributes
 		 *
+		 * @todo Extract HTML into separate template file, so it can be easily overridden by site owners/developers
+		 *
 		 * @uses $wpdb
 		 * @uses shortcode_atts()
 		 * @uses $post to determine the ID of the current post in the loop
@@ -598,6 +600,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		/**
 		 * Handle the shortcode to display a list of posts
 		 * @param array $atts the array of shortcode attributes
+		 *
+		 * @todo Extract HTML to external template to make it easier for theme devs/site owners to override
+		 *       
 		 * @uses shortcode_atts() to parse the default/allowed attributes
 		 * @uses Post_Content_Shortcodes::get_args()
 		 * @uses Post_Content_Shortcodes::get_posts_from_blog()
