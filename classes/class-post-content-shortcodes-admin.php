@@ -109,25 +109,25 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * @return void
 		 */
 		public function admin_init() {
-			add_settings_section( $this->settings_section, __( 'Post Content Shortcodes' ), array( $this, 'settings_section' ), $this->settings_page );
+			add_settings_section( $this->settings_section, __( 'Post Content Shortcodes', 'post-content-shortcodes' ), array( $this, 'settings_section' ), $this->settings_page );
 			
 			/**
 			 * Add a setting field to enable/disable network settings in a multi-network environment
 			 */
 			if ( $this->is_multinetwork() && isset( $_REQUEST['page'] ) && 'mn-post-content-shortcodes' == $_REQUEST['page'] ) {
-				add_settings_field( 'enable-network-settings', __( 'Allow network admins to override these settings on an individual network?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-network-settings' ) );
+				add_settings_field( 'enable-network-settings', __( 'Allow network admins to override these settings on an individual network?', 'post-content-shortcodes' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-network-settings' ) );
 			}
 			/**
 			 * Add a setting field to enable/disable site settings in a multisite environment
 			 */
 			if ( $this->is_plugin_active_for_network() && is_network_admin() ) {
-				add_settings_field( 'enable-site-settings', __( 'Allow individual administrators to override these settings on their invidual sites/blogs?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-site-settings' ) );
+				add_settings_field( 'enable-site-settings', __( 'Allow individual administrators to override these settings on their invidual sites/blogs?', 'post-content-shortcodes' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-site-settings' ) );
 			}
 			
-			add_settings_field( 'enable-pcs-content-widget', __( 'Enable the post content widget?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-content-widget' ) );
-			add_settings_field( 'enable-pcs-list-widget', __( 'Enable the post list widget?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-list-widget' ) );
-			/*add_settings_field( 'enable-pcs-ajax', __( 'Enable experimental AJAX features?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-ajax' ) );*/
-			add_settings_field( 'use-styles', __( 'Enable the default stylesheet?' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'use-styles' ) );
+			add_settings_field( 'enable-pcs-content-widget', __( 'Enable the post content widget?', 'post-content-shortcodes' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-content-widget' ) );
+			add_settings_field( 'enable-pcs-list-widget', __( 'Enable the post list widget?', 'post-content-shortcodes' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-list-widget' ) );
+			/*add_settings_field( 'enable-pcs-ajax', __( 'Enable experimental AJAX features?', 'post-content-shortcodes' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'enable-pcs-ajax' ) );*/
+			add_settings_field( 'use-styles', __( 'Enable the default stylesheet?', 'post-content-shortcodes' ), array( $this, 'settings_field' ), $this->settings_page, $this->settings_section, array( 'label_for' => 'use-styles' ) );
 			
 			register_setting( $this->settings_section, 'pcs-settings', array( $this, 'sanitize_settings' ) );
 		}
@@ -143,7 +143,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 			$this->_get_options();
 			
 			if ( $this->is_multinetwork() ) {
-				add_submenu_page( 'index.php', __( 'Multi-Network Post Content Shortcodes Settings' ), __( 'Multi-Network Post Content Shortcodes' ), 'manage_network_plugins', 'mn-' . $this->settings_page, array( $this, 'admin_page' ) );
+				add_submenu_page( 'index.php', __( 'Multi-Network Post Content Shortcodes Settings', 'post-content-shortcodes' ), __( 'Multi-Network Post Content Shortcodes', 'post-content-shortcodes' ), 'manage_network_plugins', 'mn-' . $this->settings_page, array( $this, 'admin_page' ) );
 				if ( false === $this->settings['enable-network-settings'] && false == $this->settings['enable-site-settings'] ) {
 					return;
 				}
@@ -151,12 +151,12 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 				
 			if ( $this->is_plugin_active_for_network() ) {
 				if ( ! $this->is_multinetwork() || true === $this->settings['enable-network-settings'] ) {
-					add_submenu_page( 'settings.php', __( 'Network Post Content Shortcodes Settings' ), __( 'Post Content Shortcodes' ), 'manage_network_plugins', $this->settings_page, array( $this, 'admin_page' ) );
+					add_submenu_page( 'settings.php', __( 'Network Post Content Shortcodes Settings', 'post-content-shortcodes' ), __( 'Post Content Shortcodes', 'post-content-shortcodes' ), 'manage_network_plugins', $this->settings_page, array( $this, 'admin_page' ) );
 				}
 			}
 			
 			if ( ( ! $this->is_multinetwork() && ! $this->is_plugin_active_for_network() ) || true === $this->settings['enable-site-settings'] ) {
-				add_options_page( __( 'Post Content Shortcodes Settings' ), __( 'Post Content Shortcodes' ), 'manage_options', $this->settings_page, array( $this, 'admin_page' ) );
+				add_options_page( __( 'Post Content Shortcodes Settings', 'post-content-shortcodes' ), __( 'Post Content Shortcodes', 'post-content-shortcodes' ), 'manage_options', $this->settings_page, array( $this, 'admin_page' ) );
 			}
 		}
 		
@@ -319,7 +319,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 ?>
 		<div class="updated fade">
 <?php
-				printf( __( '<p>The %s options were %supdated%s.</p>' ), $this->settings_titles[$k], ( true === $msg ? '' : '<strong>not</strong> ' ), ( true === $msg ? ' successfully' : '' ) );
+				printf( __( '<p>The %1$s options were %2$supdated%3$s.</p>', 'post-content-shortcodes' ), $this->settings_titles[$k], ( true === $msg ? '' : __( '<strong>not</strong> ', 'post-content-shortcodes' ) ), ( true === $msg ? __( ' successfully', 'post-content-shortcodes' ) : '' ) );
 ?>
 		</div>
 <?php
