@@ -256,6 +256,9 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 ### 1.0 ###
 * Fixes PHP fatal error thanks to GitHub user [@stefanogualdi](https://github.com/stefanogualdi)
 * Fixes other minor warnings and errors
+* Adds plugin textdomain to all translatable strings
+* Fixes some other minor PHP warnings
+* Re-organizes code within plugin
 
 ### 0.6 ###
 
