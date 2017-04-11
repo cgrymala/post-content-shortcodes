@@ -270,11 +270,13 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 	</label>
 </p>
 <fieldset>
-	<legend><?php _e( 'Image Dimensions', 'post-content-shortcodes' ) ?></legend>
+	<legend style="font-weight: bold; margin-bottom: 10px;">
+        <?php _e( 'Image Dimensions', 'post-content-shortcodes' ) ?>
+    </legend>
 	<label for="<?php echo $this->get_field_id( 'image_width' ) ?>">
 		<?php _e( 'Width: ', 'post-content-shortcodes' ) ?>
 	</label>
-	<input class="tiny-test" type="number" value="<?php echo intval( $instance['image_width'] ) ?>" name="<?php echo $this->get_field_name( 'image_width' ) ?>" id="<?php echo $this->get_field_id( 'image_width' ) ?>"/><?php _e( 'px' ) ?>
+	<input class="tiny-text" type="number" value="<?php echo intval( $instance['image_width'] ) ?>" name="<?php echo $this->get_field_name( 'image_width' ) ?>" id="<?php echo $this->get_field_id( 'image_width' ) ?>"/><?php _e( 'px' ) ?>
 	<?php _e( ' x ', 'post-content-shortcodes' ) ?>
 	<label for="<?php echo $this->get_field_id( 'image_height' ) ?>">
 		<?php _e( 'Height: ', 'post-content-shortcodes' ) ?>
@@ -451,6 +453,9 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 		public function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
+			if ( ! array_key_exists( 'title', $instance ) ) {
+			    $instance['title'] = '';
+            }
 ?>
 <p>
 	<label for="<?php echo $this->get_field_id( 'title' ) ?>">
@@ -479,7 +484,7 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 			}
 ?>
 <fieldset style="padding: 5px; margin: 5px; border: 1px solid #999">
-	<legend>
+	<legend style="font-weight: bold; margin-bottom: 10px;">
 		<?php _e( 'Post Selection', 'post-content-shortcodes' ) ?>
 	</legend>
 	<p>
@@ -573,12 +578,15 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 		public function form( $instance ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
+			if ( ! array_key_exists( 'title', $instance ) ) {
+				$instance['title'] = '';
+			}
 ?>
 <p>
 	<label for="<?php echo $this->get_field_id( 'title' ) ?>">
 		<?php _e( 'Widget Title:', 'post-content-shortcodes' ) ?>
 	</label>
-	<input type="text" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/>
+	<input class="widefat" type="text" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/>
 </p>
 <?php
 			if ( $this->blog_list ) {
@@ -613,7 +621,7 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 	</label>
 	<input type="number" class="widefat" id="<?php echo $this->get_field_id( 'post_parent' ) ?>" name="<?php echo $this->get_field_name( 'post_parent' ) ?>" value="<?php echo $instance['post_parent'] ?>"/>
 	<br/>
-	<span class="note">
+	<span class="note" style="font-style: italic;">
 		<?php _e( 'Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.', 'post-content-shortcodes' ) ?>
 	</span>
 </p>
@@ -621,7 +629,7 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 	<label for="<?php echo $this->get_field_id( 'tax_name' ) ?>">
 		<?php _e( 'Taxonomy Slug:', 'post-content-shortcodes' ) ?>
 	</label>
-	<input type="text" name="<?php echo $this->get_field_name( 'tax_name' ) ?>" id="<?php echo $this->get_field_id( 'tax_name' ) ?>" value="<?php echo $instance['tax_name'] ?>"/>
+	<input class="widefat" type="text" name="<?php echo $this->get_field_name( 'tax_name' ) ?>" id="<?php echo $this->get_field_id( 'tax_name' ) ?>" value="<?php echo $instance['tax_name'] ?>"/>
 	<br/>
 	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)</span>', 'post-content-shortcodes' ) ?>
 </p>
@@ -629,7 +637,7 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 	<label for="<?php echo $this->get_field_id( 'tax_term' ) ?>">
 		<?php _e( 'Term Slugs:', 'post-content-shortcodes' ) ?>
 	</label>
-	<input type="text" name="<?php echo $this->get_field_name( 'tax_term' ) ?>" id="<?php echo $this->get_field_id( 'tax_term' ) ?>" value="<?php echo $instance['tax_term'] ?>"/>
+	<input class="widefat" type="text" name="<?php echo $this->get_field_name( 'tax_term' ) ?>" id="<?php echo $this->get_field_id( 'tax_term' ) ?>" value="<?php echo $instance['tax_term'] ?>"/>
 	<br/>
 	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs</span>', 'post-content-shortcodes' ) ?>
 </p>
@@ -673,7 +681,7 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 	</label>
 	<input type="number" class="widefat" name="<?php echo $this->get_field_name( 'numberposts' ) ?>" id="<?php echo $this->get_field_id( 'numberposts' ) ?>" value="<?php echo $instance['numberposts'] ?>"/>
 	<br />
-	<span class="note">
+	<span class="note" style="font-style: italic;">
 		<?php _e( 'Leave this set to -1 if you would like all posts to be retrieved and displayed.', 'post-content-shortcodes' ) ?>
 	</span>
 </p>
