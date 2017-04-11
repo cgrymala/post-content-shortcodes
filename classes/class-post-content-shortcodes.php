@@ -526,7 +526,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$content = explode( ' ', $content );
 				$content = implode( ' ', array_slice( $content, 0, ( intval( $excerpt_length ) - 1 ) ) );
 				$content = force_balance_tags( $content );
-				$content .= apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title, $p, $atts ) . '">' . __( 'Read more' ) . '</a></span>', $p, $atts );
+				$content .= apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title, $p, $atts ) . '">' . __( 'Read more', 'post-content-shortcodes' ) . '</a></span>', $p, $atts );
 			}
 			
 			if ( $show_image ) {
@@ -555,11 +555,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			if ( $show_date && $show_author )
-				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
 			elseif ( $show_date )
-				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on %2$s' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on %2$s', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
 			elseif ( $show_author )
-				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by %s' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
+				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by %s', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts ) . $content;
 			
 			if ( $show_title )
 				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title, $p, $atts ) . $content;
@@ -794,11 +794,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>', $atts );
 				}
 				if ( $atts['show_author'] && $atts['show_date'] ) {
-					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
+					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				} elseif ( $atts['show_date'] ) {
-					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on <span class="post-date">%2$s</a>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
+					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on <span class="post-date">%2$s</a>', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				} elseif ( $atts['show_author'] ) {
-					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
+					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				}
 				
 				if( $atts['show_excerpt'] ) {
@@ -827,7 +827,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						}
 					}
 					$read_more = $atts['read_more'] ? 
-						apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more' ) . '</a></span>', $p, $atts ) : 
+						apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more', 'post-content-shortcodes' ) . '</a></span>', $p, $atts ) :
 						'';
 					$output .= '<div class="pcs-excerpt">' . apply_filters( 'post-content-shortcodes-list-excerpt', apply_filters( 'the_content', $excerpt . $read_more ), $p, $atts ) . '</div></div>';
 				}
