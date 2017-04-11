@@ -246,7 +246,8 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 */
 		public function admin_page() {
 			if ( ( is_network_admin() && ! current_user_can( 'manage_network_options' ) ) || ( is_admin() && ! current_user_can( 'manage_options' ) ) ) {
-				return $this->_no_permissions();
+				$this->_no_permissions();
+				return '';
 			}
 			
 			if ( is_network_admin() && isset( $_REQUEST['action'] ) && $this->settings_page == $_REQUEST['page'] ) {
