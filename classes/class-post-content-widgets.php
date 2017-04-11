@@ -263,45 +263,95 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 				}
 			}
 ?>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ) ?>" id="<?php echo $this->get_field_id( 'show_image' ) ?>" value="1"<?php checked( $instance['show_image'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_image' ) ?>"><?php _e( 'Display the featured image with the post?' ) ?></label></p>
-<p><?php _e( 'Image Dimensions' ) ?><br/>
-	<label for="<?php echo $this->get_field_id( 'image_width' ) ?>"><?php _e( 'Width: ' ) ?></label>
-		<input type="number" value="<?php echo intval( $instance['image_width'] ) ?>" name="<?php echo $this->get_field_name( 'image_width' ) ?>" id="<?php echo $this->get_field_id( 'image_width' ) ?>"/><?php _e( 'px' ) ?>
-	<?php _e( ' x ' ) ?>
-	<label for="<?php echo $this->get_field_id( 'image_height' ) ?>"><?php _e( 'Height: ' ) ?></label> 
-		<input type="number" value="<?php echo intval( $instance['image_height'] ) ?>" name="<?php echo $this->get_field_name( 'image_height' ) ?>" id="<?php echo $this->get_field_id( 'image_height' ) ?>"/><?php _e( 'px' ) ?></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_comments' ) ?>" id="<?php echo $this->get_field_id( 'show_comments' ) ?>" value="1"<?php checked( $instance['show_comments'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_comments' ) ?>"><?php _e( 'Display comments with the post?' ) ?></label></p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ) ?>" id="<?php echo $this->get_field_id( 'show_image' ) ?>" value="1"<?php checked( $instance['show_image'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'show_image' ) ?>">
+		<?php _e( 'Display the featured image with the post?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<fieldset>
+	<legend><?php _e( 'Image Dimensions', 'post-content-shortcodes' ) ?></legend>
+	<label for="<?php echo $this->get_field_id( 'image_width' ) ?>">
+		<?php _e( 'Width: ', 'post-content-shortcodes' ) ?>
+	</label>
+	<input class="tiny-test" type="number" value="<?php echo intval( $instance['image_width'] ) ?>" name="<?php echo $this->get_field_name( 'image_width' ) ?>" id="<?php echo $this->get_field_id( 'image_width' ) ?>"/><?php _e( 'px' ) ?>
+	<?php _e( ' x ', 'post-content-shortcodes' ) ?>
+	<label for="<?php echo $this->get_field_id( 'image_height' ) ?>">
+		<?php _e( 'Height: ', 'post-content-shortcodes' ) ?>
+	</label>
+	<input class="tiny-text" type="number" value="<?php echo intval( $instance['image_height'] ) ?>" name="<?php echo $this->get_field_name( 'image_height' ) ?>" id="<?php echo $this->get_field_id( 'image_height' ) ?>"/><?php _e( 'px' ) ?>
+</fieldset>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'show_comments' ) ?>" id="<?php echo $this->get_field_id( 'show_comments' ) ?>" value="1"<?php checked( $instance['show_comments'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'show_comments' ) ?>"><?php _e( 'Display comments with the post?', 'post-content-shortcodes' ) ?></label>
+</p>
 <?php
 			if ( $has_templates ) {
-				_e( '<hr/> <p style="font-style: italic">If you are using a Views Content Template to display your results, you do not need to configure any of the options below.</p>' );
+				_e( '<hr/> <p style="font-style: italic">If you are using a Views Content Template to display your results, you do not need to configure any of the options below.</p>', 'post-content-shortcodes' );
 			}
 ?>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_title' ) ?>"><?php _e( 'Display the post title?' ) ?></label></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_excerpt' ) ?>" id="<?php echo $this->get_field_id( 'show_excerpt' ) ?>" value="1"<?php checked( $instance['show_excerpt'] ) ?>/>
-	<label for="<?php echo $this->get_field_id( 'show_excerpt' ) ?>"><?php _e( 'Display an excerpt of the post content?' ) ?></label></p>
-<p><label for="<?php echo $this->get_field_id( 'excerpt_length' ) ?>"><?php _e( 'Limit the excerpt to how many words?' ) ?></label> 
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ) ?>" id="<?php echo $this->get_field_id( 'show_title' ) ?>" value="1"<?php checked( $instance['show_title'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'show_title' ) ?>">
+		<?php _e( 'Display the post title?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'show_excerpt' ) ?>" id="<?php echo $this->get_field_id( 'show_excerpt' ) ?>" value="1"<?php checked( $instance['show_excerpt'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'show_excerpt' ) ?>">
+		<?php _e( 'Display an excerpt of the post content?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'excerpt_length' ) ?>">
+		<?php _e( 'Limit the excerpt to how many words?', 'post-content-shortcodes' ) ?>
+	</label>
 	<input type="number" value="<?php echo $instance['excerpt_length'] ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ) ?>" id="<?php echo $this->get_field_id( 'excerpt_length' ) ?>"/><br/>
-	<em><?php _e( 'Leave set to 0 if you do not want the excerpts limited.' ) ?></em></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'read_more' ) ?>" id="<?php echo $this->get_field_id( 'read_more' ) ?>" value="1"<?php checked( $instance['read_more'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'read_more' ) ?>"><?php _e( 'Include a "Read more" link?' ) ?></label></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'shortcodes' ) ?>" id="<?php echo $this->get_field_id( 'shortcodes' ) ?>" value="1"<?php checked( $instance['shortcodes'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'shortcodes' ) ?>"><?php _e( 'Allow shortcodes inside of the excerpt?' ) ?></label></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'strip_html' ) ?>" id="<?php echo $this->get_field_id( 'strip_html' ) ?>" value="1"<?php checked( $instance['strip_html'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'strip_html' ) ?>"><?php _e( 'Attempt to strip all HTML out of the excerpt?' ) ?></label></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_author' ) ?>" id="<?php echo $this->get_field_id( 'show_author' ) ?>" value="1"<?php checked( $instance['show_author'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_author' ) ?>"><?php _e( 'Display the author\'s name?' ) ?></label></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'show_date' ) ?>" id="<?php echo $this->get_field_id( 'show_date' ) ?>" value="1"<?php checked( $instance['show_date'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'show_date' ) ?>"><?php _e( 'Display the publication date?' ) ?></label></p>
+	<em>
+		<?php _e( 'Leave set to 0 if you do not want the excerpts limited.', 'post-content-shortcodes' ) ?>
+	</em>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'read_more' ) ?>" id="<?php echo $this->get_field_id( 'read_more' ) ?>" value="1"<?php checked( $instance['read_more'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'read_more' ) ?>">
+		<?php _e( 'Include a "Read more" link?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'shortcodes' ) ?>" id="<?php echo $this->get_field_id( 'shortcodes' ) ?>" value="1"<?php checked( $instance['shortcodes'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'shortcodes' ) ?>">
+		<?php _e( 'Allow shortcodes inside of the excerpt?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'strip_html' ) ?>" id="<?php echo $this->get_field_id( 'strip_html' ) ?>" value="1"<?php checked( $instance['strip_html'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'strip_html' ) ?>">
+		<?php _e( 'Attempt to strip all HTML out of the excerpt?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'show_author' ) ?>" id="<?php echo $this->get_field_id( 'show_author' ) ?>" value="1"<?php checked( $instance['show_author'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'show_author' ) ?>">
+		<?php _e( 'Display the author\'s name?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'show_date' ) ?>" id="<?php echo $this->get_field_id( 'show_date' ) ?>" value="1"<?php checked( $instance['show_date'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'show_date' ) ?>">
+		<?php _e( 'Display the publication date?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
 <?php
 /**
  * Options added in 0.6
  */
 ?>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'link_image' ) ?>" id="<?php echo $this->get_field_id( 'link_image' ) ?>" value="1"<?php checked( $instance['link_image'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'link_image' ) ?>"><?php _e( 'Wrap the thumbnail in a link to the post?' ) ?></label></p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'link_image' ) ?>" id="<?php echo $this->get_field_id( 'link_image' ) ?>" value="1"<?php checked( $instance['link_image'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'link_image' ) ?>">
+		<?php _e( 'Wrap the thumbnail in a link to the post?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
 <?php
 		}
 		
@@ -372,9 +422,9 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 		public function __construct() {
 			parent::__construct();
 			
-			$widget_ops = array( 'classname' => 'pcs-content-widget', 'description' => 'Display the content of a single post.' );
+			$widget_ops = array( 'classname' => 'pcs-content-widget', 'description' => __( 'Display the content of a single post.', 'post-content-shortcodes' ) );
 			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-content-widget' );
-			parent::WP_Widget_construct( 'pcs-content-widget', 'Post Content Widget', $widget_ops, $control_ops );
+			parent::WP_Widget_construct( 'pcs-content-widget', __( 'Post Content Widget', 'post-content-shortcodes' ), $widget_ops, $control_ops );
 		}
 		
 		/**
@@ -402,12 +452,18 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
 ?>
-<p><label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Widget Title:' ) ?></label> 
+<p>
+	<label for="<?php echo $this->get_field_id( 'title' ) ?>">
+		<?php _e( 'Widget Title:', 'post-content-shortcodes' ) ?>
+	</label>
 	<input type="text" class="widefat" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/></p>
 <?php
 			if ( $this->blog_list ) {
 ?>
-<p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'Show post from which blog?' ) ?></label>
+<p>
+	<label for="<?php echo $this->get_field_id( 'blog_id' ) ?>">
+		<?php _e( 'Show post from which blog?', 'post-content-shortcodes' ) ?>
+	</label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'blog_id' ) ?>" id="<?php echo $this->get_field_id( 'blog_id' ) ?>">
 		<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
 <?php
@@ -417,19 +473,37 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 <?php
 				}
 ?>
-	</select></p>
+	</select>
+</p>
 <?php
 			}
 ?>
 <fieldset style="padding: 5px; margin: 5px; border: 1px solid #999">
-	<p><label for="<?php echo $this->get_field_id( 'id' ) ?>"><?php _e( 'Post ID:' ) ?></label>
-		<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'id' ) ?>" name="<?php echo $this->get_field_name( 'id' ) ?>" value="<?php echo $instance['id'] ?>"/></p>
-		<p><?php _e( 'OR' ) ?></p>
-	<p><label for="<?php echo $this->get_field_id( 'post_name' ) ?>"><?php _e( 'Post Name (slug):' ) ?></label> 
-		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'post_name' ) ?>" name="<?php echo $this->get_field_name( 'post_name' ) ?>" value="<?php echo $instance['post_name'] ?>"/></p>
+	<legend>
+		<?php _e( 'Post Selection', 'post-content-shortcodes' ) ?>
+	</legend>
+	<p>
+		<label for="<?php echo $this->get_field_id( 'id' ) ?>">
+			<?php _e( 'Post ID:', 'post-content-shortcodes' ) ?>
+		</label>
+		<input class="widefat" type="number" id="<?php echo $this->get_field_id( 'id' ) ?>" name="<?php echo $this->get_field_name( 'id' ) ?>" value="<?php echo $instance['id'] ?>"/>
+	</p>
+	<p>
+		<?php _e( 'OR', 'post-content-shortcodes' ) ?>
+	</p>
+	<p>
+		<label for="<?php echo $this->get_field_id( 'post_name' ) ?>">
+			<?php _e( 'Post Name (slug):', 'post-content-shortcodes' ) ?>
+		</label>
+		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'post_name' ) ?>" name="<?php echo $this->get_field_name( 'post_name' ) ?>" value="<?php echo $instance['post_name'] ?>"/>
+	</p>
 </fieldset>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/> 
-	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude this widget from the page/post that this widget displays?' ) ?></label></p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>">
+		<?php _e( 'Exclude this widget from the page/post that this widget displays?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
 <?php
 			$this->common_fields( $instance );
 		}
@@ -470,9 +544,9 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 		public function __construct() {
 			parent::__construct();
 			
-			$widget_ops = array( 'classname' => 'pcs-list-widget', 'description' => 'Display a filtered list of posts/pages.' );
+			$widget_ops = array( 'classname' => 'pcs-list-widget', 'description' => __( 'Display a filtered list of posts/pages.', 'post-content-shortcodes' ) );
 			$control_ops = array( 'width' => 400, 'id_base' => 'pcs-list-widget' );
-			parent::WP_Widget_construct( 'pcs-list-widget', 'Post List Widget', $widget_ops, $control_ops );
+			parent::WP_Widget_construct( 'pcs-list-widget', __( 'Post List Widget', 'post-content-shortcodes' ), $widget_ops, $control_ops );
 		}
 		
 		/**
@@ -500,14 +574,21 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 			$this->get_blogs();
 			$instance = array_merge( $this->defaults, $instance );
 ?>
-<p><label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Widget Title:' ) ?></label> 
-	<input type="text" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/></p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'title' ) ?>">
+		<?php _e( 'Widget Title:', 'post-content-shortcodes' ) ?>
+	</label>
+	<input type="text" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>"/>
+</p>
 <?php
 			if ( $this->blog_list ) {
 ?>
-<p><label for="<?php echo $this->get_field_id( 'blog_id' ) ?>"><?php _e( 'List posts from which blog?' ) ?></label>
+<p>
+	<label for="<?php echo $this->get_field_id( 'blog_id' ) ?>">
+		<?php _e( 'List posts from which blog?', 'post-content-shortcodes' ) ?>
+	</label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'blog_id' ) ?>" id="<?php echo $this->get_field_id( 'blog_id' ) ?>">
-		<option value=""><?php _e( '-- Please select a blog --' ) ?></option>
+		<option value=""><?php _e( '-- Please select a blog --', 'post-content-shortcodes' ) ?></option>
 <?php
 				foreach ( $this->blog_list as $id=>$name ) {
 ?>
@@ -515,34 +596,59 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 <?php
 				}
 ?>
-	</select></p>
+	</select>
+</p>
 <?php
 			}
 ?>
-<p><label for="<?php echo $this->get_field_id( 'post_type' ) ?>"><?php _e( 'Post type:' ) ?></label>
-	<input type="text" name="<?php echo $this->get_field_name( 'post_type' ) ?>" id="<?php echo $this->get_field_id( 'post_type' ) ?>" class="widefat" value="<?php echo $instance['post_type'] ?>"/></p>
-<p><label for="<?php echo $this->get_field_id( 'post_parent' ) ?>"><?php _e( 'Post parent ID:' ) ?></label>
-	<input type="number" class="widefat" id="<?php echo $this->get_field_id( 'post_parent' ) ?>" name="<?php echo $this->get_field_name( 'post_parent' ) ?>" value="<?php echo $instance['post_parent'] ?>"/><br>
-	<span class="note"><?php _e( 'Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.' ) ?></span></p>
-<p><label for="<?php echo $this->get_field_id( 'tax_name' ) ?>"><?php _e( 'Taxonomy Slug:' ) ?></label> 
-	<input type="text" name="<?php echo $this->get_field_name( 'tax_name' ) ?>" id="<?php echo $this->get_field_id( 'tax_name' ) ?>" value="<?php echo $instance['tax_name'] ?>"/> <br/> 
-	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)</span>' ) ?></p>
-<p><label for="<?php echo $this->get_field_id( 'tax_term' ) ?>"><?php _e( 'Term Slugs:' ) ?></label> 
-	<input type="text" name="<?php echo $this->get_field_name( 'tax_term' ) ?>" id="<?php echo $this->get_field_id( 'tax_term' ) ?>" value="<?php echo $instance['tax_term'] ?>"/> <br/> 
-	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs</span>' ) ?></p>
-<p><label for="<?php echo $this->get_field_id( 'orderby' ) ?>"><?php _e( 'Sort posts by:' ) ?></label>
+<p>
+	<label for="<?php echo $this->get_field_id( 'post_type' ) ?>">
+		<?php _e( 'Post type:', 'post-content-shortcodes' ) ?>
+	</label>
+	<input type="text" name="<?php echo $this->get_field_name( 'post_type' ) ?>" id="<?php echo $this->get_field_id( 'post_type' ) ?>" class="widefat" value="<?php echo $instance['post_type'] ?>"/>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'post_parent' ) ?>">
+		<?php _e( 'Post parent ID:', 'post-content-shortcodes' ) ?>
+	</label>
+	<input type="number" class="widefat" id="<?php echo $this->get_field_id( 'post_parent' ) ?>" name="<?php echo $this->get_field_name( 'post_parent' ) ?>" value="<?php echo $instance['post_parent'] ?>"/>
+	<br/>
+	<span class="note">
+		<?php _e( 'Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.', 'post-content-shortcodes' ) ?>
+	</span>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'tax_name' ) ?>">
+		<?php _e( 'Taxonomy Slug:', 'post-content-shortcodes' ) ?>
+	</label>
+	<input type="text" name="<?php echo $this->get_field_name( 'tax_name' ) ?>" id="<?php echo $this->get_field_id( 'tax_name' ) ?>" value="<?php echo $instance['tax_name'] ?>"/>
+	<br/>
+	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)</span>', 'post-content-shortcodes' ) ?>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'tax_term' ) ?>">
+		<?php _e( 'Term Slugs:', 'post-content-shortcodes' ) ?>
+	</label>
+	<input type="text" name="<?php echo $this->get_field_name( 'tax_term' ) ?>" id="<?php echo $this->get_field_id( 'tax_term' ) ?>" value="<?php echo $instance['tax_term'] ?>"/>
+	<br/>
+	<?php _e( '<span style="font-style: italic;">If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs</span>', 'post-content-shortcodes' ) ?>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'orderby' ) ?>">
+		<?php _e( 'Sort posts by:', 'post-content-shortcodes' ) ?>
+	</label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'orderby' ) ?>" id="<?php echo $this->get_field_id( 'orderby' ) ?>">
 <?php
 			$sortfields = array( 
-				'post_title'	=> __( 'Title' ), 
-				'date'			=> __( 'Post Date' ),
-				'menu_order'	=> __( 'Menu/Page order' ),
-				'ID'			=> __( 'Post ID' ), 
-				'author'		=> __( 'Author' ),
-				'modified'		=> __( 'Post Modification Date' ),
-				'parent'		=> __( 'Post Parent ID' ),
-				'comment_count'	=> __( 'Number of Comments' ),
-				'rand'			=> __( 'Random' ),
+				'post_title'	=> __( 'Title', 'post-content-shortcodes' ),
+				'date'			=> __( 'Post Date', 'post-content-shortcodes' ),
+				'menu_order'	=> __( 'Menu/Page order', 'post-content-shortcodes' ),
+				'ID'			=> __( 'Post ID', 'post-content-shortcodes' ),
+				'author'		=> __( 'Author', 'post-content-shortcodes' ),
+				'modified'		=> __( 'Post Modification Date', 'post-content-shortcodes' ),
+				'parent'		=> __( 'Post Parent ID', 'post-content-shortcodes' ),
+				'comment_count'	=> __( 'Number of Comments', 'post-content-shortcodes' ),
+				'rand'			=> __( 'Random', 'post-content-shortcodes' ),
 			);
 			
 			foreach ( $sortfields as $val=>$lbl ) {
@@ -551,23 +657,37 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 <?php
 			}
 ?>
-	</select></p>
-<p><label for="<?php echo $this->get_field_id( 'order' ) ?>"><?php _e( 'In which order?' ) ?></label>
+	</select>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'order' ) ?>"><?php _e( 'In which order?', 'post-content-shortcodes' ) ?>
+	</label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'order' ) ?>" id="<?php echo $this->get_field_id( 'order' ) ?>">
-		<option value="asc"<?php selected( 'asc', strtolower( $instance['order'] ) ) ?>>Ascending</option>
-		<option value="desc"<?php selected( 'desc', strtolower( $instance['order'] ) ) ?>>Descending</option>
-	</select></p>
-<p><label for="<?php echo $this->get_field_id( 'numberposts' ) ?>"><?php _e( 'How many posts should be shown?' ) ?></label>
-	<input type="number" class="widefat" name="<?php echo $this->get_field_name( 'numberposts' ) ?>" id="<?php echo $this->get_field_id( 'numberposts' ) ?>" value="<?php echo $instance['numberposts'] ?>"/><br>
-	<span class="note"><?php _e( 'Leave this set to -1 if you would like all posts to be retrieved and displayed.' ) ?></span></p>
-<p><label for="<?php echo $this->get_field_id( 'post_status' ) ?>"><?php _e( 'Post status:' ) ?></label>
+		<option value="asc"<?php selected( 'asc', strtolower( $instance['order'] ) ) ?>><?php _e( 'Ascending', 'post-content-shortcodes' ) ?></option>
+		<option value="desc"<?php selected( 'desc', strtolower( $instance['order'] ) ) ?>><?php _e( 'Descending', 'post-content-shortcodes' ) ?></option>
+	</select>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'numberposts' ) ?>">
+		<?php _e( 'How many posts should be shown?', 'post-content-shortcodes' ) ?>
+	</label>
+	<input type="number" class="widefat" name="<?php echo $this->get_field_name( 'numberposts' ) ?>" id="<?php echo $this->get_field_id( 'numberposts' ) ?>" value="<?php echo $instance['numberposts'] ?>"/>
+	<br />
+	<span class="note">
+		<?php _e( 'Leave this set to -1 if you would like all posts to be retrieved and displayed.', 'post-content-shortcodes' ) ?>
+	</span>
+</p>
+<p>
+	<label for="<?php echo $this->get_field_id( 'post_status' ) ?>">
+		<?php _e( 'Post status:', 'post-content-shortcodes' ) ?>
+	</label>
 	<select class="widefat" name="<?php echo $this->get_field_name( 'post_status' ) ?>" id="<?php echo $this->get_field_id( 'post_status' ) ?>">
 <?php
 			$stati = array( 
-				'publish'	=> __( 'Published' ), 
-				'draft' 	=> __( 'Draft' ),
-				'pending' 	=> __( 'Pending Review' ),
-				'inherit' 	=> __( 'Inherited' ),
+				'publish'	=> __( 'Published', 'post-content-shortcodes' ),
+				'draft' 	=> __( 'Draft', 'post-content-shortcodes' ),
+				'pending' 	=> __( 'Pending Review', 'post-content-shortcodes' ),
+				'inherit' 	=> __( 'Inherited', 'post-content-shortcodes' ),
 			);
 			
 			foreach ( $stati as $val=>$lbl ) {
@@ -576,11 +696,20 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 <?php
 			}
 ?>
-	</select></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'ignore_protected' ) ?>" id="<?php echo $this->get_field_id( 'ignore_protected' ) ?>" value="1"<?php checked( $instance['ignore_protected'] ) ?>/>
-	<label for="<?php echo $this->get_field_id( 'ignore_protected' ) ?>"><?php _e( 'Exclude password-protected posts from the list?' ) ?></label></p>
-<p><input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
-	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>"><?php _e( 'Exclude the post being viewed from the list of posts?' ) ?></label></p>
+	</select>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'ignore_protected' ) ?>" id="<?php echo $this->get_field_id( 'ignore_protected' ) ?>" value="1"<?php checked( $instance['ignore_protected'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'ignore_protected' ) ?>">
+		<?php _e( 'Exclude password-protected posts from the list?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
+<p>
+	<input type="checkbox" name="<?php echo $this->get_field_name( 'exclude_current' ) ?>" id="<?php echo $this->get_field_id( 'exclude_current' ) ?>" value="1"<?php checked( $instance['exclude_current'] ) ?>/>
+	<label for="<?php echo $this->get_field_id( 'exclude_current' ) ?>">
+		<?php _e( 'Exclude the post being viewed from the list of posts?', 'post-content-shortcodes' ) ?>
+	</label>
+</p>
 <?php
    
 			$this->common_fields( $instance );
