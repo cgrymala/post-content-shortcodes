@@ -169,7 +169,9 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 */
 		public function settings_section() {
 ?>
-<p><?php _e( 'This page allows you to tweak various elements within the Post Content Shortcodes plugin.' ) ?></p>
+<p>
+	<?php _e( 'This page allows you to tweak various elements within the Post Content Shortcodes plugin.', 'post-content-shortcodes' ) ?>
+</p>
 <?php
 		}
 		
@@ -188,22 +190,30 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 			switch( $args['label_for'] ) {
 				case 'enable-pcs-content-widget':
 ?>
-	<p class="note"><?php _e( 'Allows users to add post content to widgetized areas using the Post Content Widget.' ) ?></p>
+	<p class="note">
+		<?php _e( 'Allows users to add post content to widgetized areas using the Post Content Widget.', 'post-content-shortcodes' ) ?>
+	</p>
 <?php
 					break;
 				case 'enable-pcs-list-widget':
 ?>
-	<p class="note"><?php _e( 'Allows users to add lists of posts to widgetized areas using the Post List Widget.' ) ?></p>
+	<p class="note">
+		<?php _e( 'Allows users to add lists of posts to widgetized areas using the Post List Widget.', 'post-content-shortcodes' ) ?>
+	</p>
 <?php
 					break;
 				case 'enable-pcs-ajax':
 ?>
-	<p class="note"><?php _e( 'Experimental feature that attempts to retrieve lists of posts based on the criteria specified; making it easier to find the right post ID. If enabled, this feature will be available in any enabled PCS widgets, as well as the Visual Editor button.' ) ?></p>
+	<p class="note">
+		<?php _e( 'Experimental feature that attempts to retrieve lists of posts based on the criteria specified; making it easier to find the right post ID. If enabled, this feature will be available in any enabled PCS widgets, as well as the Visual Editor button.', 'post-content-shortcodes' ) ?>
+	</p>
 <?php
 					break;
 				case 'use-styles':
 ?>
-	<p class="note"><?php _e( 'Some default styles are included with the plugin to help style the lists of posts. If you would like to use these default styles, check this box. If you want to apply your own styles, uncheck this box.' ) ?></p>
+	<p class="note">
+		<?php _e( 'Some default styles are included with the plugin to help style the lists of posts. If you would like to use these default styles, check this box. If you want to apply your own styles, uncheck this box.', 'post-content-shortcodes' ) ?>
+	</p>
 <?php
 					break;
 			}
@@ -258,18 +268,28 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 ?>
 	<div class="wrap">
 <div class="wrap">
-	<h2><?php _e( 'Post Content Shortcodes Settings' ) ?></h2>
+	<h2>
+		<?php _e( 'Post Content Shortcodes Settings', 'post-content-shortcodes' ) ?>
+	</h2>
 <?php
 			if ( isset( $msg ) ) {
 				$this->options_updated_message( $msg );
 			}
 			if ( is_admin() && $this->is_plugin_active_for_network() ) {
 ?>
-	<p><em><?php _e( 'If you save these settings, they will override any settings configured at the network level. If you would like this site to use the network-wide settings, do not save the settings on this page.' ) ?></em></p>
+	<p>
+		<em>
+			<?php _e( 'If you save these settings, they will override any settings configured at the network level. If you would like this site to use the network-wide settings, do not save the settings on this page.', 'post-content-shortcodes' ) ?>
+		</em>
+	</p>
 <?php
 			} else if ( is_network_admin() && $this->is_multinetwork() ) {
 ?>
-	<p><em><?php _e( 'If you save these settings, they will override any settings configured at the multi-network level. If you would like this network to use the default multi-network settings, do not save the settings on this page.' ) ?></em></p>
+	<p>
+		<em>
+			<?php _e( 'If you save these settings, they will override any settings configured at the multi-network level. If you would like this network to use the default multi-network settings, do not save the settings on this page.', 'post-content-shortcodes' ) ?>
+		</em>
+	</p>
 <?php
 			}
 ?>
@@ -278,7 +298,9 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		settings_fields( $this->settings_page );
 		do_settings_sections( $this->settings_page );
 ?>
-		<p><input type="submit" value="<?php _e( 'Save' ) ?>" class="button-primary"/></p>
+		<p>
+			<input type="submit" value="<?php _e( 'Save', 'post-content-shortcodes' ) ?>" class="button-primary"/>
+		</p>
 	</form>
 </div>
 <?php
@@ -313,8 +335,12 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		protected function _no_permissions() {
 ?>
 	<div class="wrap">
-		<h2><?php _e( 'Post Content Shortcodes', 'post-content-shortcodes' ) ?></h2>
-		<p><?php _e( 'You do not have the appropriate permissions to update these options. Please work with an administrator of the site to update the options. Thank you.', 'post-content-shortcodes' ) ?></p>
+		<h2>
+			<?php _e( 'Post Content Shortcodes', 'post-content-shortcodes' ) ?>
+		</h2>
+		<p>
+			<?php _e( 'You do not have the appropriate permissions to update these options. Please work with an administrator of the site to update the options. Thank you.', 'post-content-shortcodes' ) ?>
+		</p>
 	</div>
 <?php
 		}
