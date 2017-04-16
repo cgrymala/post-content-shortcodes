@@ -19,7 +19,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @access public
 		 * @var    string
 		 */
-		public $version = '0.9.9.1';
+		public $version = '0.9.9.2';
 		/**
 		 * Holds the class instance.
 		 *
@@ -684,7 +684,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 							$field = 'slug';
 						}
 							
-						$atts['tax_query'][] = array( 'taxonomy' => $atts['tax_term'], 'field' => $field, 'terms' => $terms );
+						$atts['tax_query'][] = array( 'taxonomy' => $atts['tax_name'], 'field' => $field, 'terms' => $terms );
 					}
 				}
 			}
