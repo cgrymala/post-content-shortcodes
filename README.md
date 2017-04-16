@@ -251,6 +251,12 @@ There is a known issue where HTML (especially [caption] shortcodes) within the e
 
 Unfortunately, because of the way the Views plugin processes posts, the [wpv-post-url], [wpv-post-link] and [wpv-post-featured-image] shortcodes do not work properly. Instead, you will need to use the [pcs-post-url] and [pcs-thumbnail] shortcodes.
 
+## Screenshots
+
+1. An example of the post-list shortcode being used within the Twenty Seventeen theme, with the default PCS styles enabled ![post-list shortcode example](screenshot.png?raw=true)
+1. An example of the post-content shortcode being used within the Twenty Seventeen theme ![post-content shortcode example](screenshot2.png?raw=true)
+1. An example of the post-list shortcode being used within the Twenty Seventeen theme, with the default PCS styles disabled ![post-list shortcode example with no default styles](screenshot3.png?raw=true)
+
 ## Changelog ##
 
 ### 1.0 ###
