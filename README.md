@@ -3,11 +3,11 @@
 
 **Tags:** shortcode, clone, syndication, post content, post list
 
-**Requires at least:** 4.0
+**Requires at least:** 4.3
 
-**Tested up to:** 4.3
+**Tested up to:** 4.7.3
 
-**Stable tag:** 0.5.6
+**Stable tag:** 1.0
 
 
 Adds shortcodes to display the content of a post or a list of posts.
