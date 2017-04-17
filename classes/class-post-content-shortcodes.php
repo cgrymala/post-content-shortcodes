@@ -479,8 +479,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			/**
 			 * Output a little debug info if necessary
 			 */
-			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || isset( $_REQUEST['pcs-debug'] ) )
-				error_log( '[PCS Debug]: Preparing to retrieve post content with the following args: ' . print_r( $atts, true ) );
+			$this->debug( sprintf( 'Preparing to retrieve post content with the following args: %s', print_r( $atts, true ) ) );
 			
 			$p = $this->get_post_from_blog( $id, $blog_id );
 			if( empty( $p ) || is_wp_error( $p ) ) {
@@ -709,8 +708,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			/**
 			 * Output a little debug info if necessary
 			 */
-			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || isset( $_REQUEST['pcs-debug'] ) )
-				error_log( '[PCS Debug]: Preparing to retrieve post list with the following args: ' . print_r( $atts, true ) );
+			$this->debug( sprintf( 'Preparing to retrieve post list with the following args: %s', print_r( $atts, true ) ) );
 				
 			$posts = $this->get_posts_from_blog( $atts, $atts['blog_id'] );
 			if( empty( $posts ) ) {
@@ -1169,8 +1167,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			/**
 			 * Output a little debug info if necessary
 			 */
-			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || isset( $_REQUEST['pcs-debug'] ) )
-				error_log( '[PCS Debug]: Preparing to return filtered args: ' . print_r( $atts, true ) );
+			$this->debug( sprintf( 'Preparing to return filtered args: %s', print_r( $atts, true ) ) );
 			
 			return $atts;
 		}
@@ -1240,7 +1237,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return void
 		 */
 		protected function debug( $message, $log=true ) {
-			if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG ) {
+			if ( ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG ) && ! isset( $_REQUEST['pcs-debug'] ) ) {
 				return;
 			}
 			
