@@ -143,7 +143,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 			$this->_get_options();
 			
 			if ( $this->is_multinetwork() ) {
-			    $this->debug( 'This install is reporting as a multi-network installation' );
+				$this->debug( 'This install is reporting as a multi-network installation' );
 				add_submenu_page( 'index.php', __( 'Multi-Network Post Content Shortcodes Settings', 'post-content-shortcodes' ), __( 'Multi-Network Post Content Shortcodes', 'post-content-shortcodes' ), 'manage_network_plugins', 'mn-' . $this->settings_page, array( $this, 'admin_page' ) );
 				if ( false === $this->settings['enable-network-settings'] && false == $this->settings['enable-site-settings'] ) {
 					return;
@@ -151,15 +151,15 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 			}
 				
 			if ( $this->is_plugin_active_for_network() ) {
-			    $this->debug( 'This plugin appears to be network-active in multisite' );
+				$this->debug( 'This plugin appears to be network-active in multisite' );
 				if ( ! $this->is_multinetwork() || true === $this->settings['enable-network-settings'] ) {
-				    $this->debug( 'Adding the network admin menu' );
+					$this->debug( 'Adding the network admin menu' );
 					add_submenu_page( 'settings.php', __( 'Network Post Content Shortcodes Settings', 'post-content-shortcodes' ), __( 'Post Content Shortcodes', 'post-content-shortcodes' ), 'manage_network_plugins', $this->settings_page, array( $this, 'admin_page' ) );
 				}
 			}
 			
 			if ( ( ! $this->is_multinetwork() && ! $this->is_plugin_active_for_network() ) || true === $this->settings['enable-site-settings'] ) {
-			    $this->debug( 'Adding the individual sub-site menu' );
+				$this->debug( 'Adding the individual sub-site menu' );
 				add_options_page( __( 'Post Content Shortcodes Settings', 'post-content-shortcodes' ), __( 'Post Content Shortcodes', 'post-content-shortcodes' ), 'manage_options', $this->settings_page, array( $this, 'admin_page' ) );
 			}
 		}

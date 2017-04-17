@@ -1245,7 +1245,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			
 			if ( $log ) {
-				error_log( sprintf( '[PCS Debug Message]: %s', $message );
+				error_log( sprintf( '[PCS Debug Message]: %s', $message ) );
 			} else {
 				printf( "\n<!-- PCS Debug Message: \n%s\n -->\n", $message );
 			}
