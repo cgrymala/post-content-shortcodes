@@ -1228,5 +1228,27 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			return implode( ' ', $classes );
 		}
+		
+		/**
+		 * Output/log a debug message if appropriate
+		 *
+		 * @param $message string the message that should be logged/output
+		 * @param $log     bool whether to log the message or output it
+		 *
+		 * @access protected
+		 * @since  1.0
+		 * @return void
+		 */
+		protected function debug( $message, $log=true ) {
+			if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG ) {
+				return;
+			}
+			
+			if ( $log ) {
+				error_log( sprintf( '[PCS Debug Message]: %s', $message );
+			} else {
+				printf( "\n<!-- PCS Debug Message: \n%s\n -->\n", $message );
+			}
+		}
 	}
 }
