@@ -128,16 +128,17 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			/**
 			 * Prepare to register the default stylesheet
 			 */
-			add_action( 'wp_print_styles', array( &$this, 'print_styles' ) );
+			add_action( 'wp_print_styles', array( $this, 'print_styles' ) );
 			
+			$this->debug( 'Adding the admin_init action' );
 			/**
 			 * Set up the various admin options items
 			 */
-			add_action( 'admin_init', array( &$this, 'admin_init' ) );
+			add_action( 'admin_init', array( $this, 'admin_init' ) );
 			
 			if( $this->is_plugin_active_for_network() )
-				add_action( 'network_admin_menu', array( &$this, 'admin_menu' ) );
-			add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+				add_action( 'network_admin_menu', array( $this, 'admin_menu' ) );
+			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		}
 		
 		/**
@@ -260,8 +261,21 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return bool whether this is a multisite install with the plugin activated network-wide
 		 */
 		protected function is_plugin_active_for_network() {
-			$this->debug( 'Evaluating whether the plugin is active on the network' );
-			return function_exists( 'is_plugin_active_for_network' ) && is_multisite() && is_plugin_active_for_network( $this->plugin_dir_name );
+			if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			}
+			$rt = function_exists( 'is_plugin_active_for_network' ) && is_multisite() && is_plugin_active_for_network( $this->plugin_dir_name );
+			$fe = function_exists( 'is_plugin_active_for_network' ) ? 'does' : 'does not';
+			$im = is_multisite() ? 'is' : 'is not';
+			$pa = 'is not';
+			if ( function_exists( 'is_plugin_active_for_network' ) )
+				$pa = is_plugin_active_for_network( $this->plugin_dir_name ) ? 'is' : 'is not';
+			
+			/*$this->debug( sprintf( 'Evaluating whether the plugin is active on the network. The primary result is: %s.', print_r( $rt, true ) ) );
+			$this->debug( sprintf( 'The function %s exist(s)', $fe ) );
+			$this->debug( sprintf( 'This install %s multisite', $im ) );
+			$this->debug( sprintf( 'The plugin %s network-active', $pa ) );*/
+			return $rt;
 		}
 		
 		/**
@@ -279,19 +293,32 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return void
 		 */
 		protected function _get_options() {
+			$this->debug( 'Stepping into the _get_options method' );
+			
 			global $blog_id;
 			$this->current_blog_id = $blog_id;
 			$this->current_post_id = is_singular() ? get_the_ID() : false;
 			
 			$this->settings = array();
 			if ( isset( $_REQUEST['page'] ) && stristr( $_REQUEST['page'], 'post-content-shortcodes' ) ) {
+				$this->debug( 'The page param is set, and it looks like this is the right settings page' );
 				if ( is_network_admin() ) {
+					$this->debug( 'While retrieving settings, it looks like we are in the network admin area' );
 					if ( 1 == $GLOBALS['site_id'] && isset( $_REQUEST['page'] ) && 'mn-post-content-shortcodes' == $_REQUEST['page'] )
 						$this->settings = get_mnetwork_option( 'pcs-settings', array() );
 					else
 						$this->settings = get_site_option( 'pcs-settings', array() );
 				} elseif ( is_admin() ) {
+					$this->debug( 'We are in the normal admin area retrieving settings' );
 					$this->settings = get_option( 'pcs-settings', array() );
+					if ( $this->is_plugin_active_for_network() ) {
+						$tmp = get_site_option( 'pcs-settings', array() );
+						if ( false === $tmp['enable-site-settings'] ) {
+							$this->settings = $tmp;
+							return;
+						}
+						$this->settings['enable-site-settings'] = true;
+					}
 				}
 				$this->settings = array_merge( $this->stock_settings, $this->settings );
 				return;
@@ -324,7 +351,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$tmp = get_option( 'pcs-settings', array() );
 				
 				if ( ! empty( $tmp ) ) {
+					$this->debug( 'Retrieving and returning individual site settings' );
 					$this->settings = array_merge( $this->stock_settings, $tmp );
+					$this->settings['enable-site-settings'] = $settings['enable-site-settings'];
 					return;
 				}
 				

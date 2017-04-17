@@ -261,6 +261,7 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 * Adds plugin textdomain to all translatable strings
 * Fixes some other minor PHP warnings
 * Re-organizes code within plugin
+* Fixes some issues with the way individual site options are handled in multisite
 
 = 0.6 =
 

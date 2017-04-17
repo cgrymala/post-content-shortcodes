@@ -109,6 +109,8 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * @return void
 		 */
 		public function admin_init() {
+		    $this->debug( 'Stepping into the admin_init action' );
+		    
 			add_settings_section( $this->settings_section, __( 'Post Content Shortcodes', 'post-content-shortcodes' ), array( $this, 'settings_section' ), $this->settings_page );
 			
 			/**
@@ -140,6 +142,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * @return void
 		 */
 		public function admin_menu() {
+		    $this->debug( 'Stepping into the admin menu function' );
 			$this->_get_options();
 			
 			if ( $this->is_multinetwork() ) {
@@ -150,7 +153,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 				}
 			}
 				
-			if ( $this->is_plugin_active_for_network() ) {
+			if ( $this->is_plugin_active_for_network() && is_network_admin() ) {
 				$this->debug( 'This plugin appears to be network-active in multisite' );
 				if ( ! $this->is_multinetwork() || true === $this->settings['enable-network-settings'] ) {
 					$this->debug( 'Adding the network admin menu' );
@@ -279,7 +282,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 			if ( isset( $msg ) ) {
 				$this->options_updated_message( $msg );
 			}
-			if ( is_admin() && $this->is_plugin_active_for_network() ) {
+			if ( is_admin() && ! is_network_admin() && $this->is_plugin_active_for_network() ) {
 ?>
 	<p>
 		<em>
@@ -323,7 +326,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 ?>
 		<div class="updated fade">
 <?php
-				printf( __( '<p>The %1$s options were %2$supdated%3$s.</p>', 'post-content-shortcodes' ), $this->settings_titles[$k], ( true === $msg ? '' : __( '<strong>not</strong> ', 'post-content-shortcodes' ) ), ( true === $msg ? __( ' successfully', 'post-content-shortcodes' ) : '' ) );
+				printf( __( '<p>The %1$s options were %2$supdated%3$s.</p>', 'post-content-shortcodes' ), __( 'Post Content Shortcodes', 'post-content-shortcodes' ), ( true === $msg ? '' : __( '<strong>not</strong> ', 'post-content-shortcodes' ) ), ( true === $msg ? __( ' successfully', 'post-content-shortcodes' ) : '' ) );
 ?>
 		</div>
 <?php
