@@ -30,7 +30,7 @@ if ( ! class_exists( 'Post_Content_Shortcodes_Admin' ) ) {
 		 * @access public
 		 * @var    string
 		 */
-		public $version = '0.9.9.1';
+		public $version = '1.0';
 		/**
 		 * Holds the class instance.
 		 *

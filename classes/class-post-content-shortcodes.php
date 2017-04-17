@@ -19,7 +19,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @access public
 		 * @var    string
 		 */
-		public $version = '0.9.9.2';
+		public $version = '1.0';
 		/**
 		 * Holds the class instance.
 		 *
