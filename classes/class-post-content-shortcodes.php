@@ -95,7 +95,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		protected function __construct() {
 			$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
-			add_action( 'after_setup_theme', array( $this, 'startup' ) );
+			add_action( 'plugins_loaded', array( $this, 'startup' ), 99 );
 		}
 		
 		/**
@@ -264,6 +264,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return bool whether this is a multisite install with the plugin activated network-wide
 		 */
 		protected function is_plugin_active_for_network() {
+			$this->debug( 'Evaluating whether the plugin is active on the network' );
 			return function_exists( 'is_plugin_active_for_network' ) && is_multisite() && is_plugin_active_for_network( $this->plugin_dir_name );
 		}
 		
