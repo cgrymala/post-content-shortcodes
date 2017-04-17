@@ -106,10 +106,6 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return void
 		 */
 		public function startup() {
-			global $blog_id;
-			$this->current_blog_id = $blog_id;
-			$this->current_post_id = is_singular() ? get_the_ID() : false;
-			
 			$this->_setup_defaults();
 			
 			/**
@@ -283,6 +279,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return void
 		 */
 		protected function _get_options() {
+			global $blog_id;
+			$this->current_blog_id = $blog_id;
+			$this->current_post_id = is_singular() ? get_the_ID() : false;
+			
 			$this->settings = array();
 			if ( isset( $_REQUEST['page'] ) && stristr( $_REQUEST['page'], 'post-content-shortcodes' ) ) {
 				if ( is_network_admin() ) {
