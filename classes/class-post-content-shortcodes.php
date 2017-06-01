@@ -717,9 +717,14 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					}
 				}
 			}
-			
+
+			$excluded_tax = apply_filters( 'post-content-shortcodes-excluded-taxonomies', array(
+				'csb_visibility',
+				'csb_clone',
+			) );
+
 			foreach ( $args as $k => $v ) {
-				if ( 'view_template' == $k ) {
+				if ( 'view_template' == $k || in_array( $k, $excluded_tax ) ) {
 					continue;
 				}
 				if ( is_numeric( $v ) )

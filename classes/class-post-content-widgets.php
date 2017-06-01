@@ -18,7 +18,7 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 		 * @access public
 		 * @var    string
 		 */
-		public $version = '0.9.9.1';
+		public $version = '0.9.9.2';
 		/**
 		 * @since  0.1
 		 * @access public
