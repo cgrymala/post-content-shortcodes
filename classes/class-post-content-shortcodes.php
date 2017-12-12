@@ -213,6 +213,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				'link_image' => false, 
 				// Whether to ignore password-protected posts in post list
 				'ignore_protected' => false, 
+        /* Added by Tom */
+				// A custom meta field to display instead of post content
+				'custom_field' => '', 
 			);
 			/**
 			 * If this site is using the WP Views plugin, add support for a 
@@ -553,6 +556,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$content = empty( $p->post_excerpt ) ? $p->post_content : $p->post_excerpt;
 			}
 			
+			if ( $atts['custom_field'] && $atts['custom_field'] !== '' ) {
+				$content = empty( get_post_meta($p->ID, $atts['custom_field'], true) ) ? '' : get_post_meta($p->ID, $atts['custom_field'], true);
+			}
+			
 			if ( intval( $excerpt_length ) && intval( $excerpt_length ) < str_word_count( $content ) ) {
 				$content = explode( ' ', $content );
 				$content = implode( ' ', array_slice( $content, 0, ( intval( $excerpt_length ) - 1 ) ) );
@@ -718,9 +725,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				}
 			}
 
-			$excluded_tax = apply_filters( 'post-content-shortcodes-excluded-taxonomies', array(
-				'csb_visibility',
-				'csb_clone',
+			$excluded_tax = apply_filters( 'post-content-shortcodes-excluded-taxonomies', array(		
+				'csb_visibility',		
+				'csb_clone',		
 			) );
 
 			foreach ( $args as $k => $v ) {
