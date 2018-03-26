@@ -860,7 +860,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						}
 					}
 					$read_more = $atts['read_more'] ? 
-						apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more', 'post-content-shortcodes' ) . '</a></span>', $p, $atts ) :
+						apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more', 'post-content-shortcodes' ) . '</a></span>', $p, $atts ) :
 						'';
 					$output .= '<div class="pcs-excerpt">' . apply_filters( 'post-content-shortcodes-list-excerpt', apply_filters( 'the_content', $excerpt . $read_more ), $p, $atts ) . '</div></div>';
 				}
