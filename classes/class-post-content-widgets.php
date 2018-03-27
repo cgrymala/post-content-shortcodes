@@ -185,7 +185,9 @@ if ( ! class_exists( 'PCS_Widget' ) ) {
 		 */
 		public function get_blogs() {
 			if ( !is_multisite() ) {
-				error_log( '[PCS Notice]: This site does not appear to be multisite-enabled.' );
+			    if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				    error_log( '[PCS Notice]: This site does not appear to be multisite-enabled.' );
+			    }
 				return $this->blog_list = false;
 			}
 			
