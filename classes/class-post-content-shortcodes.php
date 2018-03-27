@@ -313,7 +313,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$this->settings = get_option( 'pcs-settings', array() );
 					if ( $this->is_plugin_active_for_network() ) {
 						$tmp = get_site_option( 'pcs-settings', array() );
-						if ( false === $tmp['enable-site-settings'] ) {
+						if ( array_key_exists( 'enable-site-settings', $tmp ) && false === $tmp['enable-site-settings'] ) {
 							$this->settings = $tmp;
 							return;
 						}
