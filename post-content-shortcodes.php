@@ -8,17 +8,32 @@ Author: cgrymala
 Author URI: http://ten-321.com/
 License: GPL2
 */
-/**
- * Pull in the post_content_shortcodes class definition file
- */
-if( ! class_exists( '\Post_Content_Shortcodes' ) )
-	require_once( plugin_dir_path( __FILE__ ) . '/classes/class-post-content-shortcodes-admin.php' );
-if( ! class_exists( '\PCS_Widget' ) )
-	require_once( plugin_dir_path( __FILE__ ) . '/classes/class-post-content-widgets.php' );
 
-global $post_content_shortcodes_obj;
-if ( is_admin() ) {
-	$post_content_shortcodes_obj = \Post_Content_Shortcodes_Admin::instance();
-} else {
-	$post_content_shortcodes_obj = \Post_Content_Shortcodes::instance();
+namespace {
+	/**
+	 * Set up an autoloader to automatically pull in the appropriate class definitions
+	 *
+	 * @param string $class_name the full name of the class being invoked
+	 *
+	 * @since 2018.1
+	 * @return void
+	 */
+	spl_autoload_register( function ( $class_name ) {
+		if ( ! stristr( $class_name, 'Post_Content_Shortcodes\\' ) ) {
+			return;
+		}
+
+		$filename = plugin_dir_path( __FILE__ ) . '/lib/functions/' . strtolower( str_replace( array( '\\', '_' ), array( '/', '-' ), $class_name ) ) . '.php';
+
+		if ( ! file_exists( $filename ) ) {
+			return;
+		}
+
+		include $filename;
+	} );
+}
+
+namespace Post_Content_Shortcodes {
+	global $post_content_shortcodes_obj;
+	$post_content_shortcodes_obj = \Post_Content_Shortcodes\Plugin::instance();
 }
