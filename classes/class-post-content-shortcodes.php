@@ -406,6 +406,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$atts['blog_id'] = $blog_id;
 			}
 
+			$this->debug( 'The blog ID was set to ' . print_r( $atts['blog_id'], true ) );
+
 			$atts['blog_id'] = intval( $atts['blog_id'] );
 
 			if ( is_array( $atts ) && array_key_exists( 'post_name', $atts ) ) {
