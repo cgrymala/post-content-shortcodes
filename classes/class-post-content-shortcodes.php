@@ -1013,7 +1013,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				return $p;
 			
 			$org_blog = switch_to_blog( $blog_id );
-			$this->check_taxonomies( $args['tax_query'], $atts['post_type'] );
+			if ( array_key_exists( 'tax_query', $atts ) ) {
+				$this->check_taxonomies( $args['tax_query'], $atts['post_type'] );
+			}
 			$posts = get_posts( $args );
 			
 			if ( false !== $this->shortcode_atts['show_image'] ) {
