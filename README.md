@@ -266,6 +266,8 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 * Fixes issue with the permalink that's used in the "Read More" link on cross-site post lists
 * Turns off debug message when site is installed on non-multisite install
 * Update WP version compatibility
+* Begin testing Gutenberg compatibility
+* Fix undefined index warnings about `enable-site-settings` and `tax_query`
 
 ### 1.0 ###
 * Fixes PHP fatal error thanks to GitHub user [@stefanogualdi](https://github.com/stefanogualdi)
