@@ -1013,7 +1013,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				return $p;
 			
 			$org_blog = switch_to_blog( $blog_id );
-			if ( array_key_exists( 'tax_query', $atts ) ) {
+			if ( array_key_exists( 'tax_query', $args ) ) {
 				$this->check_taxonomies( $args['tax_query'], $atts['post_type'] );
 			}
 			$posts = get_posts( $args );
