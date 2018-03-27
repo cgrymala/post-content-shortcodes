@@ -405,6 +405,9 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if ( ! array_key_exists( 'blog_id', $atts ) ) {
 				$atts['blog_id'] = $blog_id;
 			}
+
+			$atts['blog_id'] = intval( $atts['blog_id'] );
+
 			if ( is_array( $atts ) && array_key_exists( 'post_name', $atts ) ) {
 				$tmp = $this->get_id_from_post_name( $atts['post_name'], $atts['blog_id'] );
 				if ( false !== $tmp )
