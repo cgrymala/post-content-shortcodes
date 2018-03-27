@@ -392,6 +392,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return array the parsed list of attributes
 		 */
 		private function _get_attributes( $atts=array() ) {
+			foreach ( $atts as $k=>$v ) {
+				$v = html_entity_decode( $v );
+				$atts[$k] = str_replace( '"', '', $v );
+			}
+
 			global $blog_id;
 			if ( is_array( $atts ) && array_key_exists( 'blog', $atts ) ) {
 				if ( is_numeric( $atts['blog'] ) ) {
