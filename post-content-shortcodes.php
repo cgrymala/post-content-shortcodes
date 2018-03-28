@@ -3,11 +3,12 @@
 Plugin Name: Post Content Shortcodes
 Plugin URI: http://plugins.ten-321.com/post-content-shortcodes/
 Description: Adds shortcodes to show the content of another post or to show a list of posts
-Version: 1.0.1
+Version: 1.0.1.1
 Author: cgrymala
 Author URI: http://ten-321.com/
 License: GPL2
 Text Domain: post-content-shortcodes
+Domain Path: /lang
 */
 /**
  * Pull in the post_content_shortcodes class definition file

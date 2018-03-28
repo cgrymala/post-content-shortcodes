@@ -1,0 +1,433 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Post Content Shortcodes 1.0.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-28 08:54-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: classes/class-post-content-shortcodes-admin.php:114
+#: classes/class-post-content-shortcodes-admin.php:160
+#: classes/class-post-content-shortcodes-admin.php:166
+#: classes/class-post-content-shortcodes-admin.php:329
+#: classes/class-post-content-shortcodes-admin.php:346
+msgid "Post Content Shortcodes"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:120
+msgid ""
+"Allow network admins to override these settings on an individual network?"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:126
+msgid ""
+"Allow individual administrators to override these settings on their invidual "
+"sites/blogs?"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:129
+msgid "Enable the post content widget?"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:130
+msgid "Enable the post list widget?"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:132
+msgid "Enable the default stylesheet?"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:150
+msgid "Multi-Network Post Content Shortcodes Settings"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:150
+msgid "Multi-Network Post Content Shortcodes"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:160
+msgid "Network Post Content Shortcodes Settings"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:166
+#: classes/class-post-content-shortcodes-admin.php:279
+msgid "Post Content Shortcodes Settings"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:180
+msgid ""
+"This page allows you to tweak various elements within the Post Content "
+"Shortcodes plugin."
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:201
+msgid ""
+"Allows users to add post content to widgetized areas using the Post Content "
+"Widget."
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:208
+msgid ""
+"Allows users to add lists of posts to widgetized areas using the Post List "
+"Widget."
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:215
+msgid ""
+"Experimental feature that attempts to retrieve lists of posts based on the "
+"criteria specified; making it easier to find the right post ID. If enabled, "
+"this feature will be available in any enabled PCS widgets, as well as the "
+"Visual Editor button."
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:222
+msgid ""
+"Some default styles are included with the plugin to help style the lists of "
+"posts. If you would like to use these default styles, check this box. If you "
+"want to apply your own styles, uncheck this box."
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:289
+msgid ""
+"If you save these settings, they will override any settings configured at "
+"the network level. If you would like this site to use the network-wide "
+"settings, do not save the settings on this page."
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:297
+msgid ""
+"If you save these settings, they will override any settings configured at "
+"the multi-network level. If you would like this network to use the default "
+"multi-network settings, do not save the settings on this page."
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:309
+msgid "Save"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:329
+#, php-format
+msgid "<p>The %1$s options were %2$supdated%3$s.</p>"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:329
+msgid "<strong>not</strong> "
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:329
+msgid " successfully"
+msgstr ""
+
+#: classes/class-post-content-shortcodes-admin.php:349
+msgid ""
+"You do not have the appropriate permissions to update these options. Please "
+"work with an administrator of the site to update the options. Thank you."
+msgstr ""
+
+#: classes/class-post-content-shortcodes.php:572
+#: classes/class-post-content-shortcodes.php:880
+msgid "Read more"
+msgstr ""
+
+#: classes/class-post-content-shortcodes.php:601
+#: classes/class-post-content-shortcodes.php:847
+#, php-format
+msgid ""
+"Posted by <span class=\"post-author\">%1$s</span> on <span class=\"post-date"
+"\">%2$s</a>"
+msgstr ""
+
+#: classes/class-post-content-shortcodes.php:603
+#, php-format
+msgid "Posted on %2$s"
+msgstr ""
+
+#: classes/class-post-content-shortcodes.php:605
+#, php-format
+msgid "Posted by %s"
+msgstr ""
+
+#: classes/class-post-content-shortcodes.php:849
+#, php-format
+msgid "Posted on <span class=\"post-date\">%2$s</a>"
+msgstr ""
+
+#: classes/class-post-content-shortcodes.php:851
+#, php-format
+msgid "Posted by <span class=\"post-author\">%1$s</span>"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:253
+msgid "Views Content Template"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:255
+msgid "-- Do Not Use a Content Template --"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:271
+msgid "Display the featured image with the post?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:276
+msgid "Image Dimensions"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:279
+msgid "Width: "
+msgstr ""
+
+#: classes/class-post-content-widgets.php:281
+#: classes/class-post-content-widgets.php:286
+msgid "px"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:282
+msgid " x "
+msgstr ""
+
+#: classes/class-post-content-widgets.php:284
+msgid "Height: "
+msgstr ""
+
+#: classes/class-post-content-widgets.php:290
+msgid "Display comments with the post?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:294
+msgid ""
+"<hr/> <p style=\"font-style: italic\">If you are using a Views Content "
+"Template to display your results, you do not need to configure any of the "
+"options below.</p>"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:300
+msgid "Display the post title?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:306
+msgid "Display an excerpt of the post content?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:311
+msgid "Limit the excerpt to how many words?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:315
+msgid "Leave set to 0 if you do not want the excerpts limited."
+msgstr ""
+
+#: classes/class-post-content-widgets.php:321
+msgid "Include a \"Read more\" link?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:327
+msgid "Allow shortcodes inside of the excerpt?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:333
+msgid "Attempt to strip all HTML out of the excerpt?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:339
+msgid "Display the author's name?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:345
+msgid "Display the publication date?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:356
+msgid "Wrap the thumbnail in a link to the post?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:429
+msgid "Display the content of a single post."
+msgstr ""
+
+#: classes/class-post-content-widgets.php:431
+msgid "Post Content Widget"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:464
+#: classes/class-post-content-widgets.php:589
+msgid "Widget Title:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:472
+msgid "Show post from which blog?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:475
+#: classes/class-post-content-widgets.php:601
+msgid "-- Please select a blog --"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:490
+msgid "Post Selection"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:494
+msgid "Post ID:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:499
+msgid "OR"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:503
+msgid "Post Name (slug):"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:511
+msgid "Exclude this widget from the page/post that this widget displays?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:554
+msgid "Display a filtered list of posts/pages."
+msgstr ""
+
+#: classes/class-post-content-widgets.php:556
+msgid "Post List Widget"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:598
+msgid "List posts from which blog?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:616
+msgid "Post type:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:622
+msgid "Post parent ID:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:627
+msgid ""
+"Leave this blank (or set to 0) to retrieve and display all posts that match "
+"the other criteria specified."
+msgstr ""
+
+#: classes/class-post-content-widgets.php:632
+msgid "Taxonomy Slug:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:636
+msgid ""
+"<span style=\"font-style: italic;\">If you would like to limit posts to a "
+"specific set of terms within a taxonomy, please enter the taxonomy slug "
+"above (e.g. \"category\", \"tag\", etc.)</span>"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:640
+msgid "Term Slugs:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:644
+msgid ""
+"<span style=\"font-style: italic;\">If you would like to limit posts to a "
+"specifc set of terms within a taxonomy, please enter a space-separated list "
+"of either the term slugs or the term IDs</span>"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:648
+msgid "Sort posts by:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:653
+msgid "Title"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:654
+msgid "Post Date"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:655
+msgid "Menu/Page order"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:656
+msgid "Post ID"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:657
+msgid "Author"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:658
+msgid "Post Modification Date"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:659
+msgid "Post Parent ID"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:660
+msgid "Number of Comments"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:661
+msgid "Random"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:673
+msgid "In which order?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:676
+msgid "Ascending"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:677
+msgid "Descending"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:682
+msgid "How many posts should be shown?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:687
+msgid ""
+"Leave this set to -1 if you would like all posts to be retrieved and "
+"displayed."
+msgstr ""
+
+#: classes/class-post-content-widgets.php:692
+msgid "Post status:"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:697
+msgid "Published"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:698
+msgid "Draft"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:699
+msgid "Pending Review"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:700
+msgid "Inherited"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:714
+msgid "Exclude password-protected posts from the list?"
+msgstr ""
+
+#: classes/class-post-content-widgets.php:720
+msgid "Exclude the post being viewed from the list of posts?"
+msgstr ""

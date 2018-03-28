@@ -106,7 +106,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return void
 		 */
 		public function startup() {
-			load_plugin_textdomain( 'post-content-shortcodes', false, plugin_dir_path( dirname( __FILE__ ) ) . '/lang' );
+			add_action( 'init', array( $this, 'load_textdomain' ) );
 
 			$this->_setup_defaults();
 			
@@ -141,6 +141,19 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( $this->is_plugin_active_for_network() )
 				add_action( 'network_admin_menu', array( $this, 'admin_menu' ) );
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		}
+
+		/**
+		 * Load the plugin's text domain
+		 *
+		 * @access public
+		 * @since  1.0.1
+		 * @return bool
+		 */
+		public function load_textdomain() {
+			$this->debug( 'Attempting to load text domain from ' . dirname( plugin_basename( dirname( __FILE__ ) ) ) . '/lang' );
+
+			return load_plugin_textdomain( 'post-content-shortcodes', false, dirname( plugin_basename( dirname( __FILE__ ) ) ) . '/lang' );
 		}
 		
 		/**
