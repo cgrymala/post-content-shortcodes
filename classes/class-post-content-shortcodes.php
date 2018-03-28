@@ -106,6 +106,8 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @return void
 		 */
 		public function startup() {
+			load_plugin_textdomain( 'post-content-shortcodes', false, plugin_dir_path( dirname( __FILE__ ) ) . '/lang' );
+
 			$this->_setup_defaults();
 			
 			/**

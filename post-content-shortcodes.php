@@ -7,6 +7,7 @@ Version: 1.0.1
 Author: cgrymala
 Author URI: http://ten-321.com/
 License: GPL2
+Text Domain: post-content-shortcodes
 */
 /**
  * Pull in the post_content_shortcodes class definition file
