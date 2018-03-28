@@ -7,7 +7,7 @@
 
 **Tested up to:** 4.9.4
 
-**Stable tag:** 1.0.1
+**Stable tag:** 1.0.1.1
 
 
 Adds shortcodes to display the content of a post or a list of posts.
@@ -262,6 +262,9 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 
 ## Changelog ##
 
+### 1.0.1.1 ###
+* Adds i18n and l10n features so the plugin can be properly translated in the future
+
 ### 1.0.1 ###
 * Fixes issue with the permalink that's used in the "Read More" link on cross-site post lists
 * Turns off debug message when site is installed on non-multisite install
@@ -373,6 +376,10 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 This is the first version of this plugin
 
 ## Upgrade Notice ##
+
+### 1.0.1.1 ###
+
+* Adds i18n and l10n features
 
 ### 1.0.1 ###
 
