@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Post Content Shortcodes 1.0.1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-28 08:54-0400\n"
+"POT-Creation-Date: 2018-03-29 08:34-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,35 +135,40 @@ msgid ""
 "work with an administrator of the site to update the options. Thank you."
 msgstr ""
 
-#: classes/class-post-content-shortcodes.php:572
-#: classes/class-post-content-shortcodes.php:880
+#: classes/class-post-content-shortcodes.php:551
+#: classes/class-post-content-shortcodes.php:785
+msgid "<p>No posts could be found that matched the specified criteria.</p>"
+msgstr ""
+
+#: classes/class-post-content-shortcodes.php:594
+#: classes/class-post-content-shortcodes.php:902
 msgid "Read more"
 msgstr ""
 
-#: classes/class-post-content-shortcodes.php:601
-#: classes/class-post-content-shortcodes.php:847
+#: classes/class-post-content-shortcodes.php:623
+#: classes/class-post-content-shortcodes.php:869
 #, php-format
 msgid ""
 "Posted by <span class=\"post-author\">%1$s</span> on <span class=\"post-date"
 "\">%2$s</a>"
 msgstr ""
 
-#: classes/class-post-content-shortcodes.php:603
+#: classes/class-post-content-shortcodes.php:625
 #, php-format
 msgid "Posted on %2$s"
 msgstr ""
 
-#: classes/class-post-content-shortcodes.php:605
+#: classes/class-post-content-shortcodes.php:627
 #, php-format
 msgid "Posted by %s"
 msgstr ""
 
-#: classes/class-post-content-shortcodes.php:849
+#: classes/class-post-content-shortcodes.php:871
 #, php-format
 msgid "Posted on <span class=\"post-date\">%2$s</a>"
 msgstr ""
 
-#: classes/class-post-content-shortcodes.php:851
+#: classes/class-post-content-shortcodes.php:873
 #, php-format
 msgid "Posted by <span class=\"post-author\">%1$s</span>"
 msgstr ""
