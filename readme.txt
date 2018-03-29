@@ -248,9 +248,9 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 
 == Screenshots ==
 
-1. An example of the post-list shortcode being used within the Twenty Seventeen theme, with the default PCS styles enabled
+1. An example of the post-list shortcode being used within the Twenty Seventeen theme, with the default PCS styles **enabled**
 1. An example of the post-content shortcode being used within the Twenty Seventeen theme
-1. An example of the post-list shortcode being used within the Twenty Seventeen theme, with the default PCS styles disabled
+1. An example of the post-list shortcode being used within the Twenty Seventeen theme, with the default PCS styles **disabled**
 
 == Changelog ==
 
