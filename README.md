@@ -180,8 +180,8 @@ The `[post-list]` shortcode, however, does output some HTML to actually format t
 
 ```html
 <ul class="post-list">
-&lt;li class="listed-post"&gt;&lt;a href="%permalink%" title="%title%"&gt;%title&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+<li class="listed-post"><a href="%permalink%" title="%title%">%title</a></li>
+</ul>
 ```
 
 ### How do I change the HTML output for the post-list? ###
