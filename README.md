@@ -264,6 +264,7 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 
 ### 1.0.1.1 ###
 * Adds i18n and l10n features so the plugin can be properly translated in the future
+* Attempts to fix errant PHP warning about string/array conversion ([h/t @codingbee](https://wordpress.org/support/topic/getting-error-when-displaying-content-inside-widget/))
 
 ### 1.0.1 ###
 * Fixes issue with the permalink that's used in the "Read More" link on cross-site post lists
@@ -380,6 +381,7 @@ This is the first version of this plugin
 ### 1.0.1.1 ###
 
 * Adds i18n and l10n features
+* Fixes PHP warning
 
 ### 1.0.1 ###
 
