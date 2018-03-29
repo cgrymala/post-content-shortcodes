@@ -178,11 +178,11 @@ The `[post-content]` shortcode will not output any extra HTML at all. It simply 
 
 The `[post-list]` shortcode, however, does output some HTML to actually format the list. The default HTML code output looks like:
 
-`
-&lt;ul class="post-list"&gt;
+```html
+<ul class="post-list">
 &lt;li class="listed-post"&gt;&lt;a href="%permalink%" title="%title%"&gt;%title&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-`
+```
 
 ### How do I change the HTML output for the post-list? ###
 
