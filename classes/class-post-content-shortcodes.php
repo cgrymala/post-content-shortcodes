@@ -533,13 +533,28 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			
 			extract( $this->shortcode_atts );
 			/**
-			 * Attempt to avoid an endless loop
+			 * Bail out if the id attribute wasn't set for this shortcode
 			 */
-			if( ( is_array( $this->shortcode_atts ) && array_key_exists( 'exclude_current', $this->shortcode_atts ) && 'Do not exclude' !== $this->shortcode_atts['exclude_current'] ) && ( $id == $GLOBALS['post']->ID || empty( $id ) ) ) {
+			if ( ! isset( $id ) ) {
 				do_action( 'pcs_ending_post_content' );
-				return '';
+				return;
 			}
-			
+			/**
+			 * Attempt to avoid an endless loop
+			 *
+			 * I hate nested if statements, but this seems to be the most readable, and the best way to isolate where things might go wrong
+			 */
+			if ( is_array( $this->shortcode_atts ) && array_key_exists( 'exclude_current', $this->shortcode_atts ) ) {
+				if ( 'Do not exclude' !== $this->shortcode_atts['exclude_current'] ) {
+					if ( is_object( $GLOBALS['post'] ) ) {
+						if ( $id == $GLOBALS['post']->ID || empty( $id ) ) {
+							do_action( 'pcs_ending_post_content' );
+							return '';
+						}
+					}
+				}
+			}
+
 			/**
 			 * Output a little debug info if necessary
 			 */
