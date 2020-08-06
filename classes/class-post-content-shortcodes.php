@@ -119,9 +119,23 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 * Register a shortcode to be used by Views, since the featured image
 			 * 		doesn't work properly through Views
 			 */
-			add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
-			add_shortcode( 'pcs-post-url', array( &$this, 'do_post_permalink' ) );
-			add_shortcode( 'pcs-entry-classes', array( &$this, 'do_entry_classes' ) );
+			if ( shortcode_exists( 'wpv-post-title' ) ) {
+				add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
+				add_shortcode( 'pcs-post-url', array( &$this, 'do_post_permalink' ) );
+				add_shortcode( 'pcs-entry-classes', array( &$this, 'do_entry_classes' ) );
+
+				remove_shortcode( 'wpv-post-title' );
+				remove_shortcode( 'wpv-post-date' );
+				remove_shortcode( 'wpv-post-featured-image' );
+				remove_shortcode( 'wpv-post-url' );
+				remove_shortcode( 'wpv-post-link' );
+
+				add_shortcode( 'wpv-post-title', array( &$this, 'do_wpv_post_title' ) );
+				add_shortcode( 'wpv-post-date', array( &$this, 'do_wpv_post_date' ) );
+				add_shortcode( 'wpv-post-featured-image', array( &$this, 'do_wpv_post_featured_image' ) );
+				add_shortcode( 'wpv-post-url', array( &$this, 'do_wpv_post_url' ) );
+				add_shortcode( 'wpv-post-link', array( &$this, 'do_wpv_post_link' ) );
+			}
 			
 			/**
 			 * Prepare to register the two widgets
