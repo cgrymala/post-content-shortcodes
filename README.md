@@ -5,9 +5,9 @@
 
 **Requires at least:** 4.3
 
-**Tested up to:** 4.9.5
+**Tested up to:** 4.9.4
 
-**Stable tag:** 1.0.1.2
+**Stable tag:** 1.0.1.1
 
 
 Adds shortcodes to display the content of a post or a list of posts.
@@ -262,9 +262,6 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 
 ## Changelog ##
 
-### 1.0.1.2 ###
-* Attempts to fix PHP warning about property of non-object ([h/t @paul_williams](https://wordpress.org/support/topic/help-notice-trying-to-get-property-of-non-object/))
-
 ### 1.0.1.1 ###
 * Adds i18n and l10n features so the plugin can be properly translated in the future
 * Attempts to fix errant PHP warning about string/array conversion ([h/t @codingbee](https://wordpress.org/support/topic/getting-error-when-displaying-content-inside-widget/))
@@ -380,10 +377,6 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 This is the first version of this plugin
 
 ## Upgrade Notice ##
-
-### 1.0.1.2 ###
-
-Fixes bug resulting in warning about property of non-object
 
 ### 1.0.1.1 ###
 
