@@ -245,9 +245,9 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @since  1.0.1
 			 */
 			public function load_textdomain() {
-				$this->debug( 'Attempting to load text domain from ' . dirname( plugin_basename( dirname( __FILE__ ) ) ) . '/lang' );
+				$this->debug( 'Attempting to load text domain from ' . self::plugin_dir_path( '/lang' ) );
 
-				return load_plugin_textdomain( 'post-content-shortcodes', false, dirname( plugin_basename( dirname( __FILE__ ) ) ) . '/lang' );
+				return load_plugin_textdomain( 'post-content-shortcodes', false, self::plugin_dir_path( '/lang' ) );
 			}
 
 			/**
@@ -397,12 +397,12 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @uses get_mnetwork_option() if this is multinetwork
 			 * @uses get_site_option() if this is network activated in multisite
 			 * @uses get_option() if this is active on a single site
-			 * @uses \Post_Content_Shortcodes::$stock_settings
-			 * @uses \Post_Content_Shortcodes::$settings
+			 * @uses Ten321\Post_Content_Shortcodes\Plugin::$stock_settings
+			 * @uses Ten321\Post_Content_Shortcodes\Plugin::$settings
 			 *
 			 * @access protected
 			 * @since  0.1
-			 * @uses \Post_Content_Shortcodes::is_multinetwork()
+			 * @uses Ten321\Post_Content_Shortcodes\Plugin::is_multinetwork()
 			 */
 			protected function _get_options() {
 				$this->debug( 'Stepping into the _get_options method' );
@@ -416,7 +416,7 @@ namespace Ten321\Post_Content_Shortcodes {
 					$this->debug( 'The page param is set, and it looks like this is the right settings page' );
 					if ( is_network_admin() ) {
 						$this->debug( 'While retrieving settings, it looks like we are in the network admin area' );
-						if ( 1 == $GLOBALS['site_id'] && isset( $_REQUEST['page'] ) && 'mn-post-content-shortcodes' == $_REQUEST['page'] ) {
+						if ( 1 == $GLOBALS['site_id'] && isset( $_REQUEST['page'] ) && 'mn-post-content-shortcodes' == $_REQUEST['page'] && function_exists( 'get_mnetwork_option' ) ) {
 							$this->settings = get_mnetwork_option( 'pcs-settings', array() );
 						} else {
 							$this->settings = get_site_option( 'pcs-settings', array() );
@@ -439,7 +439,7 @@ namespace Ten321\Post_Content_Shortcodes {
 					return;
 				}
 
-				if ( $this->is_multinetwork() ) {
+				if ( $this->is_multinetwork() && function_exists( 'get_mnetwork_option' ) ) {
 					$settings = array_merge( $this->stock_settings, get_mnetwork_option( 'pcs-settings', array() ) );
 					if ( true === $settings['enable-network-settings'] ) {
 						$tmp = get_site_option( 'pcs-settings', array() );
@@ -497,15 +497,15 @@ namespace Ten321\Post_Content_Shortcodes {
 			 *
 			 * @access public
 			 * @since  0.1
-			 * @uses Post_Content_Shortcodes::$settings
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::$settings
 			 */
 			public function register_widgets() {
 				$this->_get_options();
 				if ( 'on' == $this->settings['enable-pcs-list-widget'] ) {
-					register_widget( 'PCS_List_Widget' );
+					register_widget( 'Ten321\Post_Content_Shortcodes\Widgets\Content_List' );
 				}
 				if ( 'on' == $this->settings['enable-pcs-content-widget'] ) {
-					register_widget( 'PCS_Content_Widget' );
+					register_widget( 'Ten321\Post_Content_Shortcodes\Widgets\Content' );
 				}
 			}
 
@@ -1141,7 +1141,7 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @param int $blog_id the ID of the blog/site from which to pull the posts
 			 *
 			 * @return \WP_Post[] the array of post objects
-			 * @uses Post_Content_Shortcodes::get_args()
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::get_args()
 			 * @uses get_posts()
 			 * @uses get_transient() to retrieve a cached list of posts if valid
 			 * @uses $wpdb
@@ -1281,7 +1281,7 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @since  0.1
 			 */
 			function get_the_post_thumbnail( $post_ID, $image_size = 'thumbnail', $attr = array(), $blog_id = 0 ) {
-				_deprecated_function( '\Post_Content_Shortcodes::get_the_post_thumbnail', '0.3.4', '' );
+				_deprecated_function( 'Ten321\Post_Content_Shortcodes\Plugin::get_the_post_thumbnail', '0.3.4', '' );
 
 				return '';
 
