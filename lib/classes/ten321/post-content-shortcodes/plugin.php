@@ -397,12 +397,12 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @uses get_mnetwork_option() if this is multinetwork
 			 * @uses get_site_option() if this is network activated in multisite
 			 * @uses get_option() if this is active on a single site
-			 * @uses Ten321\Post_Content_Shortcodes\Plugin::$stock_settings
-			 * @uses Ten321\Post_Content_Shortcodes\Plugin::$settings
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::$stock_settings
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::$settings
 			 *
 			 * @access protected
 			 * @since  0.1
-			 * @uses Ten321\Post_Content_Shortcodes\Plugin::is_multinetwork()
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::is_multinetwork()
 			 */
 			protected function _get_options() {
 				$this->debug( 'Stepping into the _get_options method' );
@@ -617,13 +617,13 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @uses $wpdb
 			 * @uses shortcode_atts()
 			 * @uses $post to determine the ID of the current post in the loop
-			 * @uses Post_Content_Shortcodes::get_post_from_blog() to retrieve the appropriate post
-			 * @uses Post_Content_Shortcodes::is_true() to make sure all of the settings are proper boolean values
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::get_post_from_blog() to retrieve the appropriate post
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::is_true() to make sure all of the settings are proper boolean values
 			 * @uses get_option()
 			 * @uses get_userdata()
 			 * @uses mysql2date()
 			 * @uses force_balance_tags()
-			 * @uses Post_Content_Shortcodes::get_the_post_thumbnail() to retrieve the featured image
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::get_the_post_thumbnail() to retrieve the featured image
 			 *
 			 * @uses apply_filters() to filter the post-content-shortcodes-no-posts-error error
 			 *        message that appears when no posts are retrieved
@@ -797,12 +797,12 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @todo Extract HTML to external template to make it easier for theme devs/site owners to override
 			 *
 			 * @uses shortcode_atts() to parse the default/allowed attributes
-			 * @uses Post_Content_Shortcodes::get_args()
-			 * @uses Post_Content_Shortcodes::get_posts_from_blog()
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::get_args()
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::get_posts_from_blog()
 			 * @uses mysql2date()
 			 * @uses get_option()
 			 * @uses get_userdata()
-			 * @uses Post_Content_Shortcodes::get_shortlink_from_blog()
+			 * @uses \Ten321\Post_Content_Shortcodes\Plugin::get_shortlink_from_blog()
 			 * @uses force_balance_tags()
 			 * @uses has_post_thumbnail()
 			 * @uses get_the_post_thumbnail()
@@ -1099,6 +1099,10 @@ namespace Ten321\Post_Content_Shortcodes {
 
 				if ( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) ) {
 					$p = get_post( $post_id );
+					if ( ! is_a( $p, '\WP_Post' ) ) {
+						return null;
+					}
+
 					if ( has_post_thumbnail( $post_id ) ) {
 						$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $p, $this->shortcode_atts ) ) );
 					} else {
@@ -1120,6 +1124,11 @@ namespace Ten321\Post_Content_Shortcodes {
 
 				$org_blog = switch_to_blog( $blog_id );
 				$p        = get_post( $post_id );
+				if ( ! is_a( $p, '\WP_Post' ) ) {
+					restore_current_blog();
+					return null;
+				}
+
 				if ( has_post_thumbnail( $post_id ) && $this->shortcode_atts['show_image'] ) {
 					$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $p, $this->shortcode_atts ) ) );
 				} else {
