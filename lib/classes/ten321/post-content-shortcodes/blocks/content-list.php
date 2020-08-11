@@ -158,18 +158,18 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				$trans_atts = array();
 
 				$atts = $args['attributes'];
-				foreach( $atts as $key => $att ) {
-					$trans_atts[$key] = array(
-						'type' => $att['type'],
-						'shortcode' => function( $shortcode ) {
-							return $shortcode['named'][$key];
+				foreach ( $atts as $key => $att ) {
+					$trans_atts[ $key ] = array(
+						'type'      => $att['type'],
+						'shortcode' => function ( $shortcode ) {
+							return $shortcode['named'][ $key ];
 						}
 					);
 				}
 
 				$args['transforms']['from'][] = array(
-					'type' => 'shortcode',
-					'tag' => 'post-list',
+					'type'       => 'shortcode',
+					'tag'        => 'post-list',
 					'attributes' => $trans_atts,
 				);
 

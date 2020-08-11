@@ -216,6 +216,9 @@ namespace Ten321\Post_Content_Shortcodes {
 				add_shortcode( 'pcs-post-url', array( &$this, 'do_post_permalink' ) );
 				add_shortcode( 'pcs-entry-classes', array( &$this, 'do_entry_classes' ) );
 
+				Blocks\Content_List::instance();
+				Blocks\Content::instance();
+
 				/**
 				 * Prepare to register the two widgets
 				 */
@@ -1126,6 +1129,7 @@ namespace Ten321\Post_Content_Shortcodes {
 				$p        = get_post( $post_id );
 				if ( ! is_a( $p, '\WP_Post' ) ) {
 					restore_current_blog();
+
 					return null;
 				}
 
