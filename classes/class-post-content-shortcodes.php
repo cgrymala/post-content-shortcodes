@@ -70,7 +70,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @var    null|int the ID of the blog from which the post/list is being retrieved
 		 */
 		public $current_blog_id = null;
-		
+
 		/**
 		 * Returns the instance of this class.
 		 *
@@ -85,7 +85,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			return self::$instance;
 		}
-		
+
 		/**
 		 * Build the post_content_shortcodes object
 		 * Set up default options for the plugin, register the shortcodes and widgets
@@ -97,7 +97,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
 			add_action( 'plugins_loaded', array( $this, 'startup' ), 99 );
 		}
-		
+
 		/**
 		 * Perform initial startup actions to build this object
 		 *
@@ -109,7 +109,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			add_action( 'init', array( $this, 'load_textdomain' ) );
 
 			$this->_setup_defaults();
-			
+
 			/**
 			 * Register the two shortcodes
 			 */
@@ -122,7 +122,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
 			add_shortcode( 'pcs-post-url', array( &$this, 'do_post_permalink' ) );
 			add_shortcode( 'pcs-entry-classes', array( &$this, 'do_entry_classes' ) );
-			
+
 			/**
 			 * Prepare to register the two widgets
 			 */
@@ -131,13 +131,13 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			 * Prepare to register the default stylesheet
 			 */
 			add_action( 'wp_print_styles', array( $this, 'print_styles' ) );
-			
+
 			$this->debug( 'Adding the admin_init action' );
 			/**
 			 * Set up the various admin options items
 			 */
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
-			
+
 			if( $this->is_plugin_active_for_network() )
 				add_action( 'network_admin_menu', array( $this, 'admin_menu' ) );
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
@@ -155,7 +155,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 
 			return load_plugin_textdomain( 'post-content-shortcodes', false, dirname( plugin_basename( dirname( __FILE__ ) ) ) . '/lang' );
 		}
-		
+
 		/**
 		 * Set up the default values for our shortcode attributes
 		 * These attributes are used for both shortcodes
@@ -196,41 +196,41 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				// The maximum width of the featured image to be displayed
 				'image_width'	=> 0,
 				// The maximum height of the featured image to be displayed
-				'image_height'	=> 0, 
+				'image_height'	=> 0,
 				// Whether or not to show the title with the post(s)
-				'show_title'    => false, 
+				'show_title'    => false,
 				// Whether or not to show the author's name with the post(s)
-				'show_author'   => false, 
+				'show_author'   => false,
 				// Whether or not to show the date when the post was published
-				'show_date'     => false, 
+				'show_date'     => false,
 				/* Added 0.3.3 */
 				// Whether or not include the list of comments
-				'show_comments' => false, 
+				'show_comments' => false,
 				// Whether or not to show the "read more" link at the end of the excerpt
-				'read_more' => false, 
+				'read_more' => false,
 				// Whether to include shortcodes in the post content/excerpt
-				'shortcodes' => false, 
+				'shortcodes' => false,
 				/* Added 0.3.4 */
 				// Whether to strip out all HTML from the content/excerpt
-				'strip_html' => false, 
+				'strip_html' => false,
 				/* Added 0.3.4 */
 				// A blog name that can be used in place of the blog ID
 				'blog' => null,
 				/* Added 0.3.4 */
 				// A post slug that can be used in place of the post ID
-				'post_name' => null, 
+				'post_name' => null,
 				/* Added 0.6 */
 				// A taxonomy name to limit content by
-				'tax_name' => null, 
+				'tax_name' => null,
 				// A list of taxonomy term slugs or IDs to limit content by
-				'tax_term' => null, 
+				'tax_term' => null,
 				// Whether to wrap the featured image in a link to the post
-				'link_image' => false, 
+				'link_image' => false,
 				// Whether to ignore password-protected posts in post list
-				'ignore_protected' => false, 
+				'ignore_protected' => false,
 			);
 			/**
-			 * If this site is using the WP Views plugin, add support for a 
+			 * If this site is using the WP Views plugin, add support for a
 			 * 		completely custom layout using a Views Content Template
 			 * @since 0.6
 			 */
@@ -239,7 +239,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			}
 			$this->defaults = apply_filters( 'post-content-shortcodes-defaults', $args );
 		}
-		
+
 		/**
 		 * Enqueue the default stylesheet
 		 * Only enqueues the stylesheet if the option is set to do so
@@ -253,7 +253,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( $this->settings['use-styles'] )
 				wp_enqueue_style( 'pcs-styles', plugins_url( '/styles/default-styles.css', dirname( __FILE__ ) ), array(), $this->version, 'screen' );
 		}
-		
+
 		/**
 		 * Determine whether this is a multinetwork install or not
 		 * Will only return true if the is_multinetwork() & the add_mnetwork_option() functions exist
@@ -265,7 +265,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		protected function is_multinetwork() {
 			return function_exists( 'is_multinetwork' ) && function_exists( 'add_mnetwork_option' ) && is_multinetwork();
 		}
-		
+
 		/**
 		 * Determine whether this plugin is network active in a multisite install
 		 * @uses is_plugin_active_for_network()
@@ -285,14 +285,14 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$pa = 'is not';
 			if ( function_exists( 'is_plugin_active_for_network' ) )
 				$pa = is_plugin_active_for_network( $this->plugin_dir_name ) ? 'is' : 'is not';
-			
+
 			/*$this->debug( sprintf( 'Evaluating whether the plugin is active on the network. The primary result is: %s.', print_r( $rt, true ) ) );
 			$this->debug( sprintf( 'The function %s exist(s)', $fe ) );
 			$this->debug( sprintf( 'This install %s multisite', $im ) );
 			$this->debug( sprintf( 'The plugin %s network-active', $pa ) );*/
 			return $rt;
 		}
-		
+
 		/**
 		 * Retrieve our options from the database
 		 *
@@ -309,11 +309,11 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		protected function _get_options() {
 			$this->debug( 'Stepping into the _get_options method' );
-			
+
 			global $blog_id;
 			$this->current_blog_id = $blog_id;
 			$this->current_post_id = is_singular() ? get_the_ID() : false;
-			
+
 			$this->settings = array();
 			if ( isset( $_REQUEST['page'] ) && stristr( $_REQUEST['page'], 'post-content-shortcodes' ) ) {
 				$this->debug( 'The page param is set, and it looks like this is the right settings page' );
@@ -338,49 +338,49 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$this->settings = array_merge( $this->stock_settings, $this->settings );
 				return;
 			}
-			
+
 			if ( $this->is_multinetwork() ) {
 				$settings = array_merge( $this->stock_settings, get_mnetwork_option( 'pcs-settings', array() ) );
 				if ( true === $settings['enable-network-settings'] )
 					$tmp = get_site_option( 'pcs-settings', array() );
 				if ( true === $settings['enable-site-settings'] )
 					$tmp2 = get_option( 'pcs-settings', array() );
-				
+
 				if ( ! empty( $tmp2 ) ) {
 					$this->settings = array_merge( $this->stock_settings, $tmp2 );
 					return;
 				}
-				
+
 				if ( ! empty( $tmp ) ) {
 					$this->settings = array_merge( $this->stock_settings, $tmp );
 					return;
 				}
-				
+
 				$this->settings = $settings;
 				return;
 			}
-			
+
 			if ( $this->is_plugin_active_for_network() ) {
 				$settings = array_merge( $this->stock_settings, get_site_option( 'pcs-settings', array() ) );
 				if ( true === $settings['enable-site-settings'] )
 					$tmp = get_option( 'pcs-settings', array() );
-				
+
 				if ( ! empty( $tmp ) ) {
 					$this->debug( 'Retrieving and returning individual site settings' );
 					$this->settings = array_merge( $this->stock_settings, $tmp );
 					$this->settings['enable-site-settings'] = $settings['enable-site-settings'];
 					return;
 				}
-				
+
 				$this->settings = $settings;
 				return;
 			}
-			
+
 			$this->settings = get_option( 'pcs-settings', array() );
 			$this->settings = array_merge( $this->stock_settings, $this->settings );
 			return;
 		}
-		
+
 		/**
 		 * Register the two widgets
 		 * @uses Post_Content_Shortcodes::$settings
@@ -397,7 +397,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if( 'on' == $this->settings['enable-pcs-content-widget'] )
 				register_widget( 'PCS_Content_Widget' );
 		}
-		
+
 		/**
 		 * Set the shortcode attributes to a class variable for access in other methods
 		 * @param array $atts the array of attributes to store
@@ -445,7 +445,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$atts['id'] = $tmp;
 			}
 			$this->shortcode_atts = shortcode_atts( $this->defaults, $atts );
-			
+
 			$this->is_true( $this->shortcode_atts['show_excerpt'] );
 			$this->is_true( $this->shortcode_atts['show_image'] );
 			$this->is_true( $this->shortcode_atts['show_title'] );
@@ -458,10 +458,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$this->is_true( $this->shortcode_atts['shortcodes'] );
 			$this->is_true( $this->shortcode_atts['link_image'] );
 			$this->is_true( $this->shortcode_atts['ignore_protected'] );
-			
+
 			return $this->shortcode_atts;
 		}
-		
+
 		/**
 		 * Retrieve a post ID based on its slug
 		 * @param string $post_name the slug of the post being retrieved
@@ -488,7 +488,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			else
 				return false;
 		}
-		
+
 		/**
 		 * Handle the shortcode to display another post's content
 		 * @param array $atts the array of shortcode attributes
@@ -506,19 +506,19 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses force_balance_tags()
 		 * @uses Post_Content_Shortcodes::get_the_post_thumbnail() to retrieve the featured image
 		 *
-		 * @uses apply_filters() to filter the post-content-shortcodes-no-posts-error error 
+		 * @uses apply_filters() to filter the post-content-shortcodes-no-posts-error error
 		 * 		message that appears when no posts are retrieved
-		 * @uses apply_filters() to filter the "read more" link with the 
+		 * @uses apply_filters() to filter the "read more" link with the
 		 * 		post-content-shortcodes-read-more filter
-		 * @uses apply_filters() to filter the featured image size with the 
+		 * @uses apply_filters() to filter the featured image size with the
 		 * 		post-content-shortcodes-default-image-size filter
-		 * @uses apply_filters() to assign a specific CSS class to the featured image with the 
+		 * @uses apply_filters() to assign a specific CSS class to the featured image with the
 		 * 		post-content-shortcodes-image-class filter
-		 * @uses apply_filters() to filter the output where the post author and date would 
+		 * @uses apply_filters() to filter the output where the post author and date would
 		 * 		normally appear with the post-content-shortcodes-meta filter
-		 * @uses apply_filters() to filter the title of the post with the 
+		 * @uses apply_filters() to filter the title of the post with the
 		 * 		post-content-shortcodes-title filter
-		 * @uses apply_filters() to filter the final HTML output with the 
+		 * @uses apply_filters() to filter the final HTML output with the
 		 * 		post-content-shortcodes-content filter
 		 *
 		 * @access public
@@ -527,10 +527,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		public function post_content( $atts=array() ) {
 			do_action( 'pcs_starting_post_content' );
-			
+
 			global $wpdb;
 			$this->shortcode_atts = $this->_get_attributes( $atts );
-			
+
 			extract( $this->shortcode_atts );
 			/**
 			 * Attempt to avoid an endless loop
@@ -539,20 +539,20 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				do_action( 'pcs_ending_post_content' );
 				return '';
 			}
-			
+
 			/**
 			 * Output a little debug info if necessary
 			 */
 			$this->debug( sprintf( 'Preparing to retrieve post content with the following args: %s', print_r( $this->shortcode_atts, true ) ) );
-			
+
 			$p = $this->get_post_from_blog( $id, $blog_id );
 			if( empty( $p ) || is_wp_error( $p ) ) {
 				do_action( 'pcs_ending_post_content' );
 				return apply_filters( 'post-content-shortcodes-no-posts-error', __( '<p>No posts could be found that matched the specified criteria.</p>', 'post-content-shortcodes' ), $this->get_args( $this->shortcode_atts ) );
 			}
-			
+
 			/**
-			 * If Views is active, and the user has chosen to use a Content Template, 
+			 * If Views is active, and the user has chosen to use a Content Template,
 			 * 		render that instead of the default layout
 			 */
 			if ( function_exists( 'render_view_template' ) ) {
@@ -561,39 +561,39 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					return $this->do_view_template( $p );
 				}
 			}
-			
+
 			$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
 			$post_author = get_userdata( $p->post_author );
 			if ( empty( $post_author ) || ! is_object( $post_author ) || ! isset( $post_author->display_name ) ) {
 				$post_author = (object) array( 'display_name' => '' );
 				$show_author = false;
 			}
-			
+
 			if ( true !== $shortcodes ) {
 				$p->post_content = strip_shortcodes( $p->post_content );
 				$p->post_excerpt = strip_shortcodes( $p->post_excerpt );
 			}
-			
+
 			if ( $strip_html ) {
 				if ( property_exists( $p, 'post_content' ) && ! empty( $p->post_content ) )
 					$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $this->shortcode_atts ) );
 				if ( property_exists( $p, 'post_excerpt' ) && ! empty( $p->post_excerpt ) )
 					$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $this->shortcode_atts ) );
 			}
-			
+
 			$content = $p->post_content;
-			
+
 			if ( $show_excerpt ) {
 				$content = empty( $p->post_excerpt ) ? $p->post_content : $p->post_excerpt;
 			}
-			
+
 			if ( intval( $excerpt_length ) && intval( $excerpt_length ) < str_word_count( $content ) ) {
 				$content = explode( ' ', $content );
 				$content = implode( ' ', array_slice( $content, 0, ( intval( $excerpt_length ) - 1 ) ) );
 				$content = force_balance_tags( $content );
 				$content .= apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . get_permalink( $p->ID ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title, $p, $this->shortcode_atts ) . '">' . __( 'Read more', 'post-content-shortcodes' ) . '</a></span>', $p, $this->shortcode_atts );
 			}
-			
+
 			if ( $show_image ) {
 				if ( empty( $image_height ) && empty( $image_width ) ) {
 					$image_size = apply_filters( 'post-content-shortcodes-default-image-size', 'thumbnail', $p, $this->shortcode_atts );
@@ -604,36 +604,36 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						$image_width = 9999999;
 					$image_size = array( intval( $image_width ), intval( $image_height ) );
 				}
-				
+
 				if ( $link_image ) {
 					$link = get_permalink( $p->ID );
 					$p->post_thumbnail_linked = sprintf( '<a href="%s">%s</a>', $link, $p->post_thumbnail );
-					
+
 					$content = apply_filters( 'post-content-shortcodes-include-thumbnail', $p->post_thumbnail_linked . $content, $p->post_thumbnail, $content, $p, $this->shortcode_atts );
 				} else {
 					$content = apply_filters( 'post-content-shortcodes-include-thumbnail', $p->post_thumbnail . $content, $p->post_thumbnail, $content, $p, $this->shortcode_atts );
 				}
 			}
-			
+
 			if ( $show_comments ) {
 				$content .= $p->post_comments;
 			}
-			
+
 			if ( $show_date && $show_author )
 				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span> on <span class="post-date">%2$s</a>', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $this->shortcode_atts ) . $content;
 			elseif ( $show_date )
 				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted on %2$s', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $this->shortcode_atts ) . $content;
 			elseif ( $show_author )
 				$content = apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by %s', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $this->shortcode_atts ) . $content;
-			
+
 			if ( $show_title )
 				$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title, $p, $this->shortcode_atts ) . $content;
-			
+
 			do_action( 'pcs_ending_post_content' );
-			
+
 			return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content, $p, $this->shortcode_atts ), $p, $this->shortcode_atts );
 		}
-		
+
 		/**
 		 * Output the post content using a specified Content Template
 		 * @param $p object the Post object
@@ -649,23 +649,23 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if ( empty( $p ) ) {
 				return '';
 			}
-			
+
 			global $post;
 			setup_postdata( $p );
-			
+
 			$rt = render_view_template( $this->shortcode_atts['view_template'], $p );
-			
+
 			wp_reset_postdata();
-			
+
 			return $rt;
 		}
-		
+
 		/**
 		 * Handle the shortcode to display a list of posts
 		 * @param array $atts the array of shortcode attributes
 		 *
 		 * @todo Extract HTML to external template to make it easier for theme devs/site owners to override
-		 *       
+		 *
 		 * @uses shortcode_atts() to parse the default/allowed attributes
 		 * @uses Post_Content_Shortcodes::get_args()
 		 * @uses Post_Content_Shortcodes::get_posts_from_blog()
@@ -678,25 +678,25 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses get_the_post_thumbnail()
 		 * @uses strip_shortcodes()
 		 *
-		 * @uses apply_filters() to filter the error message that's displayed when no 
+		 * @uses apply_filters() to filter the error message that's displayed when no
 		 * 		posts are retrieved with the post-content-shortcodes-no-posts-error filter
-		 * @uses apply_filters() to filter the HTML element that's used to open the list with 
+		 * @uses apply_filters() to filter the HTML element that's used to open the list with
 		 * 		the post-content-shortcodes-open-list filter
-		 * @uses apply_filters() to filter the HTML element that's used to open each list item 
+		 * @uses apply_filters() to filter the HTML element that's used to open each list item
 		 * 		with the post-content-shortcodes-open-item filter
-		 * @uses apply_filters() to filter the HTML element that's used to open each link with 
+		 * @uses apply_filters() to filter the HTML element that's used to open each link with
 		 * 		the post-content-shortcodes-item-link-open filter
 		 * @uses apply_filters() to filter the HTML element that's used to close each link
 		 * 		with the post-content-shortcodes-item-link-close filter
-		 * @uses apply_filters() to filter the author and date meta information that's 
+		 * @uses apply_filters() to filter the author and date meta information that's
 		 * 		displayed with the post-content-shortcodes-meta filter
-		 * @uses apply_filters() to filter the "Read more" link that's displayed at the end 
+		 * @uses apply_filters() to filter the "Read more" link that's displayed at the end
 		 * 		of each excerpt with the post-content-shortcodes-read-more filter
-		 * @uses apply_filters() to filter the HTML output for each list item with the 
+		 * @uses apply_filters() to filter the HTML output for each list item with the
 		 * 		post-content-shortcodes-list-excerpt filter
-		 * @uses apply_filters() to filter the HTML element that's used to close each list item 
+		 * @uses apply_filters() to filter the HTML element that's used to close each list item
 		 * 		with the post-content-shortcodes-close-item filter
-		 * @uses apply_filters() to filter the HTML element that's used to close the list with the 
+		 * @uses apply_filters() to filter the HTML element that's used to close the list with the
 		 * 		post-content-shortcodes-close-list filter
 		 *
 		 * @access public
@@ -705,25 +705,25 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 */
 		public function post_list( $atts=array() ) {
 			do_action( 'pcs_starting_post_list' );
-			
+
 			if ( ! is_array( $atts ) )
 				$atts = array();
-			
+
 			$args = $atts;
-			
-			/** 
+
+			/**
 			 * Set this shortcode to display the post title by default
 			 */
 			if ( ! array_key_exists( 'show_title', $atts ) )
 				$atts['show_title'] = true;
-			
+
 			$atts = $this->_get_attributes( $atts );
 			$atts['posts_per_page'] = $atts['numberposts'];
 			$this->shortcode_atts = $atts;
-			
+
 			$args = array_diff_key( $args, $atts );
 			$atts['tax_query'] = array();
-			
+
 			if ( isset( $atts['tax_term'] ) && ! empty( $atts['tax_term'] ) && isset( $atts['tax_name'] ) && ! empty( $atts['tax_name'] ) ) {
 				$terms = explode( ' ', $atts['tax_term'] );
 				if ( count( $terms ) > 0 ) {
@@ -746,7 +746,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 						} else {
 							$field = 'slug';
 						}
-							
+
 						$atts['tax_query'][] = array( 'taxonomy' => $atts['tax_name'], 'field' => $field, 'terms' => $terms );
 					}
 				}
@@ -766,27 +766,27 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				else
 					$atts['tax_query'][] = array( 'taxonomy' => $k, 'field' => 'slug', 'terms' => $v );
 			}
-			
+
 			if ( isset( $atts['category'] ) ) {
 				if ( is_numeric( $atts['category'] ) )
 					$atts['cat'] = $atts['category'];
 				else
 					$atts['category_name'] = $atts['category'];
 			}
-			
+
 			/**
 			 * Output a little debug info if necessary
 			 */
 			$this->debug( sprintf( 'Preparing to retrieve post list with the following args: %s', print_r( $atts, true ) ) );
-				
+
 			$posts = $this->get_posts_from_blog( $atts, $atts['blog_id'] );
 			if( empty( $posts ) ) {
 				do_action( 'pcs_ending_post_list' );
 				return apply_filters( 'post-content-shortcodes-no-posts-error', __( '<p>No posts could be found that matched the specified criteria.</p>', 'post-content-shortcodes' ), $this->get_args( $atts ) );
 			}
-			
+
 			/**
-			 * If the user is using the WP Views plugin and specified a Content Template 
+			 * If the user is using the WP Views plugin and specified a Content Template
 			 * 		to use for the results, use that instead of the default layout
 			 * @since 0.6
 			 */
@@ -804,23 +804,23 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					remove_filter( 'post_link', array( $this, 'do_post_permalink' ), 99 );
 					$output .= apply_filters( 'post-content-shortcodes-views-template-closing', '</div>' );
 					do_action( 'pcs_ending_post_list' );
-					
+
 					return $output;
 				}
 			}
-			
+
 			$output = apply_filters( 'post-content-shortcodes-open-list', '<ul class="post-list' . ( $atts['show_excerpt'] ? ' with-excerpt' : '' ) . ( $atts['show_image'] ? ' with-image' : '' ) . '">', $atts );
 			foreach( $posts as $p ) {
 				if ( ! is_object( $p ) )
 					continue;
-				
+
 				if ( $atts['strip_html'] ) {
-					if ( property_exists( $p, 'post_content' ) && ! empty( $p->post_content ) ) 
+					if ( property_exists( $p, 'post_content' ) && ! empty( $p->post_content ) )
 						$p->post_content = strip_tags( apply_filters( 'the_content', $p->post_content, $p, $atts ) );
 					if ( property_exists( $p, 'post_excerpt' ) && ! empty( $p->post_excerpt ) )
 						$p->post_excerpt = strip_tags( apply_filters( 'the_excerpt', $p->post_excerpt, $p, $atts ) );
 				}
-				
+
 				$post_date = mysql2date( get_option( 'date_format' ), $p->post_date );
 				$post_author = get_userdata( $p->post_author );
 				$show_author = $atts['show_author'];
@@ -828,14 +828,14 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$post_author = (object) array( 'display_name' => '' );
 					$show_author = false;
 				}
-				
+
 				$li_classes = 'listed-post';
 				if ( $this->current_blog_id == $atts['blog_id'] && $this->current_post_id == $p->ID ) {
 					$li_classes .= ' current-post-item';
 				}
 				$output .= apply_filters( 'post-content-shortcodes-open-item', sprintf( '<li class="%s">', $li_classes ), $p->ID, $atts );
 				if ( $atts['show_title'] ) {
-					/** 
+					/**
 					 * Applying filters to the link opening tag
 					 * @uses apply_filters() to filter the title attribute
 					 * @uses apply_filters() to filter the permalink
@@ -843,24 +843,24 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					 * This portion of code probably applies filters too many times, but
 					 * 		it is being left the way it is in order to preserve backward-compatibility
 					 */
-					$output .= apply_filters( 
-						'post-content-shortcodes-item-link-open', 
-						'<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . 
-						apply_filters( 
-							'the_title_attribute', 
-							$p->post_title 
-						) . 
-						'">', 
-						apply_filters( 
-							'the_permalink', 
-							get_permalink( $p->ID ) 
-						), 
-						apply_filters( 
-							'the_title_attribute', 
-							$p->post_title 
-						), 
-						$p, 
-						$atts 
+					$output .= apply_filters(
+						'post-content-shortcodes-item-link-open',
+						'<a class="pcs-post-title" href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' .
+						apply_filters(
+							'the_title_attribute',
+							$p->post_title
+						) .
+						'">',
+						apply_filters(
+							'the_permalink',
+							get_permalink( $p->ID )
+						),
+						apply_filters(
+							'the_title_attribute',
+							$p->post_title
+						),
+						$p,
+						$atts
 					);
 					$output .= apply_filters( 'the_title', $p->post_title, $p, $atts );
 					$output .= apply_filters( 'post-content-shortcodes-item-link-close', '</a>', $atts );
@@ -872,7 +872,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				} elseif ( $atts['show_author'] ) {
 					$output .= apply_filters( 'post-content-shortcodes-meta', '<p class="post-meta">' . sprintf( __( 'Posted by <span class="post-author">%1$s</span>', 'post-content-shortcodes' ), $post_author->display_name, $post_date ) . '</p>', $p, $atts );
 				}
-				
+
 				if( $atts['show_excerpt'] ) {
 					$output .= '<div class="pcs-excerpt-wrapper">';
 					if ( stristr( $p->post_content, '<!--more-->' ) )
@@ -890,7 +890,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					if( ! empty( $atts['excerpt_length'] ) && is_numeric( $atts['excerpt_length'] ) ) {
 						if ( ! $atts['shortcodes'] )
 							$excerpt = strip_shortcodes( $excerpt );
-						
+
 						$excerpt = apply_filters( 'the_excerpt', $excerpt );
 						if( str_word_count( $excerpt ) > $atts['excerpt_length'] ) {
 							$excerpt = explode( ' ', $excerpt );
@@ -898,7 +898,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 							$excerpt = force_balance_tags( $excerpt );
 						}
 					}
-					$read_more = $atts['read_more'] ? 
+					$read_more = $atts['read_more'] ?
 						apply_filters( 'post-content-shortcodes-read-more', ' <span class="read-more"><a href="' . $this->get_shortlink_from_blog( $p->ID, $atts['blog_id'] ) . '" title="' . apply_filters( 'the_title_attribute', $p->post_title ) . '">' . __( 'Read more', 'post-content-shortcodes' ) . '</a></span>', $p, $atts ) :
 						'';
 					$output .= '<div class="pcs-excerpt">' . apply_filters( 'post-content-shortcodes-list-excerpt', apply_filters( 'the_content', $excerpt . $read_more ), $p, $atts ) . '</div></div>';
@@ -909,12 +909,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$output .= apply_filters( 'post-content-shortcodes-close-item', '</li>', $atts );
 			}
 			$output .= apply_filters( 'post-content-shortcodes-close-list', '</ul>', $atts );
-			
+
 			do_action( 'pcs_ending_post_list' );
-			
+
 			return $output;
 		}
-		
+
 		/**
 		 * Retrieve a post from a specific blog/site
 		 * @param int $post_id the ID of the post to be retrieved
@@ -926,7 +926,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses WPDB::set_blog_id() to switch to the appropriate site
 		 * @uses WPDB::get_row to retrieve the post from the database
 		 * @uses set_transient() to set a cache version of the post
-		 * @uses apply_filters() to filter the amount of time the transient is valid with the 
+		 * @uses apply_filters() to filter the amount of time the transient is valid with the
 		 * 		pcsc-transient-timeout filter
 		 *
 		 * @access public
@@ -943,28 +943,28 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$this->shortcode_atts['image_width'] = 9999999;
 				$image_size = array( intval( $this->shortcode_atts['image_width'] ), intval( $this->shortcode_atts['image_height'] ) );
 			}
-			
+
 			if( empty( $post_id ) )
 				return null;
-			
+
 			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) ) {
 				$p = get_post( $post_id );
 				if ( has_post_thumbnail( $post_id ) )
 					$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $p, $this->shortcode_atts ) ) );
 				else
 					$p->post_thumbnail = '';
-				
+
 				$p->post_comments = $this->do_comments( $p );
-				
+
 				return $p;
 			}
-			
+
 			if ( isset( $_GET['delete_transients'] ) )
 				delete_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id );
-			
+
 			if( false !== ( $p = get_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id ) ) )
 				return $p;
-			
+
 			$org_blog = switch_to_blog( $blog_id );
 			$p = get_post( $post_id );
 			if ( has_post_thumbnail( $post_id ) && $this->shortcode_atts['show_image'] ) {
@@ -972,15 +972,15 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			} else {
 				$p->post_thumbnail = '';
 			}
-			
+
 			$p->post_comments = $this->do_comments( $p );
 			restore_current_blog();
-			
+
 			set_transient( 'pcsc-blog' . $blog_id . '-post' . $post_id, $p, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );
-			
+
 			return $p;
 		}
-		
+
 		/**
 		 * Retrieve a batch of posts from a specific blog
 		 * @param array $atts the array of shortcode attributes
@@ -991,7 +991,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		 * @uses $wpdb
 		 * @uses WPDB::set_blog_id() to switch to the appropriate site
 		 * @uses set_transient() to cache the list of posts
-		 * @uses apply_filters() to filter the amount of time the transient is cached with 
+		 * @uses apply_filters() to filter the amount of time the transient is cached with
 		 * 		the pcsc-transient-timeout filter
 		 *
 		 * @access public
@@ -1008,40 +1008,40 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 					$this->shortcode_atts['image_width'] = 9999999;
 				$image_size = array( intval( $this->shortcode_atts['image_width'] ), intval( $this->shortcode_atts['image_height'] ) );
 			}
-			
+
 			$args = $this->get_args( $atts );
-			
+
 			if( ! is_multisite() || $blog_id == $GLOBALS['blog_id'] || empty( $blog_id ) || ! is_numeric( $blog_id ) ) {
 				$posts = get_posts( $args );
 				if ( false === $this->shortcode_atts['show_image'] )
 					return $posts;
-				
+
 				foreach ( $posts as $key => $p ) {
 					if ( has_post_thumbnail( $p->ID ) )
 						$posts[$key]->post_thumbnail = get_the_post_thumbnail( $p->ID, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $posts[$key], $this->shortcode_atts ) ) );
 					else
 						$posts[$key]->post_thumbnail = '';
-						
+
 					$posts[$key]->post_comments = $this->do_comments( $p );
 				}
-				
+
 				return $posts;
 			}
-			
+
 			$args['cache_results'] = false;
-			
+
 			if ( isset( $_GET['delete_transients'] ) )
 				delete_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) );
-			
+
 			if( false !== ( $p = get_transient( 'pcsc-list-blog' . $blog_id . '-args' . md5( maybe_serialize( $args ) ) ) ) )
 				return $p;
-			
+
 			$org_blog = switch_to_blog( $blog_id );
 			if ( array_key_exists( 'tax_query', $args ) ) {
 				$this->check_taxonomies( $args['tax_query'], $atts['post_type'] );
 			}
 			$posts = get_posts( $args );
-			
+
 			if ( false !== $this->shortcode_atts['show_image'] ) {
 				foreach ( $posts as $key => $p ) {
 					if ( has_post_thumbnail( $p->ID ) )
@@ -1056,15 +1056,15 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				}
 			}
 			restore_current_blog();
-			
+
 			set_transient( 'pcsc-list-blog'. $blog_id . '-args' . md5( maybe_serialize( $args ) ), $posts, apply_filters( 'pcsc-transient-timeout', 60 * 60 ) );
 			return $posts;
 		}
-		
+
 		/**
 		 * Check to make sure necessary taxonomies exist
-		 * If we've switched blogs, and the query needs to retrieve items associated 
-		 * 		with a specific taxonomy and/or term, we need to make sure that 
+		 * If we've switched blogs, and the query needs to retrieve items associated
+		 * 		with a specific taxonomy and/or term, we need to make sure that
 		 * 		taxonomy is registered on the new blog before the query will work
 		 * @param array $tax_query the tax_query argument for the query
 		 * @param string $post_type the type of post/object being queried
@@ -1078,16 +1078,16 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				return;
 			if ( empty( $post_type ) )
 				$post_type = 'post';
-			
+
 			foreach ( $tax_query as $tq ) {
 				$taxes = get_taxonomies( array( 'name' => $tq['taxonomy'] ), 'names' );
 				if ( ! empty( $taxes ) && ! is_wp_error( $taxes ) )
 					continue;
-				
+
 				register_taxonomy( $tq['taxonomy'], $post_type );
 			}
 		}
-		
+
 		/**
 		 * Retrieve the featured image HTML for the current post
 		 * @param int $post_ID the ID of the post for which to retrieve the image
@@ -1111,12 +1111,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		function get_the_post_thumbnail( $post_ID, $image_size = 'thumbnail', $attr = array(), $blog_id = 0 ) {
 			_deprecated_function( '\Post_Content_Shortcodes::get_the_post_thumbnail', '0.3.4', '' );
 			return '';
-			
+
 			if ( empty( $blog_id ) || (int) $blog_id === (int) $GLOBALS['blog_id'] )
 				return get_the_post_thumbnail( $post_ID, $image_size, $attr );
 			if ( ! is_numeric( $post_ID ) || ! is_numeric( $blog_id ) )
 				return '';
-			
+
 			$old = switch_to_blog( $blog_id );
 			$post_thumbnail_id = get_post_meta( $post_ID, '_thumbnail_id', true );
 			if ( empty( $post_thumbnail_id ) )
@@ -1124,7 +1124,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$html = get_the_post_thumbnail( $post_ID, $image_size, $attr );
 			restore_current_blog();
 			return $html;
-			
+
 			global $wpdb;
 			$old = $wpdb->set_blog_id( $blog_id );
 			$post_thumbnail_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key=%s AND post_id=%d LIMIT 1", '_thumbnail_id', $post_ID ) );
@@ -1134,10 +1134,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$wpdb->set_blog_id( $old );
 			return $html;
 		}
-		
+
 		/**
 		 * Output any comments on a post
-		 * @param post $newpost the post object for which to display comments
+		 * @param \WP_Post $newpost the post object for which to display comments
 		 * @uses comments_template() to output the comment template
 		 *
 		 * @access public
@@ -1154,10 +1154,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$rt = ob_get_clean();
 			if ( isset( $tmpp ) )
 				$post = clone $tmpp;
-			
+
 			return $rt;
 		}
-		
+
 		/**
 		 * Determine the shortlink to a post on a specific blog
 		 * @param int $post_id the ID of the post to retrieve
@@ -1174,12 +1174,12 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				return '';
 			if( empty( $blog_id ) || $blog_id == $GLOBALS['blog_id'] || !is_numeric( $blog_id ) )
 				return apply_filters( 'the_permalink', get_permalink( $post_id ) );
-			
+
 			global $wpdb;
 			$blog_info = $wpdb->get_row( $wpdb->prepare( "SELECT domain, path FROM {$wpdb->blogs} WHERE blog_id=%d", $blog_id ), ARRAY_A );
 			return 'http://' . $blog_info['domain'] . $blog_info['path'] . '?p=' . $post_id;
 		}
-		
+
 		/**
 		 * Determine whether a variable evaluates to boolean true
 		 * @param mixed &$var the variable to be evaluated
@@ -1194,10 +1194,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			} else {
 				$var = false;
 			}
-			
+
 			return;
 		}
-		
+
 		/**
 		 * Build the list of get_posts() args
 		 * @param array $atts the array of attributes to evaluate
@@ -1211,38 +1211,38 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 				$atts = maybe_unserialize( $atts );
 			if ( ! is_array( $atts ) )
 				return $atts;
-			
+
 			unset( $atts['id'] );
-			
+
 			if ( $atts['exclude_current'] && $GLOBALS['blog_id'] != $atts['blog_id'] ) {
 				if ( ! empty( $atts['exclude'] ) ) {
 					if ( ! is_array( $atts['exclude'] ) )
 						$atts['exclude'] = array_map( 'trim', explode( ',', $atts['exclude'] ) );
-					
+
 					$atts['exclude'][] = $GLOBALS['post']->ID;
 				} else {
 					$atts['exclude'] = array( $GLOBALS['post']->ID );
 				}
 			}
-			
+
 			$atts['orderby'] = str_replace( 'post_', '', $atts['orderby'] );
-			
+
 			if ( true === $atts['ignore_protected'] ) {
 				$atts['has_password'] = false;
 			}
-			
+
 			unset( $atts['blog_id'], $atts['exclude_current'], $atts['tax_name'], $atts['tax_term'], $atts['view_template'], $atts['show_image'], $atts['image_width'], $atts['image_height'] );
-			
+
 			$atts = array_filter( $atts );
-			
+
 			/**
 			 * Output a little debug info if necessary
 			 */
 			$this->debug( sprintf( 'Preparing to return filtered args: %s', print_r( $atts, true ) ) );
-			
+
 			return $atts;
 		}
-		
+
 		/**
 		 * Build and return the featured image for the current post
 		 * @param null|string $html the current HTML for the post
@@ -1254,10 +1254,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		public function do_post_thumbnail( $html=null ) {
 			if ( $GLOBALS['blog_id'] == $this->shortcode_atts['blog_id'] && ! empty( $html ) )
 				return $html;
-			
+
 			return $GLOBALS['post']->post_thumbnail;
 		}
-		
+
 		/**
 		 * Attempt to build the URL for the post being output
 		 * @param string $link the current URL for the post
@@ -1269,10 +1269,10 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 		public function do_post_permalink( $link ) {
 			if ( $GLOBALS['blog_id'] == $this->shortcode_atts['blog_id'] && ! empty( $link ) )
 				return $link;
-			
+
 			return $this->get_shortlink_from_blog( $GLOBALS['post']->ID, $this->shortcode_atts['blog_id'] );
 		}
-		
+
 		/**
 		 * Compile and return the list of CSS classes for the specific entry being displayed
 		 * @param array $atts the attributes for the current shortcode being processed
@@ -1286,17 +1286,17 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$classes = explode( ' ', $atts['classes'] );
 			if ( is_numeric( $atts['columns'] ) && $atts['columns'] > 0 ) {
 				$col = $this->shortcode_atts['post_number'] % $atts['columns'];
-				
+
 				if ( 1 == $col ) {
 					$classes[] = 'first';
 				}
-				
+
 				$classes[] = $col > 0 ? sprintf( 'column-%d', $col ) : sprintf( 'column-%d', $atts['columns'] );
 			}
-			
+
 			return implode( ' ', $classes );
 		}
-		
+
 		/**
 		 * Output/log a debug message if appropriate
 		 *
@@ -1311,7 +1311,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if ( ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG ) && ! isset( $_REQUEST['pcs-debug'] ) ) {
 				return;
 			}
-			
+
 			if ( $log ) {
 				error_log( sprintf( '[PCS Debug Message]: %s', $message ) );
 			} else {
