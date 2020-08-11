@@ -988,6 +988,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			$org_blog = switch_to_blog( $blog_id );
 			$p = get_post( $post_id );
 			if ( ! is_a( $p, '\WP_Post' ) ) {
+				restore_current_blog();
 				return null;
 			}
 
