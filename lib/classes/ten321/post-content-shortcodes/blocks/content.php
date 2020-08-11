@@ -37,6 +37,11 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					$this,
 					'add_attributes'
 				), 10, 2 );
+
+				add_filter( 'ten321/post-content-shortcodes/blocks/register', array(
+					$this,
+					'register_args'
+				) );
 			}
 
 			/**
@@ -108,6 +113,44 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 */
 			public function render( array $atts, string $content = '' ) {
 				// TODO: Implement render() method.
+			}
+
+			/**
+			 * Add any additional block registration arguments for this block
+			 *
+			 * @param array $args the existing list of arguments
+			 *
+			 * @access public
+			 * @return array the updated list of arguments
+			 * @since  0.1
+			 */
+			public function register_args( array $args ) {
+				if ( ! array_key_exists( 'transforms', $args ) ) {
+					$args['transforms'] = array( 'from' => array() );
+				}
+				if ( ! array_key_exists( 'from', $args['transforms'] ) ) {
+					$args['transforms']['from'] = array();
+				}
+
+				$trans_atts = array();
+
+				$atts = $args['attributes'];
+				foreach( $atts as $key => $att ) {
+					$trans_atts[$key] = array(
+						'type' => $att['type'],
+						'shortcode' => function( $shortcode ) {
+							return $shortcode['named'][$key];
+						}
+					);
+				}
+
+				$args['transforms']['from'][] = array(
+					'type' => 'shortcode',
+					'tag' => 'post-content',
+					'attributes' => $trans_atts,
+				);
+
+				return $args;
 			}
 		}
 	}

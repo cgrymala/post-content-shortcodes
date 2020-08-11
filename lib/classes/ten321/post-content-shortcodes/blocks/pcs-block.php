@@ -70,17 +70,19 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			protected function register_block_type() {
+				$args = apply_filters( 'ten321/post-content-shortcodes/blocks/register', array(
+					// Enqueue blocks.style.build.css on both frontend & backend.
+					'style'           => $this->get_stylesheet(),
+					// Enqueue blocks.build.js in the editor only.
+					'editor_script'   => $this->get_editor_script(),
+					// Enqueue blocks.editor.build.css in the editor only.
+					'editor_style'    => $this->get_editor_style(),
+					'render_callback' => array( $this, 'render' ),
+					'attributes'      => $this->get_attributes(),
+				) );
+
 				register_block_type(
-					$this->block_namespace, array(
-						// Enqueue blocks.style.build.css on both frontend & backend.
-						'style'           => $this->get_stylesheet(),
-						// Enqueue blocks.build.js in the editor only.
-						'editor_script'   => $this->get_editor_script(),
-						// Enqueue blocks.editor.build.css in the editor only.
-						'editor_style'    => $this->get_editor_style(),
-						'render_callback' => array( $this, 'render' ),
-						'attributes'      => $this->get_attributes(),
-					)
+					$this->block_namespace, $args
 				);
 			}
 
@@ -253,6 +255,17 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			abstract public function add_attributes( array $atts, array $defaults );
+
+			/**
+			 * Add any additional block registration arguments for this block
+			 *
+			 * @param array $args the existing list of arguments
+			 *
+			 * @access public
+			 * @return array the updated list of arguments
+			 * @since  0.1
+			 */
+			abstract public function register_args( array $args );
 		}
 	}
 }
