@@ -87,7 +87,7 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @access private
 			 * @since  2020.8
 			 */
-			private function __construct() {
+			protected function __construct() {
 				$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
 				add_action( 'plugins_loaded', array( $this, 'startup' ), 99 );
 			}
