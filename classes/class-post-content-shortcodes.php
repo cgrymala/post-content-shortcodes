@@ -990,7 +990,7 @@ if( !class_exists( 'Post_Content_Shortcodes' ) ) {
 			if ( ! is_a( $p, '\WP_Post' ) ) {
 				return null;
 			}
-			
+
 			if ( has_post_thumbnail( $post_id ) && $this->shortcode_atts['show_image'] ) {
 				$p->post_thumbnail = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => apply_filters( 'post-content-shortcodes-image-class', 'pcs-featured-image', $p, $this->shortcode_atts ) ) );
 			} else {
