@@ -28,9 +28,9 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  2020.8
 			 */
 			private function __construct() {
-				$this->block_namespace = 'ten321/post-content-shortcodes/list';
-				$this->block_path      = Plugin::plugin_dir_url( '/dist/list/' );
-				$this->block_title     = __( 'PCS List Block', 'post-content-shortcodes' );
+				$this->block_type  = 'list';
+				$this->block_path  = Plugin::plugin_dir_url( '/dist/list/' );
+				$this->block_title = __( 'PCS List Block', 'post-content-shortcodes' );
 
 				parent::__construct();
 				add_filter( 'ten321/post-content-shortcodes/blocks/attributes', array(
@@ -155,9 +155,22 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					$args['transforms']['from'] = array();
 				}
 
+				$args['transforms']['from'][] = $this->get_transform_arguments();
+
+				return $args;
+			}
+
+			/**
+			 * Retrieve the "transforms" portion of the block registration arguments
+			 *
+			 * @access public
+			 * @return array the transforms portion of the array
+			 * @since  0.1
+			 */
+			public function get_transform_arguments() {
 				$trans_atts = array();
 
-				$atts = $args['attributes'];
+				$atts = $this->get_attributes();
 				foreach ( $atts as $key => $att ) {
 					$trans_atts[ $key ] = array(
 						'type'      => $att['type'],
@@ -167,13 +180,11 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					);
 				}
 
-				$args['transforms']['from'][] = array(
+				return array(
 					'type'       => 'shortcode',
 					'tag'        => 'post-list',
 					'attributes' => $trans_atts,
 				);
-
-				return $args;
 			}
 		}
 	}

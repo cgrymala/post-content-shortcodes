@@ -35,6 +35,11 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @access protected
 			 */
 			protected $block_title = '';
+			/**
+			 * @var string $block_type the sub-type of block being registered
+			 * @access protected
+			 */
+			protected $block_type = '';
 
 			/**
 			 * Creates the PCS_Block object
@@ -43,6 +48,8 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  2020.8
 			 */
 			public function __construct() {
+				$this->block_namespace = 'ten321/post-content-shortcodes/' . $this->block_type;
+
 				$this->register_block_type();
 			}
 
@@ -130,13 +137,13 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 
 				// WP Localized globals. Use dynamic PHP stuff in JavaScript via `cgbGlobal` object.
 				wp_localize_script(
-					'wp_nav_menu_block-cgb-block-js',
-					'cgbGlobal', // Array containing dynamic data for a JS Global.
-					[
+					$this->block_namespace . '/script',
+					'ten321__post_content_shortcodes__blocks__' . $this->block_type, // Array containing dynamic data for a JS Global.
+					apply_filters( 'ten321/post-content-shortcodes/blocks/localized-scripts', [
 						'pluginDirPath' => Plugin::plugin_dir_path(),
 						'pluginDirUrl'  => Plugin::plugin_dir_url(),
 						// Add more data here that you want to access from `cgbGlobal` object.
-					]
+					] )
 				);
 
 				return $this->block_namespace . '/script';
@@ -266,6 +273,24 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			abstract public function register_args( array $args );
+
+			/**
+			 * Add any additional elements that need to be in the localized script array
+			 *
+			 * @param array $script the existing script object/array
+			 *
+			 * @access public
+			 * @return array the updated list of script elements
+			 * @since  0.1
+			 */
+			public function localize_script( array $script ) {
+				$script['reg_args'] = array(
+					'attributes' => $this->get_attributes(),
+					'transforms' => $this->get_transform_arguments(),
+				);
+
+				return $script;
+			}
 		}
 	}
 }
