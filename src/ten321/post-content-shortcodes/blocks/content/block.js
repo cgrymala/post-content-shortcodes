@@ -106,7 +106,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         numberposts: getAttributeValue('post-content', 'numberposts', text),
                         blog: getAttributeValue('post-content', 'blog', text),
                         excerpt_length: getAttributeValue('post-content', 'excerpt_length', text)
-                    }, innerBlocks);
+                    });
                 }
             }
         ]
