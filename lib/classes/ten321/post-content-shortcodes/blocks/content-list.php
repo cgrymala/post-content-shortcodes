@@ -69,7 +69,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 
 				$instance['title']            = array(
 					'type'    => 'string',
-					'default' => $defaults['title'],
+					'default' => '',
 				);
 				$instance['type']             = array(
 					'type'    => 'string',
