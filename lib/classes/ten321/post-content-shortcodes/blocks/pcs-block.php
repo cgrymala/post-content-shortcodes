@@ -75,11 +75,11 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			/**
 			 * Register the Block object
 			 *
-			 * @access protected
+			 * @access public
 			 * @return void
 			 * @since  0.1
 			 */
-			protected function register_block_type() {
+			public function register_block_type() {
 				$args = apply_filters( 'ten321/post-content-shortcodes/blocks/register', array(
 					// Enqueue blocks.style.build.css on both frontend & backend.
 					'style'           => $this->get_stylesheet(),
