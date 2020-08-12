@@ -27,6 +27,16 @@ namespace Ten321\Post_Content_Shortcodes {
 			public $settings_section = 'post-content-shortcodes';
 
 			/**
+			 * Creates the \Ten321\Post_Content_Shortcodes\Admin object
+			 *
+			 * @access private
+			 * @since  2020.8
+			 */
+			protected function __construct() {
+				parent::__construct();
+			}
+
+			/**
 			 * Returns the instance of this class.
 			 *
 			 * @access  public
