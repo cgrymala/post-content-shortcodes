@@ -340,7 +340,12 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 
 				if ( is_multisite() ) {
 					$script['blogList'] = $this->get_blog_list();
-					$script['currentBlog'] = get_current_blog_id();
+					$blog_id = intval( get_current_blog_id() );
+					foreach( $script['blogList'] as $blog ) {
+						if ( intval( $blog['key'] ) === $blog_id ) {
+							$script['currentBlog'] = $blog;
+						}
+					}
 				}
 
 				return $script;
