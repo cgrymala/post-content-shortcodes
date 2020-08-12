@@ -44,7 +44,14 @@ export const getAttributeValue = function (tag, att, content) {
     return null;
 };
 
-export const getFieldShowTitle = function (val) {
+export const getFieldShowTitle = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: { show_title },
+        setAttributes,
+    } = props;
+
     let checked = false;
     if (typeof val !== 'undefined') {
         checked = val;

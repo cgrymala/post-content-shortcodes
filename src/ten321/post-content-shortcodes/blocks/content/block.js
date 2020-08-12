@@ -80,7 +80,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         function getDisplayPanel() {
             return (
                 <PanelBody title={ __( 'Display Settings', 'umw-rss-display' ) }>
-                    { getFieldShowTitle( attributes.show_title ) }
+                    { getFieldShowTitle( props ) }
                 </PanelBody>
             );
         }
