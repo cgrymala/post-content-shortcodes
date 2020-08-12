@@ -98,6 +98,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     return /^\[post-content /.test(text);
                 },
                 transform: ({text}) => {
+                    console.log( 'Text found inside post-content shortcode:' );
+                    console.log( text );
+
                     const atts = {
                         id: getAttributeValue('post-content', 'id', text),
                         post_type: getAttributeValue('post-content', 'post-type', text),
@@ -108,17 +111,19 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         excerpt_length: getAttributeValue('post-content', 'excerpt_length', text)
                     };
 
+                    const shortcodeAttributes = {};
+
                     for (let i in atts) {
                         if (!atts.hasOwnProperty(i)) {
                             continue;
                         }
 
-                        if (atts[i] === null) {
-                            delete atts[i];
+                        if (atts[i] !== null) {
+                            shortcodeAttributes[i] = atts[i];
                         }
                     }
 
-                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/content', atts);
+                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/content', shortcodeAttributes);
                 }
             }
         ]
