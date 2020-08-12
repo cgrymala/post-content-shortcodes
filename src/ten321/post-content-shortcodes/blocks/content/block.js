@@ -9,11 +9,11 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue, getFieldShowTitle, PCSGetFields} from '../common.js';
+import {getAttributeValue, getFieldShowImage, getFieldShowTitle, PCSGetFields} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
-const {PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
+const {PanelBody, CheckboxControl, BaseControl, TextControl, CustomSelectControl} = wp.components;
 const {useState} = wp.element;
 const {withState} = wp.compose;
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
@@ -70,6 +70,16 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     attributes: ten321__post_content_shortcodes__blocks__content.reg_args.attributes,
 
     edit: (props) => {
+        if ( typeof ten321__post_content_shortcodes__blocks__content.blogList !== 'undefined' ) {
+            const blogOptions = ten321__post_content_shortcodes__blocks__content.blogList;
+            if (blogOptions[0].key !== 0) {
+                blogOptions.unshift({
+                    key: 0,
+                    name: '-- Please select a blog --',
+                });
+            }
+        }
+
         const {
             className,
             isSelected,
@@ -82,8 +92,38 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         function getDisplayPanel() {
             return (
                 <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
+                    {getFieldBlogSelect()}
+                    {getFieldShowImage(props)}
                     {getFieldShowTitle(props)}
                 </PanelBody>
+            );
+        }
+
+        function getFieldBlogSelect() {
+            if ( typeof ten321__post_content_shortcodes__blocks__content.blogList === 'undefined' ) {
+                return;
+            }
+
+            let selected = blogOptions[0];
+
+            if (typeof attributes.blog !== 'undefined') {
+                selected = attributes.blog;
+            } else if ( typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined' ) {
+                selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
+            }
+
+            const [ fontSize, setFontSize ] = useState( selected );
+
+            return (
+                <CustomSelectControl
+                    label={__( 'Show post from which blog?', 'post-content-shortcodes' )}
+                    options={ blogOptions }
+                    onChange={ ( newValue, props ) => {
+                        setAttributes( { menu_id: newValue.selectedItem } );
+                        return setFontSize( newValue );
+                    } }
+                    value={ blogOptions.find( ( option ) => option.key === fontSize.key ) }
+                />
             );
         }
 

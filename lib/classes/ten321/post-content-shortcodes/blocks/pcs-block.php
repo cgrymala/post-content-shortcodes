@@ -338,7 +338,41 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'transforms' => $this->get_transform_arguments(),
 				);
 
+				if ( is_multisite() ) {
+					$script['blogList'] = $this->get_blog_list();
+					$script['currentBlog'] = get_current_blog_id();
+				}
+
 				return $script;
+			}
+
+			/**
+			 * Retrieve a list of all blogs in this multisite
+			 *
+			 * @access protected
+			 * @return array the list of blogs
+			 * @since  0.1
+			 */
+			protected function get_blog_list() {
+				$blog_list = array();
+
+				global $wpdb;
+				$blogs    = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs} ORDER BY blog_id" );
+				$org_blog = $GLOBALS['blog_id'];
+
+				foreach ( $blogs as $blog ) {
+					if ( empty( $org_blog ) ) {
+						$org_blog = $wpdb->set_blog_id( $blog );
+					} else {
+						$wpdb->set_blog_id( $blog );
+					}
+
+					$blog_list[ $blog ] = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name=%s", 'blogname' ) );
+				}
+
+				$wpdb->set_blog_id( $org_blog );
+
+				return $blog_list;
 			}
 		}
 	}

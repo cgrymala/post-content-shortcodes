@@ -91,13 +91,41 @@ export const getFieldShowTitle = function (props) {
 
     return (
         <CheckboxControl
-            label={__('Display the item title?', 'ten321/post-content-shortcodes')}
+            label={__( 'Display the post title?', 'post-content-shortcodes' )}
             checked={isChecked}
             onChange={(newValue, props) => {
                 setChecked(newValue);
                 setAttributes({show_title: newValue});
             }}
             name="show_title"
+        />
+    );
+}
+
+export const getFieldShowImage = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: {show_image},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof show_image !== 'undefined') {
+        checked = show_image;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__( 'Display the featured image with the post?', 'post-content-shortcodes' )}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({show_image: newValue});
+            }}
+            name="show_image"
         />
     );
 }
