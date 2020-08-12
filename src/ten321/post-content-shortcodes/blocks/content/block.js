@@ -98,31 +98,33 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         }
 
         function getFieldBlogSelect() {
-            if ( typeof ten321__post_content_shortcodes__blocks__content.blogList === 'undefined' ) {
+            if (typeof ten321__post_content_shortcodes__blocks__content.blogList === 'undefined') {
                 return;
             }
 
             let selected = blogOptions[0];
 
             if (typeof attributes.blog !== 'undefined') {
+                console.log('Setting a pre-selected option as blog');
                 selected = attributes.blog;
-            } else if ( typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined' ) {
+            } else if (typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined') {
+                console.log('Setting the "current blog" as blog');
                 selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
             }
 
-            console.log( selected );
+            console.log(selected);
 
-            const [ fontSize, setFontSize ] = useState( selected );
+            const [fontSize, setFontSize] = useState(selected);
 
             return (
                 <CustomSelectControl
-                    label={__( 'Show post from which blog?', 'post-content-shortcodes' )}
-                    options={ blogOptions }
-                    onChange={ ( newValue, props ) => {
-                        setAttributes( { menu_id: newValue.selectedItem } );
-                        return setFontSize( newValue );
-                    } }
-                    value={ blogOptions.find( ( option ) => option.key === fontSize.key ) }
+                    label={__('Show post from which blog?', 'post-content-shortcodes')}
+                    options={blogOptions}
+                    onChange={(newValue, props) => {
+                        setAttributes({menu_id: newValue.selectedItem});
+                        return setFontSize(newValue);
+                    }}
+                    value={blogOptions.find((option) => option.key === fontSize.key)}
                 />
             );
         }
