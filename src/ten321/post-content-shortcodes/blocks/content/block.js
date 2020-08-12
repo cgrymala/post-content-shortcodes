@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import getAttributeValue from '../common.js';
+import { getAttributeValue } from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
