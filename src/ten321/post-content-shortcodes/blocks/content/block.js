@@ -9,13 +9,13 @@
 import './editor.scss';
 import './style.scss';
 
-import { getAttributeValue, getFieldShowTitle } from '../common.js';
+import {getAttributeValue, getBoolField, getFieldShowTitle} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
-const { URLInputButton, URLInput, InspectorControls } = wp.blockEditor;
-const { PanelBody, CheckboxControl, BaseControl, TextControl } = wp.components;
-const { useState } = wp.element;
-const { withState } = wp.compose;
+const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
+const {PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
+const {useState} = wp.element;
+const {withState} = wp.compose;
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
 
 /**
@@ -51,13 +51,13 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 },
                 transform: ({text}) => {
                     let atts = {};
-                    for ( let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes ) {
-                        if ( ! ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i) ) {
+                    for (let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes) {
+                        if (!ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i)) {
                             continue;
                         }
 
-                        let tmp = getAttributeValue( 'post-content', i, text );
-                        if ( tmp !== null ) {
+                        let tmp = getAttributeValue('post-content', i, text);
+                        if (tmp !== null) {
                             atts[i] = tmp;
                         }
                     }
@@ -79,8 +79,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getDisplayPanel() {
             return (
-                <PanelBody title={ __( 'Display Settings', 'umw-rss-display' ) }>
-                    { getFieldShowTitle( props ) }
+                <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
+                    {getBoolField(props, 'show_title', __('Display the item title?', 'ten321/post-content-shortcodes'))}
                 </PanelBody>
             );
         }
@@ -88,9 +88,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         return (
             <div>
                 <p>This will eventually be a PCS Content Block</p>
-                { isSelected &&
+                {isSelected &&
                 <InspectorControls>
-                    { getDisplayPanel() }
+                    {getDisplayPanel()}
                 </InspectorControls>
                 }
             </div>

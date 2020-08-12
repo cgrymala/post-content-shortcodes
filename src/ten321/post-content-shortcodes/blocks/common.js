@@ -44,11 +44,39 @@ export const getAttributeValue = function (tag, att, content) {
     return null;
 };
 
+export const getBoolField = function (props, fieldName, fieldLabel) {
+    const {
+        className,
+        isSelected,
+        attributes,
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof attributes[fieldName] !== 'undefined') {
+        checked = attributes[fieldName];
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={fieldLabel}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({fieldName: newValue});
+            }}
+            name={fieldName}
+        />
+    );
+}
+
 export const getFieldShowTitle = function (props) {
     const {
         className,
         isSelected,
-        attributes: { show_title },
+        attributes: {show_title},
         setAttributes,
     } = props;
 
@@ -57,16 +85,16 @@ export const getFieldShowTitle = function (props) {
         checked = val;
     }
 
-    const [ isChecked, setChecked ] = useState( checked );
+    const [isChecked, setChecked] = useState(checked);
 
     return (
         <CheckboxControl
-            label={ __( 'Display the item title?', 'ten321/post-content-shortcodes' ) }
-            checked={ isChecked }
-            onChange={ ( newValue, props ) => {
-                setChecked( newValue );
-                setAttributes( { show_title: newValue } );
-            } }
+            label={__('Display the item title?', 'ten321/post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({show_title: newValue});
+            }}
             name="show_title"
         />
     );
