@@ -83,8 +83,8 @@ export const getFieldShowTitle = function (props) {
     } = props;
 
     let checked = false;
-    if (typeof val !== 'undefined') {
-        checked = val;
+    if (typeof attributes.show_title !== 'undefined') {
+        checked = attributes.show_title;
     }
 
     const [isChecked, setChecked] = useState(checked);
