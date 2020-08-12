@@ -90,6 +90,9 @@ namespace Ten321\Post_Content_Shortcodes {
 			protected function __construct() {
 				$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
 				add_action( 'plugins_loaded', array( $this, 'startup' ), 99 );
+
+				Blocks\Content_List::instance();
+				Blocks\Content::instance();
 			}
 
 			/**
@@ -215,9 +218,6 @@ namespace Ten321\Post_Content_Shortcodes {
 				add_shortcode( 'pcs-thumbnail', array( &$this, 'do_post_thumbnail' ) );
 				add_shortcode( 'pcs-post-url', array( &$this, 'do_post_permalink' ) );
 				add_shortcode( 'pcs-entry-classes', array( &$this, 'do_entry_classes' ) );
-
-				Blocks\Content_List::instance();
-				Blocks\Content::instance();
 
 				/**
 				 * Prepare to register the two widgets
