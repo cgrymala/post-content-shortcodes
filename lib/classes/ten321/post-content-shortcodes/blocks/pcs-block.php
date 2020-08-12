@@ -48,7 +48,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  2020.8
 			 */
 			public function __construct() {
-				$this->block_namespace = 'ten321/post-content-shortcodes/' . $this->block_type;
+				$this->block_namespace = 'ten321/post-content-shortcodes/blocks/' . $this->block_type;
 				$this->block_path  = Plugin::plugin_dir_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
 
 				add_action( 'init', array( $this, 'register_block_type' ) );
