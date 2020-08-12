@@ -99,7 +99,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				);
 				$instance['title']           = array(
 					'type'    => 'string',
-					'default' => $defaults['title'],
+					'default' => '',
 				);
 
 				return array_merge( $atts, $instance );
