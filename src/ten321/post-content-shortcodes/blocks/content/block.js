@@ -110,6 +110,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
             }
 
+            console.log( selected );
+
             const [ fontSize, setFontSize ] = useState( selected );
 
             return (
