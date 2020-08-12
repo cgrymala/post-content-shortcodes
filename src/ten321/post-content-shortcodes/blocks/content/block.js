@@ -52,7 +52,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     transforms: {
         from: [
             {
-                type: 'shortcode',
+                type: 'core/shortcode',
                 tag: 'post-content',
                 attributes: {
                     id: {
