@@ -9,6 +9,8 @@
 import './editor.scss';
 import './style.scss';
 
+import getAttributeValue from '../common.js';
+
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
 
@@ -25,47 +27,6 @@ const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blo
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-
-/**
- * Get the value for a shortcode attribute, whether it's enclosed in double quotes, single
- * quotes, or no quotes.
- *
- * @param  {string} tag     The shortcode name
- * @param  {string} att     The attribute name
- * @param  {string} content The text which includes the shortcode
- *
- * @return {string}         The attribute value or an empty string.
- */
-export const getAttributeValue = function (tag, att, content) {
-    // In string literals, slashes need to be double escaped
-    //
-    //    Match  attribute="value"
-    //    \[tag[^\]]*      matches opening of shortcode tag
-    //    att="([^"]*)"    captures value inside " and "
-    var re = new RegExp(`\\[${tag}[^\\]]* ${att}="([^"]*)"`, 'im');
-    var result = content.match(re);
-    if (result != null && result.length > 0)
-        return result[1];
-
-    //    Match  attribute='value'
-    //    \[tag[^\]]*      matches opening of shortcode tag
-    //    att="([^"]*)"    captures value inside ' and ''
-    re = new RegExp(`\\[${tag}[^\\]]* ${att}='([^']*)'`, 'im');
-    result = content.match(re);
-    if (result != null && result.length > 0)
-        return result[1];
-
-    //    Match  attribute=value
-    //    \[tag[^\]]*      matches opening of shortcode tag
-    //    att="([^"]*)"    captures a shortcode value provided without
-    //                     quotes, as in [me color=green]
-    re = new RegExp(`\\[${tag}[^\\]]* ${att}=([^\\s]*)[\\s|\\]]`, 'im');
-    result = content.match(re);
-    if (result != null && result.length > 0)
-        return result[1];
-    return null;
-};
-
 registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __('PCS Post Content Block'), // Block title.
