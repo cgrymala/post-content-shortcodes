@@ -70,14 +70,12 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     attributes: ten321__post_content_shortcodes__blocks__content.reg_args.attributes,
 
     edit: (props) => {
-        if ( typeof ten321__post_content_shortcodes__blocks__content.blogList !== 'undefined' ) {
-            const blogOptions = ten321__post_content_shortcodes__blocks__content.blogList;
-            if (blogOptions[0].key !== 0) {
-                blogOptions.unshift({
-                    key: 0,
-                    name: '-- Please select a blog --',
-                });
-            }
+        const blogOptions = ten321__post_content_shortcodes__blocks__content.blogList;
+        if (blogOptions[0].key !== 0) {
+            blogOptions.unshift({
+                key: 0,
+                name: '-- Please select a blog --',
+            });
         }
 
         const {
