@@ -1,7 +1,7 @@
-const { URLInputButton, URLInput, InspectorControls } = wp.blockEditor;
-const { FormToggle, PanelBody, CheckboxControl, BaseControl, TextControl } = wp.components;
-const { useState } = wp.element;
-const { withState } = wp.compose;
+const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
+const {FormToggle, PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
+const {useState} = wp.element;
+const {withState} = wp.compose;
 
 /**
  * Get the value for a shortcode attribute, whether it's enclosed in double quotes, single
@@ -43,13 +43,15 @@ export const getAttributeValue = function (tag, att, content) {
     return null;
 };
 
-export const getFieldShowTitle = function(val) {
-    return withState( {
-        checked: val,
-    } )( ( { checked, setState } ) => (
+export const getFieldShowTitle = function (val) {
+    const {checked, setState} = withState(val);
+
+    console.log(withState(val));
+
+    return (
         <FormToggle
-            checked={ checked }
-            onChange={ () => setState( state => ( { show_title: ! state.checked } ) ) }
+            checked={checked}
+            onChange={() => setState(state => ({show_title: !state.checked}))}
         />
-    ) );
+    );
 }
