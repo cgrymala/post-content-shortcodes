@@ -103,7 +103,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
                     const atts = {
                         id: getAttributeValue('post-content', 'id', text),
-                        post_type: getAttributeValue('post-content', 'post-type', text),
+                        post_type: getAttributeValue('post-content', 'post_type', text),
                         order: getAttributeValue('post-content', 'order', text),
                         orderby: getAttributeValue('post-content', 'orderby', text),
                         numberposts: getAttributeValue('post-content', 'numberposts', text),
@@ -117,6 +117,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         if (!atts.hasOwnProperty(i)) {
                             continue;
                         }
+
+                        console.log( 'Looking for a value associated with the key ' + i );
+                        console.log( 'Found a value of ' + atts[i] );
 
                         if (atts[i] !== null) {
                             shortcodeAttributes[i] = atts[i];
