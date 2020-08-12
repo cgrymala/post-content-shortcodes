@@ -52,37 +52,28 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     transforms: {
         from: [
             {
-                type: 'core/shortcode',
-                tag: 'post-content',
-                attributes: {
-                    id: {
-                        type: "integer",
-                        shortcode: attributes => attributes.named.id
-                    },
-                    post_type: {
-                        type: "string",
-                        shortcode: attributes => attributes.named.post_type
-                    },
-                    order: {
-                        type: "string",
-                        shortcode: attributes => attributes.named.order
-                    },
-                    orderby: {
-                        type: "string",
-                        shortcode: attributes => attributes.named.orderby
-                    },
-                    numberposts: {
-                        type: "integer",
-                        shortcode: attributes => attributes.named.numberposts
-                    },
-                    blog: {
-                        type: "string",
-                        shortcode: attributes => attributes.named.blog
-                    },
-                    excerpt_length: {
-                        type: "integer",
-                        shortcode: attributes => attributes.named.excerpt_length
-                    }
+                type: 'block',
+                blocks: ['core/shortcode'],
+                isMatch: function ({text}) {
+                    return /^\[post-content /.test(text);
+                },
+                transform: ({text}) => {
+
+                    const content = getInnerContent('post-content', text);
+
+                    const innerBlocks = wp.blocks.rawHandler({
+                        HTML: content,
+                    });
+
+                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/content', {
+                        id: getAttributeValue('post-content', 'id', text),
+                        post_type: getAttributeValue('post-content', 'post-type', text),
+                        order: getAttributeValue('post-content', 'order', text),
+                        orderby: getAttributeValue('post-content', 'orderby', text),
+                        numberposts: getAttributeValue('post-content', 'numberposts', text),
+                        blog: getAttributeValue('post-content', 'blog', text),
+                        excerpt_length: getAttributeValue('post-content', 'excerpt_length', text)
+                    }, innerBlocks);
                 }
             }
         ]
