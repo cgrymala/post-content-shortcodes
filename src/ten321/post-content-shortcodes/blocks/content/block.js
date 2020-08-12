@@ -81,7 +81,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         const {
             className,
             isSelected,
-            attributes,
+            attributes: { show_title, show_image, blog },
             setAttributes,
         } = props;
 
@@ -104,9 +104,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
             let selected = blogOptions[0];
 
-            if (typeof attributes.blog !== 'undefined') {
+            if (typeof blog !== 'undefined') {
                 console.log('Setting a pre-selected option as blog');
-                selected = attributes.blog;
+                selected = blog;
             } else if (typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined') {
                 console.log('Setting the "current blog" as blog');
                 selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
