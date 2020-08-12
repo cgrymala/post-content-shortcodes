@@ -53,7 +53,9 @@ registerBlockType( 'ten321--post-content-shortcodes--blocks/list', {
         __( 'Multisite' ),
         __( 'excerpt' ),
     ],
-    transforms: ten321__post_content_shortcodes__blocks__list.reg_args.transforms,
+    transforms: {
+        from: ten321__post_content_shortcodes__blocks__list.reg_args.transforms
+    },
     attributes: ten321__post_content_shortcodes__blocks__list.reg_args.attributes,
 
     edit: (props) => {
