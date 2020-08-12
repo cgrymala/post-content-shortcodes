@@ -52,7 +52,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         __('excerpt'),
     ],
     transforms: {
-        from: ten321__post_content_shortcodes__blocks__content.reg_args.transforms
+        from: [
+            ten321__post_content_shortcodes__blocks__content.reg_args.transforms
+            ]
     },
     attributes: ten321__post_content_shortcodes__blocks__content.reg_args.attributes,
 
