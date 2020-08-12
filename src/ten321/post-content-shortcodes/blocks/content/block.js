@@ -77,11 +77,12 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             setAttributes,
         } = props;
 
+        const fields = PCSGetFields(props);
+
         function getDisplayPanel() {
-            const field = PCSGetFields(props);
             return (
                 <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
-                    {field.show_title}
+                    {fields.show_title}
                 </PanelBody>
             );
         }
