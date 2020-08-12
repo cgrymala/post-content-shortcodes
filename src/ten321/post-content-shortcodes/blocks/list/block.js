@@ -9,8 +9,8 @@
 import './editor.scss';
 import './style.scss';
 
-const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const {__} = wp.i18n; // Import __() from wp.i18n
+const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
 
 /**
  * Register: aa Gutenberg Block.
@@ -27,36 +27,34 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
  */
 
 let transformArgs = {};
-for ( let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes ) {
-    if ( ! ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i) ) {
+for (let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes) {
+    if (!ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i)) {
         continue;
     }
     transformArgs[i] = {
         type: ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes[i].type,
-        shortcode: function( attributes ) {
-            return attributes.named[i];
-        }
+        shortcode: attributes => attributes.named[i]
     }
 }
 
 ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes = transformArgs;
 
-registerBlockType( 'ten321--post-content-shortcodes--blocks/list', {
+registerBlockType('ten321--post-content-shortcodes--blocks/list', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( 'PCS Post List Block' ), // Block title.
+    title: __('PCS Post List Block'), // Block title.
     icon: 'list-view', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
     category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     keywords: [
-        __( 'Post Content Shortcodes' ),
-        __( 'Content List' ),
-        __( 'Post List' ),
-        __( 'Multisite' ),
-        __( 'excerpt' ),
+        __('Post Content Shortcodes'),
+        __('Content List'),
+        __('Post List'),
+        __('Multisite'),
+        __('excerpt'),
     ],
     transforms: {
         from: [
             ten321__post_content_shortcodes__blocks__list.reg_args.transforms
-            ]
+        ]
     },
     attributes: ten321__post_content_shortcodes__blocks__list.reg_args.attributes,
 
@@ -65,4 +63,4 @@ registerBlockType( 'ten321--post-content-shortcodes--blocks/list', {
             <p>This will eventually be a PCS List Block</p>
         );
     }
-} );
+});

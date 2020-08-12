@@ -27,15 +27,13 @@ const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blo
  */
 
 let transformArgs = {};
-for ( let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes ) {
-    if ( ! ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i) ) {
+for (let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes) {
+    if (!ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i)) {
         continue;
     }
     transformArgs[i] = {
         type: ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes[i].type,
-        shortcode: function( attributes ) {
-            return attributes.named[i];
-        }
+        shortcode: attributes => attributes.named[i]
     }
 }
 
@@ -53,8 +51,41 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     ],
     transforms: {
         from: [
-            ten321__post_content_shortcodes__blocks__content.reg_args.transforms
-            ]
+            {
+                type: 'shortcode',
+                tag: 'post-content',
+                attributes: {
+                    id: {
+                        type: "integer",
+                        shortcode: attributes => attributes.named.id
+                    },
+                    post_type: {
+                        type: "string",
+                        shortcode: attributes => attributes.named.post_type
+                    },
+                    order: {
+                        type: "string",
+                        shortcode: attributes => attributes.named.order
+                    },
+                    orderby: {
+                        type: "string",
+                        shortcode: attributes => attributes.named.orderby
+                    },
+                    numberposts: {
+                        type: "integer",
+                        shortcode: attributes => attributes.named.numberposts
+                    },
+                    blog: {
+                        type: "string",
+                        shortcode: attributes => attributes.named.blog
+                    },
+                    excerpt_length: {
+                        type: "integer",
+                        shortcode: attributes => attributes.named.excerpt_length
+                    }
+                }
+            }
+        ]
     },
     attributes: ten321__post_content_shortcodes__blocks__content.reg_args.attributes,
 
