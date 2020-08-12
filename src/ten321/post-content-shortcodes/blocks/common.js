@@ -49,6 +49,7 @@ export class PCSGetFields {
         this.props = props;
         this.attributes = this.props.attributes;
         this.setAttributes = this.props.setAttributes;
+        this.CheckboxControl = wp.components.CheckboxControl;
     }
 
     show_title() {
@@ -60,7 +61,7 @@ export class PCSGetFields {
         const [isChecked, setChecked] = useState(checked);
 
         return (
-            <CheckboxControl
+            <this.CheckboxControl
                 label={__('Display the item title?', 'ten321/post-content-shortcodes')}
                 checked={isChecked}
                 onChange={(newValue) => {
