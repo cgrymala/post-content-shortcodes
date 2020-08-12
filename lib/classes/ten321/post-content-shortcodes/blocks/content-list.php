@@ -29,7 +29,6 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 */
 			private function __construct() {
 				$this->block_type  = 'list';
-				$this->block_path  = Plugin::plugin_dir_url( '/dist/list/' );
 				$this->block_title = __( 'PCS List Block', 'post-content-shortcodes' );
 
 				parent::__construct();
