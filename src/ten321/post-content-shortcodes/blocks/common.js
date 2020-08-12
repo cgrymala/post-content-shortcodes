@@ -46,12 +46,9 @@ export const getAttributeValue = function (tag, att, content) {
 
 export class PCSGetFields {
     constructor(props) {
-        let {
-            className,
-            isSelected,
-            attributes,
-            setAttributes,
-        } = props;
+        this.props = props;
+        this.attributes = this.props.attributes;
+        this.setAttributes = this.props.setAttributes;
     }
 
     show_title() {
