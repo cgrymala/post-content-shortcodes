@@ -66,19 +66,6 @@ export const getAttributeValue = function (tag, att, content) {
     return null;
 };
 
-let transformArgs = {};
-for (let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes) {
-    if (!ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i)) {
-        continue;
-    }
-    transformArgs[i] = {
-        type: ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes[i].type,
-        shortcode: attributes => attributes.named[i]
-    }
-}
-
-ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes = transformArgs;
-
 registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __('PCS Post Content Block'), // Block title.
@@ -98,35 +85,19 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     return /^\[post-content /.test(text);
                 },
                 transform: ({text}) => {
-                    console.log( 'Text found inside post-content shortcode:' );
-                    console.log( text );
-
-                    const atts = {
-                        id: getAttributeValue('post-content', 'id', text),
-                        post_type: getAttributeValue('post-content', 'post_type', text),
-                        order: getAttributeValue('post-content', 'order', text),
-                        orderby: getAttributeValue('post-content', 'orderby', text),
-                        numberposts: getAttributeValue('post-content', 'numberposts', text),
-                        blog: getAttributeValue('post-content', 'blog', text),
-                        excerpt_length: getAttributeValue('post-content', 'excerpt_length', text)
-                    };
-
-                    const shortcodeAttributes = {};
-
-                    for (let i in atts) {
-                        if (!atts.hasOwnProperty(i)) {
+                    let atts = {};
+                    for ( let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes ) {
+                        if ( ! ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i) ) {
                             continue;
                         }
 
-                        console.log( 'Looking for a value associated with the key ' + i );
-                        console.log( 'Found a value of ' + atts[i] );
-
-                        if (atts[i] !== null) {
-                            shortcodeAttributes[i] = atts[i];
+                        let tmp = getAttributeValue( 'post-content', i, text );
+                        if ( tmp !== null ) {
+                            atts[i] = tmp;
                         }
                     }
 
-                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/content', shortcodeAttributes);
+                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/content', atts);
                 }
             }
         ]
