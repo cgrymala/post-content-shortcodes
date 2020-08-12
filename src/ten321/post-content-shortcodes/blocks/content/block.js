@@ -36,7 +36,7 @@ const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blo
  *
  * @return {string}         The attribute value or an empty string.
  */
-export const getAttributeValue = function(tag, att, content){
+export const getAttributeValue = function (tag, att, content) {
     // In string literals, slashes need to be double escaped
     //
     //    Match  attribute="value"
@@ -44,7 +44,7 @@ export const getAttributeValue = function(tag, att, content){
     //    att="([^"]*)"    captures value inside " and "
     var re = new RegExp(`\\[${tag}[^\\]]* ${att}="([^"]*)"`, 'im');
     var result = content.match(re);
-    if( result != null && result.length > 0 )
+    if (result != null && result.length > 0)
         return result[1];
 
     //    Match  attribute='value'
@@ -52,7 +52,7 @@ export const getAttributeValue = function(tag, att, content){
     //    att="([^"]*)"    captures value inside ' and ''
     re = new RegExp(`\\[${tag}[^\\]]* ${att}='([^']*)'`, 'im');
     result = content.match(re);
-    if( result != null && result.length > 0 )
+    if (result != null && result.length > 0)
         return result[1];
 
     //    Match  attribute=value
@@ -61,9 +61,9 @@ export const getAttributeValue = function(tag, att, content){
     //                     quotes, as in [me color=green]
     re = new RegExp(`\\[${tag}[^\\]]* ${att}=([^\\s]*)\\s`, 'im');
     result = content.match(re);
-    if( result != null && result.length > 0 )
+    if (result != null && result.length > 0)
         return result[1];
-    return false;
+    return null;
 };
 
 let transformArgs = {};
@@ -98,7 +98,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     return /^\[post-content /.test(text);
                 },
                 transform: ({text}) => {
-                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/content', {
+                    const atts = {
                         id: getAttributeValue('post-content', 'id', text),
                         post_type: getAttributeValue('post-content', 'post-type', text),
                         order: getAttributeValue('post-content', 'order', text),
@@ -106,7 +106,19 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         numberposts: getAttributeValue('post-content', 'numberposts', text),
                         blog: getAttributeValue('post-content', 'blog', text),
                         excerpt_length: getAttributeValue('post-content', 'excerpt_length', text)
-                    });
+                    };
+
+                    for (let i in atts) {
+                        if (!atts.hasOwnProperty(i)) {
+                            continue;
+                        }
+
+                        if (atts[i] === null) {
+                            delete atts[i];
+                        }
+                    }
+
+                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/content', atts);
                 }
             }
         ]
