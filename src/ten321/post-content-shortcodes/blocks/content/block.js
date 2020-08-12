@@ -59,7 +59,7 @@ export const getAttributeValue = function (tag, att, content) {
     //    \[tag[^\]]*      matches opening of shortcode tag
     //    att="([^"]*)"    captures a shortcode value provided without
     //                     quotes, as in [me color=green]
-    re = new RegExp(`\\[${tag}[^\\]]* ${att}=([^\\s]*)\\s`, 'im');
+    re = new RegExp(`\\[${tag}[^\\]]* ${att}=([^\\s]*)[\\s|\\]]`, 'im');
     result = content.match(re);
     if (result != null && result.length > 0)
         return result[1];
