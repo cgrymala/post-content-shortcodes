@@ -1,3 +1,6 @@
+const { FormToggle } = wp.components;
+const { withState } = wp.compose;
+
 /**
  * Get the value for a shortcode attribute, whether it's enclosed in double quotes, single
  * quotes, or no quotes.
@@ -37,3 +40,14 @@ export const getAttributeValue = function (tag, att, content) {
         return result[1];
     return null;
 };
+
+export const getFieldShowTitle = function(val) {
+    return withState( {
+        checked: val,
+    } )( ( { checked, setState } ) => (
+        <FormToggle
+            checked={ checked }
+            onChange={ () => setState( state => ( { show_title: ! state.checked } ) ) }
+        />
+    ) );
+}

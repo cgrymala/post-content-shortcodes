@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import { getAttributeValue } from '../common.js';
+import { getAttributeValue, getFieldShowTitle } from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
@@ -66,8 +66,30 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
     attributes: ten321__post_content_shortcodes__blocks__content.reg_args.attributes,
 
     edit: (props) => {
+        const {
+            className,
+            isSelected,
+            attributes,
+            setAttributes,
+        } = props;
+
+        function getDisplayPanel() {
+            return (
+                <PanelBody title={ __( 'Display Settings', 'umw-rss-display' ) }>
+                    { getFieldShowTitle( attributes.show_title ) }
+                </PanelBody>
+            );
+        }
+
         return (
-            <p>This will be a PCS Post Content Block eventually</p>
+            <div>
+                <p>This will eventually be a PCS Content Block</p>
+                { isSelected &&
+                <div className="editControls">
+                    { getDisplayPanel() }
+                </div>
+                }
+            </div>
         );
     }
 });
