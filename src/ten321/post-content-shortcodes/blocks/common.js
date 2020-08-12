@@ -1,3 +1,4 @@
+const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
 const {PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
 const {useState} = wp.element;
