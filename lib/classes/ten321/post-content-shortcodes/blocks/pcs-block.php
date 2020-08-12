@@ -48,6 +48,8 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  2020.8
 			 */
 			public function __construct() {
+				Plugin::log( 'Entered the PCS_Block __construct() method' );
+
 				$this->block_namespace = 'ten321/post-content-shortcodes/blocks/' . $this->block_type;
 				$this->block_path  = Plugin::plugin_dir_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
 
