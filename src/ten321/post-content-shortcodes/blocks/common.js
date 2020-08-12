@@ -46,24 +46,18 @@ export const getAttributeValue = function (tag, att, content) {
 
 export class PCSGetFields {
     constructor(props) {
-        const {
+        let {
             className,
             isSelected,
             attributes,
             setAttributes,
         } = props;
-
-        const {__} = wp.i18n; // Import __() from wp.i18n
-        const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
-        const {PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
-        const {useState} = wp.element;
-        const {withState} = wp.compose;
     }
 
     show_title() {
         let checked = false;
-        if (typeof attributes.show_title !== 'undefined') {
-            checked = attributes.show_title;
+        if (typeof this.attributes.show_title !== 'undefined') {
+            checked = this.attributes.show_title;
         }
 
         const [isChecked, setChecked] = useState(checked);
@@ -72,9 +66,9 @@ export class PCSGetFields {
             <CheckboxControl
                 label={__('Display the item title?', 'ten321/post-content-shortcodes')}
                 checked={isChecked}
-                onChange={(newValue, props) => {
+                onChange={(newValue) => {
                     setChecked(newValue);
-                    setAttributes({show_title: newValue});
+                    this.setAttributes({show_title: newValue});
                 }}
                 name="show_title"
             />
