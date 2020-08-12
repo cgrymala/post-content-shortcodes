@@ -89,9 +89,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             <div>
                 <p>This will eventually be a PCS Content Block</p>
                 { isSelected &&
-                <div className="editControls">
+                <InspectorControls>
                     { getDisplayPanel() }
-                </div>
+                </InspectorControls>
                 }
             </div>
         );
