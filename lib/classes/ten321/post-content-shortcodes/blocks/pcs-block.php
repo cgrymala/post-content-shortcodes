@@ -367,7 +367,10 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 						$wpdb->set_blog_id( $blog );
 					}
 
-					$blog_list[ $blog ] = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name=%s", 'blogname' ) );
+					$blog_list[] = array(
+						'key' => $blog,
+						'name' => $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name=%s", 'blogname' ) ),
+					);
 				}
 
 				$wpdb->set_blog_id( $org_blog );
