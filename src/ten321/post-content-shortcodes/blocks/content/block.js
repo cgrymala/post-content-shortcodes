@@ -13,7 +13,7 @@ import { getAttributeValue, getFieldShowTitle } from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const { URLInputButton, URLInput, InspectorControls } = wp.blockEditor;
-const { FormToggle, PanelBody, CheckboxControl, BaseControl, TextControl } = wp.components;
+const { PanelBody, CheckboxControl, BaseControl, TextControl } = wp.components;
 const { useState } = wp.element;
 const { withState } = wp.compose;
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks

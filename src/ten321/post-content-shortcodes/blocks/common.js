@@ -1,5 +1,5 @@
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
-const {FormToggle, PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
+const {PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
 const {useState} = wp.element;
 const {withState} = wp.compose;
 
@@ -44,14 +44,22 @@ export const getAttributeValue = function (tag, att, content) {
 };
 
 export const getFieldShowTitle = function (val) {
-    const {checked, setState} = withState(val);
+    let checked = false;
+    if (typeof val !== 'undefined') {
+        checked = val;
+    }
 
-    console.log(withState(val));
+    const [ isChecked, setChecked ] = useState( checked );
 
     return (
-        <FormToggle
-            checked={checked}
-            onChange={() => setState(state => ({show_title: !state.checked}))}
+        <CheckboxControl
+            label={ __( 'Display the item title?', 'ten321/post-content-shortcodes' ) }
+            checked={ isChecked }
+            onChange={ ( newValue, props ) => {
+                setChecked( newValue );
+                setAttributes( { show_title: newValue } );
+            } }
+            name="show_title"
         />
     );
 }
