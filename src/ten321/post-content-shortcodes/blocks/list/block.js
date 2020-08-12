@@ -9,6 +9,8 @@
 import './editor.scss';
 import './style.scss';
 
+import {getAttributeValue} from '../common.js';
+
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
 
@@ -25,20 +27,6 @@ const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blo
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-
-let transformArgs = {};
-for (let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes) {
-    if (!ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i)) {
-        continue;
-    }
-    transformArgs[i] = {
-        type: ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes[i].type,
-        shortcode: attributes => attributes.named[i]
-    }
-}
-
-ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes = transformArgs;
-
 registerBlockType('ten321--post-content-shortcodes--blocks/list', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __('PCS Post List Block'), // Block title.
@@ -53,7 +41,28 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
     ],
     transforms: {
         from: [
-            ten321__post_content_shortcodes__blocks__list.reg_args.transforms
+            {
+                type: 'block',
+                blocks: ['core/shortcode'],
+                isMatch: function ({text}) {
+                    return /^\[post-list /.test(text);
+                },
+                transform: ({text}) => {
+                    let atts = {};
+                    for ( let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes ) {
+                        if ( ! ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i) ) {
+                            continue;
+                        }
+
+                        let tmp = getAttributeValue( 'post-list', i, text );
+                        if ( tmp !== null ) {
+                            atts[i] = tmp;
+                        }
+                    }
+
+                    return wp.blocks.createBlock('ten321--post-content-shortcodes--blocks/list', atts);
+                }
+            }
         ]
     },
     attributes: ten321__post_content_shortcodes__blocks__list.reg_args.attributes,
