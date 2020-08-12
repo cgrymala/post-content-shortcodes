@@ -82,7 +82,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         function getDisplayPanel() {
             return (
                 <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
-                    {fields.show_title}
+                    {fields.show_title()}
                 </PanelBody>
             );
         }
