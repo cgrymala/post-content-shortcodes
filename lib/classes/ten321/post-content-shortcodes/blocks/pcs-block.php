@@ -89,6 +89,9 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'attributes'      => $this->get_attributes(),
 				) );
 
+				Plugin::log( 'Preparing to register a new Block' );
+				Plugin::log( print_r( $this, true ) );
+
 				register_block_type(
 					$this->block_namespace, $args
 				);
