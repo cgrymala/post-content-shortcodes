@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue, getBoolField, getFieldShowTitle} from '../common.js';
+import {getAttributeValue, getFieldShowTitle, PCSGetFields} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
@@ -78,9 +78,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         } = props;
 
         function getDisplayPanel() {
+            const field = PCSGetFields(props);
             return (
                 <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
-                    {getBoolField(props, 'show_title', __('Display the item title?', 'ten321/post-content-shortcodes'))}
+                    {field.show_title}
                 </PanelBody>
             );
         }

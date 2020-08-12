@@ -72,6 +72,38 @@ export const getBoolField = function (props, fieldName, fieldLabel) {
     );
 }
 
+export class PCSGetFields {
+    constructor(props) {
+        const {
+            className,
+            isSelected,
+            attributes,
+            setAttributes,
+        } = props;
+    }
+
+    show_title() {
+        let checked = false;
+        if (typeof attributes.show_title !== 'undefined') {
+            checked = attributes.show_title;
+        }
+
+        const [isChecked, setChecked] = useState(checked);
+
+        return (
+            <CheckboxControl
+                label={__('Display the item title?', 'ten321/post-content-shortcodes')}
+                checked={isChecked}
+                onChange={(newValue, props) => {
+                    setChecked(newValue);
+                    setAttributes({show_title: newValue});
+                }}
+                name="show_title"
+            />
+        );
+    }
+}
+
 export const getFieldShowTitle = function (props) {
     const {
         className,
