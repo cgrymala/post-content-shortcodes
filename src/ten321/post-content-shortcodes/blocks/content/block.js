@@ -77,7 +77,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             setAttributes,
         } = props;
 
-        const fields = PCSGetFields(props);
+        const fields = new PCSGetFields(props);
 
         function getDisplayPanel() {
             return (
