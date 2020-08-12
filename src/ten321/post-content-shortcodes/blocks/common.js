@@ -44,34 +44,6 @@ export const getAttributeValue = function (tag, att, content) {
     return null;
 };
 
-export const getBoolField = function (props, fieldName, fieldLabel) {
-    const {
-        className,
-        isSelected,
-        attributes,
-        setAttributes,
-    } = props;
-
-    let checked = false;
-    if (typeof attributes[fieldName] !== 'undefined') {
-        checked = attributes[fieldName];
-    }
-
-    const [isChecked, setChecked] = useState(checked);
-
-    return (
-        <CheckboxControl
-            label={fieldLabel}
-            checked={isChecked}
-            onChange={(newValue, props) => {
-                setChecked(newValue);
-                setAttributes({fieldName: newValue});
-            }}
-            name={fieldName}
-        />
-    );
-}
-
 export class PCSGetFields {
     constructor(props) {
         const {
@@ -80,6 +52,12 @@ export class PCSGetFields {
             attributes,
             setAttributes,
         } = props;
+
+        const {__} = wp.i18n; // Import __() from wp.i18n
+        const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
+        const {PanelBody, CheckboxControl, BaseControl, TextControl} = wp.components;
+        const {useState} = wp.element;
+        const {withState} = wp.compose;
     }
 
     show_title() {
