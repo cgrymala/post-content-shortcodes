@@ -1,4 +1,6 @@
-const { FormToggle } = wp.components;
+const { URLInputButton, URLInput, InspectorControls } = wp.blockEditor;
+const { FormToggle, PanelBody, CheckboxControl, BaseControl, TextControl } = wp.components;
+const { useState } = wp.element;
 const { withState } = wp.compose;
 
 /**
