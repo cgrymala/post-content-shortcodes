@@ -1,0 +1,46 @@
+{
+  "name": "post-content-shortcodes",
+  "version": "1.0.0",
+  "description": "**Contributors:** cgrymala",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scss": "node-sass -o dist/ten321/post-content-shortcodes/blocks/content src/ten321/post-content-shortcodes/blocks/content/editor.scss && node-sass -o dist/ten321/post-content-shortcodes/blocks/content src/ten321/post-content-shortcodes/blocks/content/style.scss && node-sass -o dist/ten321/post-content-shortcodes/blocks/list src/ten321/post-content-shortcodes/blocks/list/editor.scss && node-sass -o dist/ten321/post-content-shortcodes/blocks/list src/ten321/post-content-shortcodes/blocks/list/style.scss",
+    "cssmin": "cleancss -o dist/ten321/post-content-shortcodes/blocks/content/block.editor.build.css dist/ten321/post-content-shortcodes/blocks/content/editor.css && cleancss -o dist/ten321/post-content-shortcodes/blocks/content/block.build.css dist/ten321/post-content-shortcodes/blocks/content/style.css && cleancss -o dist/ten321/post-content-shortcodes/blocks/list/block.editor.build.css dist/ten321/post-content-shortcodes/blocks/list/editor.css && cleancss -o dist/ten321/post-content-shortcodes/blocks/list/block.build.css dist/ten321/post-content-shortcodes/blocks/list/style.css",
+    "webpack": "webpack",
+    "uglify": "uglifyjs -o dist/ten321/post-content-shortcodes/blocks/content/block.min.js dist/ten321/post-content-shortcodes/blocks/content/block.js && uglifyjs -o dist/ten321/post-content-shortcodes/blocks/list/block.min.js dist/ten321/post-content-shortcodes/blocks/list/block.js",
+    "build:css": "npm run scss && npm run cssmin",
+    "build:js": "npm run webpack && npm run uglify",
+    "build": "npm run build:css && npm run build:js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://cgrymala@github.com/cgrymala/post-content-shortcodes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cgrymala/post-content-shortcodes/issues"
+  },
+  "homepage": "https://github.com/cgrymala/post-content-shortcodes#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "clean-css-cli": "^4.3.0",
+    "concat": "^1.0.3",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.6.0",
+    "node-sass": "^4.14.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}

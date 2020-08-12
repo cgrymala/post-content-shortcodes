@@ -49,7 +49,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 */
 			public function __construct() {
 				$this->block_namespace = 'ten321/post-content-shortcodes/' . $this->block_type;
-				$this->block_path  = Plugin::plugin_dir_url( '/dist/' );
+				$this->block_path  = Plugin::plugin_dir_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
 
 				$this->register_block_type();
 			}
@@ -102,15 +102,23 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function get_stylesheet() {
+				if ( $this->script_debug() ) {
+					$file = $this->block_path . 'style.css';
+				} else {
+					$file = $this->block_path . 'block.build.css';
+				}
+
+				$handle = $this->block_namespace . '/style';
+
 				wp_register_style(
-					$this->block_namespace . '/style',
-					$this->block_path . 'blocks.style.build.css',
+					$handle,
+					$file,
 					is_admin() ? array( 'wp-editor' ) : null,
 					null,
 					'all'
 				);
 
-				return $this->block_namespace . '/style';
+				return $handle;
 			}
 
 			/**
@@ -121,9 +129,17 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function get_editor_script() {
+				if ( $this->script_debug() ) {
+					$file = $this->block_path . 'block.js';
+				} else {
+					$file = $this->block_path . 'block.min.js';
+				}
+
+				$handle = $this->block_namespace . '/script';
+
 				wp_register_script(
-					$this->block_namespace . '/script',
-					$this->block_path . 'blocks.build.js',
+					$handle,
+					$file,
 					array(
 						'wp-blocks',
 						'wp-i18n',
@@ -138,7 +154,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 
 				// WP Localized globals. Use dynamic PHP stuff in JavaScript via `cgbGlobal` object.
 				wp_localize_script(
-					$this->block_namespace . '/script',
+					$handle,
 					'ten321__post_content_shortcodes__blocks__' . $this->block_type, // Array containing dynamic data for a JS Global.
 					apply_filters( 'ten321/post-content-shortcodes/blocks/localized-scripts', [
 						'pluginDirPath' => Plugin::plugin_dir_path(),
@@ -147,7 +163,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					] )
 				);
 
-				return $this->block_namespace . '/script';
+				return $handle;
 			}
 
 			/**
@@ -158,15 +174,34 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function get_editor_style() {
+				if ( $this->script_debug() ) {
+					$file = $this->block_path . 'editor.css';
+				} else {
+					$file = $this->block_path . 'block.editor.build.css';
+				}
+
+				$handle = $this->block_namespace . '/editor-style';
+
 				wp_register_style(
-					$this->block_namespace . '/editor-style',
-					$this->block_path . 'blocks.editor.build.css',
+					$handle,
+					$file,
 					array( 'wp-edit-blocks' ),
 					null,
 					'all'
 				);
 
-				return $this->block_namespace . '/editor-style';
+				return $handle;
+			}
+
+			/**
+			 * Determine whether to use debuggable scripts
+			 *
+			 * @access protected
+			 * @return bool whether to use debuggable scripts
+			 * @since  0.1
+			 */
+			protected function script_debug() {
+				return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 			}
 
 			/**

@@ -25,10 +25,10 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'ten321/post-content-shortcodes/blocks/content', {
+registerBlockType( 'ten321/post-content-shortcodes/blocks/list', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __( 'PCS Post List Block' ), // Block title.
-    icon: 'format-aside', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+    icon: 'list-view', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
     category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     keywords: [
         __( 'Post Content Shortcodes' ),
@@ -37,10 +37,12 @@ registerBlockType( 'ten321/post-content-shortcodes/blocks/content', {
         __( 'Multisite' ),
         __( 'excerpt' ),
     ],
-    transforms: ten321__post_content_shortcodes__blocks__content.transforms,
-    attributes: ten321__post_content_shortcodes__blocks__content.attributes,
+    transforms: ten321__post_content_shortcodes__blocks__list.transforms,
+    attributes: ten321__post_content_shortcodes__blocks__list.attributes,
 
     edit: (props) => {
-
+        return (
+            <p>This will eventually be a PCS List Block</p>
+        );
     }
 } );

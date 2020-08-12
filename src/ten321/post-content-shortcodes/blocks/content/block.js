@@ -9,8 +9,8 @@
 import './editor.scss';
 import './style.scss';
 
-const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const {__} = wp.i18n; // Import __() from wp.i18n
+const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
 
 /**
  * Register: aa Gutenberg Block.
@@ -25,20 +25,22 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'ten321/post-content-shortcodes/blocks/content', {
-	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'PCS Post Content Block' ), // Block title.
-	icon: 'format-aside', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [
-		__( 'Post Content Shortcodes' ),
-		__( 'Multisite' ),
-		__( 'excerpt' ),
-	],
-	transforms: ten321__post_content_shortcodes__blocks__list.transforms,
-	attributes: ten321__post_content_shortcodes__blocks__list.attributes,
+registerBlockType('ten321/post-content-shortcodes/blocks/content', {
+    // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
+    title: __('PCS Post Content Block'), // Block title.
+    icon: 'format-aside', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+    category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+    keywords: [
+        __('Post Content Shortcodes'),
+        __('Multisite'),
+        __('excerpt'),
+    ],
+    transforms: ten321__post_content_shortcodes__blocks__content.transforms,
+    attributes: ten321__post_content_shortcodes__blocks__content.attributes,
 
-	edit: (props) => {
-
-	}
-} );
+    edit: (props) => {
+        return (
+            <p>This will be a PCS Post Content Block eventually</p>
+        );
+    }
+});
