@@ -145,6 +145,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         }
 
         function getFieldPostName() {
+            if ( typeof post_name === 'undefined' ) {
+                post_name = '';
+            }
+
             return (
                 <TextControl
                     label={__('Post Name (slug):', 'post-content-shortcodes')}
