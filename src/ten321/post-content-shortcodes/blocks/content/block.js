@@ -81,7 +81,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         const {
             className,
             isSelected,
-            attributes: {show_title, show_image, blog},
+            attributes: {show_title, show_image, blog, id, post_name},
             setAttributes,
         } = props;
 
