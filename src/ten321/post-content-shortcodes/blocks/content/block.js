@@ -136,11 +136,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             const [value, setValue] = useState(id);
 
             return (
-                <NumberControl
+                <TextControl
                     label={__('Post ID:', 'post-content-shortcodes')}
-                    isShiftStepEnabled={true}
                     onChange={setValue}
-                    shiftStep={10}
                     value={value}
                 />
             );
