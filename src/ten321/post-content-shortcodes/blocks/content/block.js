@@ -13,7 +13,7 @@ import {getAttributeValue, getFieldShowImage, getFieldShowTitle, PCSGetFields} f
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
-const {PanelBody, CheckboxControl, BaseControl, TextControl, CustomSelectControl} = wp.components;
+const {PanelBody, CheckboxControl, BaseControl, TextControl, CustomSelectControl, NumberControl} = wp.components;
 const {useState} = wp.element;
 const {withState} = wp.compose;
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
@@ -90,7 +90,6 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         function getDisplayPanel() {
             return (
                 <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
-                    {getFieldBlogSelect()}
                     {getFieldShowImage(props)}
                     {getFieldShowTitle(props)}
                 </PanelBody>
@@ -129,13 +128,49 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             );
         }
 
+        function getFieldPostID() {
+            if (typeof id === 'undefined') {
+                id = 0;
+            }
+
+            const [value, setValue] = useState(id);
+
+            return (
+                <NumberControl
+                    label={__('Post ID:', 'post-content-shortcodes')}
+                    isShiftStepEnabled={true}
+                    onChange={setValue}
+                    shiftStep={10}
+                    value={value}
+                />
+            );
+        }
+
+        function getFieldPostName() {
+            return (
+                <URLInput
+                    label={__('Post Name (slug):', 'post-content-shortcodes')}
+                    className="widefat"
+                    onChange={(newPostName) => {
+                        setAttributes({post_name: newPostName});
+                    }}
+                    value={post_name}
+                />
+            );
+        }
+
         return (
             <div>
                 <p>This will eventually be a PCS Content Block</p>
                 {isSelected &&
-                <InspectorControls>
-                    {getDisplayPanel()}
-                </InspectorControls>
+                <div className="editor-controls">
+                    {getFieldBlogSelect()}
+                    {getFieldPostID()}
+                    {getFieldPostName()}
+                    <InspectorControls>
+                        {getDisplayPanel()}
+                    </InspectorControls>
+                </div>
                 }
             </div>
         );
