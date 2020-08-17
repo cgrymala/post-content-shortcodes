@@ -148,7 +148,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getFieldPostName() {
             return (
-                <URLInput
+                <TextControl
                     label={__('Post Name (slug):', 'post-content-shortcodes')}
                     className="widefat"
                     onChange={(newPostName) => {
