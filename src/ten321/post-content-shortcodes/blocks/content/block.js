@@ -129,11 +129,12 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         }
 
         function getFieldPostID() {
-            if (typeof id === 'undefined') {
-                let id = 0;
+            let current = 0;
+            if (typeof id !== 'undefined') {
+                current = id;
             }
 
-            const [value, setValue] = useState(id);
+            const [value, setValue] = useState(current);
 
             return (
                 <TextControl
@@ -145,8 +146,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         }
 
         function getFieldPostName() {
-            if ( typeof post_name === 'undefined' ) {
-                let post_name = '';
+            let value = '';
+            if ( typeof post_name !== 'undefined' ) {
+                value = post_name;
             }
 
             return (
@@ -156,7 +158,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     onChange={(newPostName) => {
                         setAttributes({post_name: newPostName});
                     }}
-                    value={post_name}
+                    value={value}
                 />
             );
         }
