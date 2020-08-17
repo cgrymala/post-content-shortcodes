@@ -130,7 +130,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getFieldPostID() {
             if (typeof id === 'undefined') {
-                id = 0;
+                let id = 0;
             }
 
             const [value, setValue] = useState(id);
@@ -146,7 +146,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getFieldPostName() {
             if ( typeof post_name === 'undefined' ) {
-                post_name = '';
+                let post_name = '';
             }
 
             return (
