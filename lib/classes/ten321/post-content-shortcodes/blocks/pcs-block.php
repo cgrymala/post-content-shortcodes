@@ -81,6 +81,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 */
 			public function register_block_type() {
 				$atts = $this->get_attributes();
+				Plugin::log( 'Attributes Array looks like: ' );
 				Plugin::log( print_r( $atts, true ) );
 
 				$args = apply_filters( 'ten321/post-content-shortcodes/blocks/register', array(
@@ -296,7 +297,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				);
 				$instance['view_template']  = array(
 					'type'    => 'integer',
-					'default' => $all['view_template'],
+					'default' => 0,
 				);
 				$instance['link_image']     = array(
 					'type'    => 'boolean',
