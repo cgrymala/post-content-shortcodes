@@ -116,7 +116,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function render( array $atts, string $content = '' ) {
-				// TODO: Implement render() method.
+				return Plugin::instance()->post_content( $atts );
 			}
 
 			/**

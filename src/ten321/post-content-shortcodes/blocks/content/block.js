@@ -215,9 +215,17 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             );
         }
 
+        function getContentBlock() {
+            return (
+                <ServerSideRender
+                    block="ten321--post-content-shortcodes--blocks/content"
+                    attributes={props.attributes}
+                />
+            );
+        }
+
         return (
             <div className={props.className}>
-                <p>This will eventually be a PCS Content Block</p>
                 {isSelected &&
                 <div className="editor-controls">
                     {getFieldBlog()}
@@ -230,6 +238,11 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         {getImagePanel(props)}
                         {getDisplayPanel()}
                     </InspectorControls>
+                </div>
+                }
+                {!isSelected &&
+                <div>
+                    {getContentBlock()}
                 </div>
                 }
             </div>
