@@ -80,6 +80,9 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function register_block_type() {
+				$atts = $this->get_attributes();
+				Plugin::log( print_r( $atts, true ) );
+
 				$args = apply_filters( 'ten321/post-content-shortcodes/blocks/register', array(
 					// Enqueue blocks.style.build.css on both frontend & backend.
 					'style'           => $this->get_stylesheet(),
@@ -88,7 +91,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					// Enqueue blocks.editor.build.css in the editor only.
 					'editor_style'    => $this->get_editor_style(),
 					'render_callback' => array( $this, 'render' ),
-					'attributes'      => $this->get_attributes(),
+					'attributes'      => $atts,
 				) );
 
 				Plugin::log( 'Preparing to register a new Block' );
