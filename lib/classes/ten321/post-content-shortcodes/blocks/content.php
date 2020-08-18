@@ -116,7 +116,13 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function render( array $atts, string $content = '' ) {
-				return Plugin::instance()->post_content( $atts );
+				ob_start();
+				print( '<pre><code>' );
+				var_dump( $atts );
+				print( '</code></pre>' );
+				$rt = ob_get_clean();
+
+				return $rt . Plugin::instance()->post_content( $atts );
 			}
 
 			/**
