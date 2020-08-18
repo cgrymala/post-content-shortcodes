@@ -136,6 +136,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 selected = blog;
             } else if (typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined') {
                 console.log('Setting the "current blog" as blog');
+                console.log(ten321__post_content_shortcodes__blocks__content.currentBlog);
                 selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
             }
 
