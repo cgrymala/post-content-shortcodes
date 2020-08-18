@@ -127,6 +127,32 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             )
         }
 
+        function getFieldBlog() {
+            let selected = blogOptions[0];
+
+            if (typeof blog !== 'undefined') {
+                console.log('Setting a pre-selected option as blog');
+                selected = blog;
+            } else if (typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined') {
+                console.log('Setting the "current blog" as blog');
+                selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
+            }
+
+            const [ fontSize, setFontSize ] = useState( selected );
+
+            return (
+                <CustomSelectControl
+                    label={__('Show post from which blog?', 'post-content-shortcodes')}
+                    options={ blogOptions }
+                    onChange={ ( newValue, props ) => {
+                        setAttributes( { blog: newValue.selectedItem } );
+                        return setFontSize( newValue );
+                    } }
+                    value={ blogOptions.find( ( option ) => option.key === fontSize.key ) }
+                />
+            );
+        }
+
         function getFieldBlogSelect() {
             if (typeof ten321__post_content_shortcodes__blocks__content.blogList === 'undefined') {
                 return;
@@ -150,10 +176,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 <CustomSelectControl
                     label={__('Show post from which blog?', 'post-content-shortcodes')}
                     options={blogOptions}
-                    onChange={(newValue, props) => {
-                        setAttributes({menu_id: newValue.selectedItem});
-                        return setFontSize(newValue);
-                    }}
+                    onChange={ ( newValue, props ) => {
+                        setAttributes( { blog: newValue.selectedItem } );
+                        return setFontSize( newValue );
+                    } }
                     value={blogOptions.find((option) => option.key === fontSize.key)}
                 />
             );
@@ -189,7 +215,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 <p>This will eventually be a PCS Content Block</p>
                 {isSelected &&
                 <div className="editor-controls">
-                    {getFieldBlogSelect()}
+                    {getFieldBlog()}
                     <PanelBody title={__('Post Selection', 'post-content-shortcodes')}>
                         {getFieldPostID()}
                         <p>OR</p>
