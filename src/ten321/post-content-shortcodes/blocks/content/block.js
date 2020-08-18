@@ -216,7 +216,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         }
 
         return (
-            <div>
+            <div className={props.className}>
                 <p>This will eventually be a PCS Content Block</p>
                 {isSelected &&
                 <div className="editor-controls">
