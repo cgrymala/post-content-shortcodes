@@ -299,10 +299,6 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'type'    => 'boolean',
 					'default' => $all['link_image'],
 				);
-				$instance['blog']           = array(
-					'type'    => 'string',
-					'default' => $all['blog'],
-				);
 				$instance['blog_id']        = array(
 					'type'    => 'integer',
 					'default' => $all['blog_id'],
