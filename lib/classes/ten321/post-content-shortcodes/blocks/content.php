@@ -116,6 +116,10 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function render( array $atts, string $content = '' ) {
+				if ( array_key_exists( 'blog', $atts ) ) {
+					$atts['blog'] = $atts['blog']['key'];
+				}
+
 				ob_start();
 				print( '<pre><code>' );
 				var_dump( $atts );
