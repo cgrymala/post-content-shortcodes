@@ -184,7 +184,7 @@ function getFieldImageHeight(props) {
     );
 }
 
-export const getImagePanel = function(props) {
+export const getImagePanel = function (props) {
     return (
         <PanelBody title={__('Image Options', 'post-content-shortcodes')}>
             {getFieldShowImage(props)}
@@ -279,4 +279,60 @@ export const getExcerptPanel = function (props) {
             {getFieldExcerptLength(props)}
         </PanelBody>
     )
+}
+
+export const getFieldReadMore = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: {read_more},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof read_more !== 'undefined') {
+        checked = read_more;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Include a "Read more" link?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({read_more: newValue});
+            }}
+            name="read_more"
+        />
+    );
+}
+
+export const getFieldShortcodes = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: {shortcodes},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof shortcodes !== 'undefined') {
+        checked = shortcodes;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Allow shortcodes inside of the excerpt?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({shortcodes: newValue});
+            }}
+            name="shortcodes"
+        />
+    );
 }

@@ -9,7 +9,15 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue, getFieldShowTitle, PCSGetFields, getImagePanel, getExcerptPanel, getFieldShowComments} from '../common.js';
+import {
+    getAttributeValue,
+    getFieldShowTitle,
+    PCSGetFields,
+    getImagePanel,
+    getExcerptPanel,
+    getFieldShowComments,
+    getFieldReadMore, getFieldShortcodes
+} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
@@ -81,7 +89,20 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         const {
             className,
             isSelected,
-            attributes: {show_title, show_image, blog, id, post_name, image_width, image_height},
+            attributes: {
+                show_title,
+                show_image,
+                blog,
+                id,
+                post_name,
+                image_width,
+                image_height,
+                show_comments,
+                show_excerpt,
+                excerpt_length,
+                read_more,
+                shortcodes,
+            },
             setAttributes,
         } = props;
 
@@ -93,6 +114,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     {getFieldShowTitle(props)}
                     {getFieldShowComments(props)}
                     {getExcerptPanel(props)}
+                    {getFieldReadMore(props)}
+                    {getFieldShortcodes(props)}
                 </PanelBody>
             )
         }
@@ -148,7 +171,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getFieldPostName() {
             let value = '';
-            if ( typeof post_name !== 'undefined' ) {
+            if (typeof post_name !== 'undefined') {
                 value = post_name;
             }
 
@@ -171,9 +194,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 <div className="editor-controls">
                     {getFieldBlogSelect()}
                     <PanelBody title={__('Post Selection', 'post-content-shortcodes')}>
-                    {getFieldPostID()}
-                    <p>OR</p>
-                    {getFieldPostName()}
+                        {getFieldPostID()}
+                        <p>OR</p>
+                        {getFieldPostName()}
                     </PanelBody>
                     <InspectorControls>
                         {getImagePanel(props)}
