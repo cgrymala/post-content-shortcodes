@@ -331,7 +331,7 @@ namespace Ten321\Post_Content_Shortcodes {
 				 *        completely custom layout using a Views Content Template
 				 * @since 0.6
 				 */
-				if ( class_exists( 'WP_Views_plugin' ) ) {
+				if ( class_exists( '\WP_Views_plugin' ) ) {
 					$args['view_template'] = null;
 				}
 				$this->defaults = apply_filters( 'post-content-shortcodes-defaults', $args );

@@ -67,17 +67,9 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			public function add_attributes( array $atts, array $defaults ) {
 				$instance = array();
 
-				$instance['title']            = array(
-					'type'    => 'string',
-					'default' => '',
-				);
 				$instance['type']             = array(
 					'type'    => 'string',
 					'default' => 'list',
-				);
-				$instance['blog_id']          = array(
-					'type'    => 'integer',
-					'default' => $defaults['blog_id'],
 				);
 				$instance['post_type']        = array(
 					'type'    => 'string',
@@ -173,7 +165,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				foreach ( $atts as $key => $att ) {
 					$trans_atts[ $key ] = array(
 						'type'      => $att['type'],
-						'shortcode' => function ( $shortcode ) {
+						'shortcode' => function ( $shortcode, $key ) {
 							return $shortcode['named'][ $key ];
 						}
 					);

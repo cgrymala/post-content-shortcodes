@@ -245,6 +245,10 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 							'name' => get_blog_option( $GLOBALS['blog_id'], 'name' ),
 						)
 					);
+					$instance['blog_id']        = array(
+						'type'    => 'integer',
+						'default' => $GLOBALS['blog_id'],
+					);
 				}
 
 				$instance['show_title']     = array(
@@ -295,17 +299,15 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'type'    => 'integer',
 					'default' => $all['image_height'],
 				);
-				$instance['view_template']  = array(
-					'type'    => 'integer',
-					'default' => 0,
-				);
+				if ( class_exists( '\WP_Views_plugin' ) ) {
+					$instance['view_template'] = array(
+						'type'    => 'integer',
+						'default' => 0,
+					);
+				}
 				$instance['link_image']     = array(
 					'type'    => 'boolean',
 					'default' => $all['link_image'],
-				);
-				$instance['blog_id']        = array(
-					'type'    => 'integer',
-					'default' => $all['blog_id'],
 				);
 
 				return apply_filters( 'ten321/post-content-shortcodes/blocks/attributes', $instance, $all );

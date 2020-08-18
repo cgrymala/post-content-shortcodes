@@ -89,17 +89,9 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'type'    => 'string',
 					'default' => $defaults['post_name'],
 				);
-				$instance['blog_id']         = array(
-					'type'    => 'integer',
-					'default' => $defaults['blog_id'],
-				);
 				$instance['exclude_current'] = array(
 					'type'    => 'boolean',
 					'default' => $defaults['exclude_current'],
-				);
-				$instance['title']           = array(
-					'type'    => 'string',
-					'default' => '',
 				);
 
 				return array_merge( $atts, $instance );
@@ -119,6 +111,12 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				if ( array_key_exists( 'blog', $atts ) ) {
 					$atts['blog'] = $atts['blog']['key'];
 				}
+
+				ob_start();
+				print( '<pre><code>' );
+				var_dump( $atts );
+				print( '</code></pre>' );
+				$rt = ob_get_clean();
 
 				return $rt . Plugin::instance()->post_content( $atts );
 			}
@@ -159,7 +157,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				foreach ( $atts as $key => $att ) {
 					$trans_atts[ $key ] = array(
 						'type'      => $att['type'],
-						'shortcode' => function ( $shortcode ) {
+						'shortcode' => function ( $shortcode, $key ) {
 							return $shortcode['named'][ $key ];
 						}
 					);
