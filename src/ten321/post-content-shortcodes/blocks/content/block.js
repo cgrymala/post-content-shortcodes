@@ -86,6 +86,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             });
         }
 
+        console.log(props.attributes);
+
         const {
             className,
             isSelected,
