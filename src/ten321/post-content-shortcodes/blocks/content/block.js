@@ -87,6 +87,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         }
 
         console.log(props.attributes);
+        console.log(ten321__post_content_shortcodes__blocks__content.reg_args.attributes);
 
         const {
             className,
