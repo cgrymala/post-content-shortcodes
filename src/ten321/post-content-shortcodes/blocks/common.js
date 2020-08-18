@@ -145,18 +145,13 @@ function getFieldImageWidth(props) {
         setAttributes,
     } = props;
 
-    let current = 0;
-    if (typeof image_width !== 'undefined') {
-        current = image_width;
-    }
-
-    const [value, setValue] = useState(current);
-
     return (
         <TextControl
             label={__('Width: ', 'post-content-shortcodes')}
-            onChange={setValue}
-            value={value}
+            onChange={ ( newVal ) => {
+                setAttributes( { image_width: parseInt( newVal ) } );
+            } }
+            value={image_width}
         />
     );
 }
@@ -168,18 +163,13 @@ function getFieldImageHeight(props) {
         setAttributes,
     } = props;
 
-    let current = 0;
-    if (typeof image_height !== 'undefined') {
-        current = image_height;
-    }
-
-    const [value, setValue] = useState(current);
-
     return (
         <TextControl
             label={__('Height: ', 'post-content-shortcodes')}
-            onChange={setValue}
-            value={value}
+            onChange={ ( newVal ) => {
+                setAttributes( { image_height: parseInt( newVal ) } );
+            } }
+            value={image_height}
         />
     );
 }
@@ -285,18 +275,13 @@ function getFieldExcerptLength(props) {
         setAttributes,
     } = props;
 
-    let current = 0;
-    if (typeof excerpt_length !== 'undefined') {
-        current = excerpt_length;
-    }
-
-    const [value, setValue] = useState(current);
-
     return (
         <TextControl
             label={__('Limit the excerpt to how many words: ', 'post-content-shortcodes')}
-            onChange={setValue}
-            value={value}
+            onChange={ ( newVal ) => {
+                setAttributes( { excerpt_length: parseInt( newVal ) } );
+            } }
+            value={excerpt_length}
         />
     );
 }

@@ -160,36 +160,26 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         }
 
         function getFieldPostID() {
-            let current = 0;
-            if (typeof id !== 'undefined') {
-                current = id;
-            }
-
-            const [value, setValue] = useState(current);
-
             return (
                 <TextControl
                     label={__('Post ID:', 'post-content-shortcodes')}
-                    onChange={setValue}
-                    value={value}
+                    onChange={ ( newVal ) => {
+                        setAttributes( { id: parseInt( newVal ) } );
+                    } }
+                    value={id}
                 />
             );
         }
 
         function getFieldPostName() {
-            let value = '';
-            if (typeof post_name !== 'undefined') {
-                value = post_name;
-            }
-
             return (
                 <TextControl
                     label={__('Post Name (slug):', 'post-content-shortcodes')}
                     className="widefat"
-                    onChange={(newPostName) => {
-                        setAttributes({post_name: newPostName});
-                    }}
-                    value={value}
+                    onChange={ ( newVal ) => {
+                        setAttributes( { post_name: newVal });
+                    } }
+                    value={post_name}
                 />
             );
         }
