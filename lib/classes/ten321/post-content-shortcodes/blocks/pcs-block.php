@@ -51,7 +51,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				Plugin::log( 'Entered the PCS_Block __construct() method' );
 
 				$this->block_namespace = 'ten321--post-content-shortcodes--blocks/' . $this->block_type;
-				$this->block_path  = Plugin::plugin_dir_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
+				$this->block_path      = Plugin::plugin_dir_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
 
 				add_action( 'init', array( $this, 'register_block_type' ) );
 			}
@@ -231,7 +231,18 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			public function get_attributes() {
 				$all = Plugin::instance()->defaults;
 
-				$instance                   = array();
+				$instance = array();
+
+				if ( is_multisite() ) {
+					$instance['blog'] = array(
+						'type'    => 'object',
+						'default' => array(
+							'key'  => $GLOBALS['blog_id'],
+							'name' => get_blog_option( $GLOBALS['blog_id'], 'name' ),
+						)
+					);
+				}
+
 				$instance['show_title']     = array(
 					'type'    => 'boolean',
 					'default' => $all['show_title'],
@@ -288,12 +299,12 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'type'    => 'boolean',
 					'default' => $all['link_image'],
 				);
-				$instance['blog'] = array(
-					'type' => 'string',
+				$instance['blog']           = array(
+					'type'    => 'string',
 					'default' => $all['blog'],
 				);
-				$instance['blog_id'] = array(
-					'type' => 'integer',
+				$instance['blog_id']        = array(
+					'type'    => 'integer',
 					'default' => $all['blog_id'],
 				);
 
@@ -340,8 +351,8 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 
 				if ( is_multisite() ) {
 					$script['blogList'] = $this->get_blog_list();
-					$blog_id = intval( get_current_blog_id() );
-					foreach( $script['blogList'] as $blog ) {
+					$blog_id            = intval( get_current_blog_id() );
+					foreach ( $script['blogList'] as $blog ) {
 						if ( intval( $blog['key'] ) === $blog_id ) {
 							$script['currentBlog'] = $blog;
 						}
@@ -373,7 +384,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					}
 
 					$blog_list[] = array(
-						'key' => $blog,
+						'key'  => $blog,
 						'name' => $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name=%s", 'blogname' ) ),
 					);
 				}
