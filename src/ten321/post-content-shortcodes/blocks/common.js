@@ -184,11 +184,40 @@ function getFieldImageHeight(props) {
     );
 }
 
+function getFieldLinkImage(props) {
+    const {
+        className,
+        isSelected,
+        attributes: {link_image},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof link_image !== 'undefined') {
+        checked = link_image;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Wrap the thumbnail in a link to the post?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({link_image: newValue});
+            }}
+            name="link_image"
+        />
+    );
+}
+
 export const getImagePanel = function (props) {
     return (
         <PanelBody title={__('Image Options', 'post-content-shortcodes')}>
             {getFieldShowImage(props)}
             {getFieldImageDimensions(props)}
+            {getFieldLinkImage(props)}
         </PanelBody>
     );
 }
@@ -277,6 +306,7 @@ export const getExcerptPanel = function (props) {
         <PanelBody title={__('Excerpt Options', 'post-content-shortcodes')}>
             {getFieldShowExcerpt(props)}
             {getFieldExcerptLength(props)}
+            <p><em>{__('Leave set to 0 if you do not want the excerpts limited.', 'post-content-shortcodes')}</em></p>
         </PanelBody>
     )
 }
@@ -333,6 +363,90 @@ export const getFieldShortcodes = function (props) {
                 setAttributes({shortcodes: newValue});
             }}
             name="shortcodes"
+        />
+    );
+}
+
+export const getFieldStripHTML = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: {strip_html},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof strip_html !== 'undefined') {
+        checked = strip_html;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Attempt to strip all HTML out of the excerpt?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({strip_html: newValue});
+            }}
+            name="strip_html"
+        />
+    );
+}
+
+export const getFieldShowAuthor = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: {show_author},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof show_author !== 'undefined') {
+        checked = show_author;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Display the author\'s name?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({show_author: newValue});
+            }}
+            name="show_author"
+        />
+    );
+}
+
+export const getFieldShowDate = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: {show_date},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof show_date !== 'undefined') {
+        checked = show_date;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Display the publication date?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({show_date: newValue});
+            }}
+            name="show_date"
         />
     );
 }

@@ -16,7 +16,7 @@ import {
     getImagePanel,
     getExcerptPanel,
     getFieldShowComments,
-    getFieldReadMore, getFieldShortcodes
+    getFieldReadMore, getFieldShortcodes, getFieldStripHTML, getFieldShowAuthor, getFieldShowDate
 } from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
@@ -102,6 +102,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 excerpt_length,
                 read_more,
                 shortcodes,
+                strip_html,
+                show_author,
+                show_date,
+                link_image,
             },
             setAttributes,
         } = props;
@@ -116,6 +120,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     {getExcerptPanel(props)}
                     {getFieldReadMore(props)}
                     {getFieldShortcodes(props)}
+                    {getFieldStripHTML(props)}
+                    {getFieldShowAuthor(props)}
+                    {getFieldShowDate(props)}
                 </PanelBody>
             )
         }
