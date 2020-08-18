@@ -110,8 +110,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             setAttributes,
         } = props;
 
-        console.log( blogOptions );
-        console.log( blog );
+        console.log(blogOptions);
+        console.log(blog);
 
         function getDisplayPanel() {
             return (
@@ -131,7 +131,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         function getFieldBlog() {
             let selected = blogOptions[0];
 
-            if (typeof blog !== 'undefined') {
+            if (typeof blog !== 'undefined' && blog !== null) {
                 console.log('Setting a pre-selected option as blog');
                 selected = blog;
             } else if (typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined') {
@@ -139,17 +139,17 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
             }
 
-            const [ fontSize, setFontSize ] = useState( selected );
+            const [fontSize, setFontSize] = useState(selected);
 
             return (
                 <CustomSelectControl
                     label={__('Show post from which blog?', 'post-content-shortcodes')}
-                    options={ blogOptions }
-                    onChange={ ( newValue, props ) => {
-                        setAttributes( { blog: newValue.selectedItem } );
-                        return setFontSize( newValue );
-                    } }
-                    value={ blogOptions.find( ( option ) => option.key === fontSize.key ) }
+                    options={blogOptions}
+                    onChange={(newValue, props) => {
+                        setAttributes({blog: newValue.selectedItem});
+                        return setFontSize(newValue);
+                    }}
+                    value={blogOptions.find((option) => option.key === fontSize.key)}
                 />
             );
         }
@@ -177,10 +177,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 <CustomSelectControl
                     label={__('Show post from which blog?', 'post-content-shortcodes')}
                     options={blogOptions}
-                    onChange={ ( newValue, props ) => {
-                        setAttributes( { blog: newValue.selectedItem } );
-                        return setFontSize( newValue );
-                    } }
+                    onChange={(newValue, props) => {
+                        setAttributes({blog: newValue.selectedItem});
+                        return setFontSize(newValue);
+                    }}
                     value={blogOptions.find((option) => option.key === fontSize.key)}
                 />
             );
@@ -190,9 +190,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             return (
                 <TextControl
                     label={__('Post ID:', 'post-content-shortcodes')}
-                    onChange={ ( newVal ) => {
-                        setAttributes( { id: parseInt( newVal ) } );
-                    } }
+                    onChange={(newVal) => {
+                        setAttributes({id: parseInt(newVal)});
+                    }}
                     value={id}
                 />
             );
@@ -203,9 +203,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 <TextControl
                     label={__('Post Name (slug):', 'post-content-shortcodes')}
                     className="widefat"
-                    onChange={ ( newVal ) => {
-                        setAttributes( { post_name: newVal });
-                    } }
+                    onChange={(newVal) => {
+                        setAttributes({post_name: newVal});
+                    }}
                     value={post_name}
                 />
             );
