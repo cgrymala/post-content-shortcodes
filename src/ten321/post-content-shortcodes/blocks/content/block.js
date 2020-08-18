@@ -169,8 +169,11 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 {isSelected &&
                 <div className="editor-controls">
                     {getFieldBlogSelect()}
+                    <PanelBody title={__('Post Selection', 'post-content-shortcodes')}>
                     {getFieldPostID()}
+                    <p>OR</p>
                     {getFieldPostName()}
+                    </PanelBody>
                     <InspectorControls>
                         {getDisplayPanel()}
                     </InspectorControls>
