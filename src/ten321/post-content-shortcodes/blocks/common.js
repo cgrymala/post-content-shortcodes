@@ -129,3 +129,57 @@ export const getFieldShowImage = function (props) {
         />
     );
 }
+
+export const getFieldImageDimensions = function(props) {
+    return (
+        <PanelBody title={__('Image Dimensions', 'post-content-shortcodes')}>
+            {getFieldImageWidth(props)} <span>x</span> {getFieldImageHeight(props)}
+        </PanelBody>
+    );
+}
+
+function getFieldImageWidth(props) {
+    const {
+        className,
+        attributes: {image_width},
+        setAttributes,
+    } = props;
+
+    let current = 0;
+    if (typeof image_width !== 'undefined') {
+        current = image_width;
+    }
+
+    const [value, setValue] = useState(current);
+
+    return (
+        <TextControl
+            label={__( 'Width: ', 'post-content-shortcodes' )}
+            onChange={setValue}
+            value={value}
+        />
+    );
+}
+
+function getFieldImageHeight(props) {
+    const {
+        className,
+        attributes: {image_height},
+        setAttributes,
+    } = props;
+
+    let current = 0;
+    if (typeof image_height !== 'undefined') {
+        current = image_height;
+    }
+
+    const [value, setValue] = useState(current);
+
+    return (
+        <TextControl
+            label={__( 'Height: ', 'post-content-shortcodes' )}
+            onChange={setValue}
+            value={value}
+        />
+    );
+}

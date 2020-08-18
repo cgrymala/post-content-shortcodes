@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue, getFieldShowImage, getFieldShowTitle, PCSGetFields} from '../common.js';
+import {getAttributeValue, getFieldShowImage, getFieldShowTitle, PCSGetFields, getFieldImageDimensions} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
@@ -81,7 +81,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         const {
             className,
             isSelected,
-            attributes: {show_title, show_image, blog, id, post_name},
+            attributes: {show_title, show_image, blog, id, post_name, image_width, image_height},
             setAttributes,
         } = props;
 
@@ -91,6 +91,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             return (
                 <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
                     {getFieldShowImage(props)}
+                    {getFieldImageDimensions(props)}
                     {getFieldShowTitle(props)}
                 </PanelBody>
             );
