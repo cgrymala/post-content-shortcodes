@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue, getFieldShowTitle, PCSGetFields, getImagePanel, getExcerptPanel} from '../common.js';
+import {getAttributeValue, getFieldShowTitle, PCSGetFields, getImagePanel, getExcerptPanel, getFieldShowComments} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
