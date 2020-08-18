@@ -220,7 +220,24 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             return (
                 <ServerSideRender
                     block="ten321--post-content-shortcodes--blocks/content"
-                    attributes={props.attributes}
+                    attributes={{
+                        show_title: show_title,
+                        show_image: show_image,
+                        blog: blog,
+                        id: id,
+                        post_name: post_name,
+                        image_width: image_width,
+                        image_height: image_height,
+                        show_comments: show_comments,
+                        show_excerpt: show_excerpt,
+                        excerpt_length: excerpt_length,
+                        read_more: read_more,
+                        shortcodes: shortcodes,
+                        strip_html: strip_html,
+                        show_author: show_author,
+                        show_date: show_date,
+                        link_image: link_image,
+                    }}
                 />
             );
         }
