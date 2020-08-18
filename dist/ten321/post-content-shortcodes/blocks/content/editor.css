@@ -10,3 +10,6 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.wp-block-ten321--post-content-shortcodes--blocks-content,
+.wp-block-ten321--post-content-shortcodes--blocks-list {
+  padding: 1rem; }
