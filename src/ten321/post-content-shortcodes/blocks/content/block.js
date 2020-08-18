@@ -25,6 +25,7 @@ const {PanelBody, CheckboxControl, BaseControl, TextControl, CustomSelectControl
 const {useState} = wp.element;
 const {withState} = wp.compose;
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
+const {ServerSideRender} = wp.editor;
 
 /**
  * Register: aa Gutenberg Block.
