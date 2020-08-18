@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue, getFieldShowImage, getFieldShowTitle, PCSGetFields, getFieldImageDimensions} from '../common.js';
+import {getAttributeValue, getFieldShowTitle, PCSGetFields, getImagePanel, getExcerptPanel} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {URLInputButton, URLInput, InspectorControls} = wp.blockEditor;
@@ -89,12 +89,12 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getDisplayPanel() {
             return (
-                <PanelBody title={__('Display Settings', 'ten321/post-content-shortcodes')}>
-                    {getFieldShowImage(props)}
-                    {getFieldImageDimensions(props)}
+                <PanelBody title={__('Display Options', 'post-content-shortcodes')}>
                     {getFieldShowTitle(props)}
+                    {getFieldShowComments(props)}
+                    {getExcerptPanel(props)}
                 </PanelBody>
-            );
+            )
         }
 
         function getFieldBlogSelect() {
@@ -176,6 +176,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     {getFieldPostName()}
                     </PanelBody>
                     <InspectorControls>
+                        {getImagePanel(props)}
                         {getDisplayPanel()}
                     </InspectorControls>
                 </div>

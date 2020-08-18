@@ -91,7 +91,7 @@ export const getFieldShowTitle = function (props) {
 
     return (
         <CheckboxControl
-            label={__( 'Display the post title?', 'post-content-shortcodes' )}
+            label={__('Display the post title?', 'post-content-shortcodes')}
             checked={isChecked}
             onChange={(newValue, props) => {
                 setChecked(newValue);
@@ -102,7 +102,7 @@ export const getFieldShowTitle = function (props) {
     );
 }
 
-export const getFieldShowImage = function (props) {
+function getFieldShowImage(props) {
     const {
         className,
         isSelected,
@@ -119,7 +119,7 @@ export const getFieldShowImage = function (props) {
 
     return (
         <CheckboxControl
-            label={__( 'Display the featured image with the post?', 'post-content-shortcodes' )}
+            label={__('Display the featured image with the post?', 'post-content-shortcodes')}
             checked={isChecked}
             onChange={(newValue, props) => {
                 setChecked(newValue);
@@ -130,7 +130,7 @@ export const getFieldShowImage = function (props) {
     );
 }
 
-export const getFieldImageDimensions = function(props) {
+function getFieldImageDimensions(props) {
     return (
         <PanelBody title={__('Image Dimensions', 'post-content-shortcodes')}>
             {getFieldImageWidth(props)} <span>x</span> {getFieldImageHeight(props)}
@@ -154,7 +154,7 @@ function getFieldImageWidth(props) {
 
     return (
         <TextControl
-            label={__( 'Width: ', 'post-content-shortcodes' )}
+            label={__('Width: ', 'post-content-shortcodes')}
             onChange={setValue}
             value={value}
         />
@@ -177,9 +177,106 @@ function getFieldImageHeight(props) {
 
     return (
         <TextControl
-            label={__( 'Height: ', 'post-content-shortcodes' )}
+            label={__('Height: ', 'post-content-shortcodes')}
             onChange={setValue}
             value={value}
         />
     );
+}
+
+export const getImagePanel = function(props) {
+    return (
+        <PanelBody title={__('Image Options', 'post-content-shortcodes')}>
+            {getFieldShowImage(props)}
+            {getFieldImageDimensions(props)}
+        </PanelBody>
+    );
+}
+
+export const getFieldShowComments = function (props) {
+    const {
+        className,
+        isSelected,
+        attributes: {show_comments},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof show_comments !== 'undefined') {
+        checked = show_comments;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Display comments with the post?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({show_comments: newValue});
+            }}
+            name="show_comments"
+        />
+    );
+}
+
+function getFieldShowExcerpt(props) {
+    const {
+        className,
+        isSelected,
+        attributes: {show_excerpt},
+        setAttributes,
+    } = props;
+
+    let checked = false;
+    if (typeof show_excerpt !== 'undefined') {
+        checked = show_excerpt;
+    }
+
+    const [isChecked, setChecked] = useState(checked);
+
+    return (
+        <CheckboxControl
+            label={__('Display an excerpt of the post content?', 'post-content-shortcodes')}
+            checked={isChecked}
+            onChange={(newValue, props) => {
+                setChecked(newValue);
+                setAttributes({show_excerpt: newValue});
+            }}
+            name="show_excerpt"
+        />
+    );
+}
+
+function getFieldExcerptLength(props) {
+    const {
+        className,
+        attributes: {excerpt_length},
+        setAttributes,
+    } = props;
+
+    let current = 0;
+    if (typeof excerpt_length !== 'undefined') {
+        current = excerpt_length;
+    }
+
+    const [value, setValue] = useState(current);
+
+    return (
+        <TextControl
+            label={__('Limit the excerpt to how many words: ', 'post-content-shortcodes')}
+            onChange={setValue}
+            value={value}
+        />
+    );
+}
+
+export const getExcerptPanel = function (props) {
+    return (
+        <PanelBody title={__('Excerpt Options', 'post-content-shortcodes')}>
+            {getFieldShowExcerpt(props)}
+            {getFieldExcerptLength(props)}
+        </PanelBody>
+    )
 }
