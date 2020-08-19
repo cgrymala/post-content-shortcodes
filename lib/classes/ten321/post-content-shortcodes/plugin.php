@@ -555,7 +555,7 @@ namespace Ten321\Post_Content_Shortcodes {
 
 				$atts['blog_id'] = intval( $atts['blog_id'] );
 
-				if ( is_array( $atts ) && array_key_exists( 'post_name', $atts ) ) {
+				if ( is_array( $atts ) && array_key_exists( 'post_name', $atts ) && ! empty( $atts['post_name'] ) ) {
 					$tmp = $this->get_id_from_post_name( $atts['post_name'], $atts['blog_id'] );
 					if ( false !== $tmp ) {
 						$atts['id'] = $tmp;
