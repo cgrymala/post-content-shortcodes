@@ -103,7 +103,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				$args = $this->get_args( $args );
 
 				Plugin::log( 'Preparing to register a new Block' );
-				Plugin::log( print_r( $this, true ) );
+				Plugin::log( print_r( $args, true ) );
 
 				register_block_type(
 					$this->block_namespace, $args
