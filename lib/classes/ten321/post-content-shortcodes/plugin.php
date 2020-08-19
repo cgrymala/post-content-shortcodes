@@ -576,6 +576,8 @@ namespace Ten321\Post_Content_Shortcodes {
 				$this->is_true( $this->shortcode_atts['link_image'] );
 				$this->is_true( $this->shortcode_atts['ignore_protected'] );
 
+				$this->debug( 'The full list of shortcode attributes after processing looks like: ' . print_r( $this->shortcode_atts, true ) );
+
 				return $this->shortcode_atts;
 			}
 
