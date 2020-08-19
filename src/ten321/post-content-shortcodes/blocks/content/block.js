@@ -66,7 +66,20 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         }
 
                         let tmp = getAttributeValue('post-content', i, text);
-                        if (tmp !== null) {
+                        if ( i === 'blog' ) {
+                            let blogList = ten321__post_content_shortcodes__blocks__content.blogList;
+                            for ( let b in blogList ) {
+                                if ( ! blogList.hasOwnProperty(b) ) {
+                                    continue;
+                                }
+
+                                if ( ( blogList[b].key * 1 ) !== ( tmp * 1 ) ) {
+                                    continue;
+                                }
+
+                                atts[i] = blogList[b];
+                            }
+                        } else if (tmp !== null) {
                             atts[i] = tmp;
                         }
                     }
