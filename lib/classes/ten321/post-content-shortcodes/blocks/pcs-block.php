@@ -53,6 +53,11 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				$this->block_namespace = 'ten321--post-content-shortcodes--blocks/' . $this->block_type;
 				$this->block_path      = Plugin::plugin_dir_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
 
+				add_filter( 'ten321/post-content-shortcodes/blocks/localized-scripts', array(
+					$this,
+					'localize_script'
+				) );
+
 				add_action( 'init', array( $this, 'register_block_type' ) );
 			}
 
@@ -84,7 +89,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				Plugin::log( 'Attributes Array looks like: ' );
 				Plugin::log( print_r( $atts, true ) );
 
-				$args = apply_filters( 'ten321/post-content-shortcodes/blocks/register', array(
+				$args = array(
 					// Enqueue blocks.style.build.css on both frontend & backend.
 					'style'           => $this->get_stylesheet(),
 					// Enqueue blocks.build.js in the editor only.
@@ -93,7 +98,9 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'editor_style'    => $this->get_editor_style(),
 					'render_callback' => array( $this, 'render' ),
 					'attributes'      => $atts,
-				) );
+				);
+
+				$args = $this->get_args( $args );
 
 				Plugin::log( 'Preparing to register a new Block' );
 				Plugin::log( print_r( $this, true ) );
@@ -102,6 +109,17 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					$this->block_namespace, $args
 				);
 			}
+
+			/**
+			 * Get the array of arguments used to register the new block
+			 *
+			 * @param array $args the existing array of arguments
+			 *
+			 * @access public
+			 * @return array the updated list of arguments
+			 * @since  0.1
+			 */
+			abstract public function get_args( array $args );
 
 			/**
 			 * Register the block stylesheet and return the handle
@@ -228,11 +246,14 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			/**
 			 * Retrieve a list of the block attributes
 			 *
+			 * @param array $atts the existing list of attributes
+			 * @param array $defaults the array of default values
+			 *
 			 * @access public
 			 * @return array the list of attributes
 			 * @since  0.1
 			 */
-			public function get_attributes() {
+			public function get_attributes( array $atts = array(), array $defaults = array() ) {
 				$all = Plugin::instance()->defaults;
 
 				$instance = array();
@@ -310,20 +331,8 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'default' => $all['link_image'],
 				);
 
-				return apply_filters( 'ten321/post-content-shortcodes/blocks/attributes', $instance, $all );
+				return $instance;
 			}
-
-			/**
-			 * Add any additional attributes that are unique to this block
-			 *
-			 * @param array $atts the existing list of attributes
-			 * @param array $defaults the array of default values
-			 *
-			 * @access public
-			 * @return array the updated list of attributes
-			 * @since  0.1
-			 */
-			abstract public function add_attributes( array $atts, array $defaults );
 
 			/**
 			 * Add any additional block registration arguments for this block

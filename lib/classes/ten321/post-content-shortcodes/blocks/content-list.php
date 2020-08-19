@@ -32,10 +32,6 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				$this->block_title = __( 'PCS List Block', 'post-content-shortcodes' );
 
 				parent::__construct();
-				add_filter( 'ten321/post-content-shortcodes/blocks/attributes', array(
-					$this,
-					'add_attributes'
-				), 10, 2 );
 			}
 
 			/**
@@ -55,17 +51,18 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			}
 
 			/**
-			 * Add any additional attributes that are unique to this block
+			 * Add any attributes for that need to be registered for this block
 			 *
 			 * @param array $atts the existing list of attributes
 			 * @param array $defaults the array of default values
 			 *
 			 * @access public
-			 * @return array the updated list of attributes
+			 * @return array the full list of attributes
 			 * @since  0.1
 			 */
-			public function add_attributes( array $atts, array $defaults ) {
-				$instance = array();
+			public function get_attributes( array $atts = array(), array $defaults = array() ) {
+				$defaults = Plugin::instance()->defaults;
+				$instance = parent::get_attributes( $atts, $defaults );
 
 				$instance['type']             = array(
 					'type'    => 'string',
@@ -112,7 +109,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'default' => $defaults['ignore_protected'],
 				);
 
-				return array_merge( $atts, $instance );
+				return $instance;
 			}
 
 			/**
@@ -127,6 +124,19 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 */
 			public function render( array $atts, string $content = '' ) {
 				// TODO: Implement render() method.
+			}
+
+			/**
+			 * Get the array of arguments used to register the new block
+			 *
+			 * @param array $args the existing array of arguments
+			 *
+			 * @access public
+			 * @return array the updated list of arguments
+			 * @since  0.1
+			 */
+			public function get_args( array $args ) {
+				return $this->register_args( $args );
 			}
 
 			/**
