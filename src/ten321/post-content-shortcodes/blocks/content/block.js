@@ -223,7 +223,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     attributes={{
                         show_title: !!show_title,
                         show_image: !!show_image,
-                        blog_id: ( blog.key * 1 ),
+                        blog: blog,
                         id: ( id * 1 ),
                         post_name: post_name,
                         image_width: ( image_width * 1 ),

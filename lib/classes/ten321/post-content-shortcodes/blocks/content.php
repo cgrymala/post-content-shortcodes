@@ -100,6 +100,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			public function render( array $atts, string $content = '' ) {
 				if ( array_key_exists( 'blog', $atts ) ) {
 					$atts['blog'] = $atts['blog']['key'];
+					$atts['blog_id'] = $atts['blog'];
 				}
 
 				ob_start();
