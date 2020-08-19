@@ -81,6 +81,9 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'default' => $defaults['exclude_current'],
 				);
 
+				Plugin::log( 'Block Registration Arguments:' );
+				Plugin::log( print_r( $instance, true ) );
+
 				return $instance;
 			}
 
