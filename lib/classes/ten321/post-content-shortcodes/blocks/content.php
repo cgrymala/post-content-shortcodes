@@ -103,13 +103,17 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					$atts['blog_id'] = $atts['blog'];
 				}
 
-				ob_start();
+				$rt = '';
+
+				/*ob_start();
 				print( '<pre><code>' );
 				var_dump( $atts );
 				print( '</code></pre>' );
-				$rt = ob_get_clean();
+				$rt = ob_get_clean();*/
 
-				return $rt . Plugin::instance()->post_content( $atts );
+				$rt .= Plugin::instance()->post_content( $atts );
+
+				return $rt;
 			}
 
 			/**

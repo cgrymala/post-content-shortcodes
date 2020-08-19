@@ -761,11 +761,6 @@ namespace Ten321\Post_Content_Shortcodes {
 					$content = apply_filters( 'post-content-shortcodes-title', '<h2>' . $p->post_title . '</h2>', $p->post_title, $p, $this->shortcode_atts ) . $content;
 				}
 
-				/**
-				 * Temporary debug process; needs to be removed later
-				 */
-				$content = '<div class="pcs-content post-' . $p->ID . '">' . $content . '</div>';
-
 				do_action( 'pcs_ending_post_content' );
 
 				return apply_filters( 'post-content-shortcodes-content', apply_filters( 'the_content', $content, $p, $this->shortcode_atts ), $p, $this->shortcode_atts );
