@@ -66,21 +66,43 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         }
 
                         let tmp = getAttributeValue('post-content', i, text);
-                        if ( i === 'blog' ) {
+                        if (i === 'blog') {
                             let blogList = ten321__post_content_shortcodes__blocks__content.blogList;
-                            for ( let b in blogList ) {
-                                if ( ! blogList.hasOwnProperty(b) ) {
+                            for (let b in blogList) {
+                                if (!blogList.hasOwnProperty(b)) {
                                     continue;
                                 }
 
-                                if ( ( blogList[b].key * 1 ) !== ( tmp * 1 ) ) {
+                                if ((blogList[b].key * 1) !== (tmp * 1)) {
                                     continue;
                                 }
 
                                 atts[i] = blogList[b];
                             }
                         } else if (tmp !== null) {
-                            atts[i] = tmp;
+                            switch (i) {
+                                case 'show_title' :
+                                case 'show_image' :
+                                case 'show_comments' :
+                                case 'show_excerpt' :
+                                case 'read_more' :
+                                case 'shortcodes' :
+                                case 'strip_html' :
+                                case 'show_author' :
+                                case 'show_date' :
+                                case 'link_image' :
+                                    atts[i] = tmp === 'true' || tmp === 1 || tmp === '1' || tmp === true;
+                                    break;
+                                case 'id' :
+                                case 'image_width' :
+                                case 'image_height' :
+                                case 'excerpt_length' :
+                                    atts[i] = Number(tmp);
+                                    break;
+                                default :
+                                    atts[i] = tmp;
+                                    break;
+                            }
                         }
                     }
 
@@ -237,13 +259,13 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                         show_title: !!show_title,
                         show_image: !!show_image,
                         blog: blog,
-                        id: ( id * 1 ),
+                        id: (id * 1),
                         post_name: post_name,
-                        image_width: ( image_width * 1 ),
-                        image_height: ( image_height * 1 ),
+                        image_width: (image_width * 1),
+                        image_height: (image_height * 1),
                         show_comments: !!show_comments,
                         show_excerpt: !!show_excerpt,
-                        excerpt_length: ( excerpt_length * 1 ),
+                        excerpt_length: (excerpt_length * 1),
                         read_more: !!read_more,
                         shortcodes: !!shortcodes,
                         strip_html: !!strip_html,
