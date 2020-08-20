@@ -194,51 +194,30 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             );
         }
 
-        function getFieldBlogSelect() {
-            if (typeof ten321__post_content_shortcodes__blocks__content.blogList === 'undefined') {
-                return;
-            }
-
-            let selected = blogOptions[0];
-
-            if (typeof blog !== 'undefined' && blog !== null) {
-                console.log('Setting a pre-selected option as blog');
-                selected = blog;
-            } else if (typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined') {
-                console.log('Setting the "current blog" as blog');
-                selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
-            }
-
-            console.log(selected);
-
-            const [fontSize, setFontSize] = useState(selected);
-
-            return (
-                <CustomSelectControl
-                    label={__('Show post from which blog?', 'post-content-shortcodes')}
-                    options={blogOptions}
-                    onChange={(newValue, props) => {
-                        setAttributes({blog: newValue.selectedItem});
-                        return setFontSize(newValue);
-                    }}
-                    value={blogOptions.find((option) => option.key === fontSize.key)}
-                />
-            );
-        }
-
         function getFieldPostID() {
+            let val = '';
+            if ( typeof id !== 'undefined' && id !== null ) {
+                val = id;
+            }
+
             return (
                 <TextControl
                     label={__('Post ID:', 'post-content-shortcodes')}
                     onChange={(newVal) => {
-                        setAttributes({id: parseInt(newVal)});
+                        val = parseInt(newVal);
+                        setAttributes({id: isNaN( val ) ? newVal : parseInt( val )});
                     }}
-                    value={id}
+                    value={val}
                 />
             );
         }
 
         function getFieldPostName() {
+            let val = '';
+            if ( typeof post_name !== 'undefined' && post_name !== null ) {
+                val = post_name;
+            }
+
             return (
                 <TextControl
                     label={__('Post Name (slug):', 'post-content-shortcodes')}
@@ -246,7 +225,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     onChange={(newVal) => {
                         setAttributes({post_name: newVal});
                     }}
-                    value={post_name}
+                    value={val}
                 />
             );
         }

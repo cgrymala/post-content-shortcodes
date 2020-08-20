@@ -185,7 +185,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     <TextControl
                         label={__('Post parent ID:', 'post-content-shortcodes')}
                         onChange={(newVal) => {
-                            setAttributes({post_parent: parseInt(newVal)});
+                            val = parseInt(newVal);
+                            setAttributes({post_parent: isNaN( val ) ? newVal : parseInt( val )});
                         }}
                         value={val}
                     />
@@ -312,7 +313,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     <TextControl
                         label={__('How many posts should be shown?', 'post-content-shortcodes')}
                         onChange={(newVal) => {
-                            setAttributes({numberposts: newVal});
+                            val = parseInt( newVal );
+                            setAttributes({numberposts: isNaN( val ) ? newVal : parseInt( val )});
                         }}
                         value={val}
                     />
