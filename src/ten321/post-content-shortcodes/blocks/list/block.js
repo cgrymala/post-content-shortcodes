@@ -73,6 +73,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
     attributes: ten321__post_content_shortcodes__blocks__list.reg_args.attributes,
 
     edit: (props) => {
+        console.log( 'List block attributes:');
+        console.log( ten321__post_content_shortcodes__blocks__list.reg_args.attributes );
+
         const blogOptions = ten321__post_content_shortcodes__blocks__list.blogList;
         if (blogOptions[0].key !== 0) {
             blogOptions.unshift({
