@@ -304,10 +304,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         function getFieldNumberPosts() {
             let val = -1;
             if (typeof numberposts !== 'undefined' && numberposts !== null) {
-                val = parseInt(numberposts);
-                if ( isNaN(val) ) {
-                    val = '';
-                }
+                val = numberposts;
             }
 
             return (
