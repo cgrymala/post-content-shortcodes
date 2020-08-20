@@ -561,8 +561,11 @@ namespace Ten321\Post_Content_Shortcodes {
 						$atts['id'] = $tmp;
 					}
 				}
-				$this->debug( 'Defaults before merging: ' . print_r( $this->defaults, true ) );
-				$this->debug( 'Atts before merging: ' . print_r( $atts, true ) );
+
+				if ( empty( $this->defaults ) ) {
+					$this->_setup_defaults();
+				}
+
 				$this->shortcode_atts = shortcode_atts( $this->defaults, $atts );
 
 				$this->debug( 'The full list of shortcode atts after merging defaults looks like: ' . print_r( $this->shortcode_atts, true ) );
