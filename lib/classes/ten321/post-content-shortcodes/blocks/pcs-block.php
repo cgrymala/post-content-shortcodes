@@ -53,11 +53,6 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				$this->block_namespace = 'ten321--post-content-shortcodes--blocks/' . $this->block_type;
 				$this->block_path      = Plugin::plugin_dir_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
 
-				add_filter( 'ten321/post-content-shortcodes/blocks/localized-scripts', array(
-					$this,
-					'localize_script'
-				) );
-
 				add_action( 'init', array( $this, 'register_block_type' ) );
 			}
 
