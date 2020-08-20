@@ -312,10 +312,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     <TextControl
                         label={__('How many posts should be shown?', 'post-content-shortcodes')}
                         onChange={(newVal) => {
-                            if ( isNaN(parseInt(newVal)) ) {
-                                return newVal;
-                            }
-                            setAttributes({numberposts: parseInt(newVal)});
+                            setAttributes({numberposts: newVal});
                         }}
                         value={val}
                     />
