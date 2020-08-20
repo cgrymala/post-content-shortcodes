@@ -3,9 +3,9 @@
 
 **Tags:** shortcode, clone, syndication, post content, post list
 
-**Requires at least:** 4.3
+**Requires at least:** 5.2
 
-**Tested up to:** 4.9.4
+**Tested up to:** 5.5
 
 **Stable tag:** 1.0.1.1
 
@@ -262,6 +262,12 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 
 ## Changelog ##
 
+### 2020.8.1 ###
+
+* Began implementing Blocks
+    * Post Content Block should be fully operational at this point.
+    * Post List Block is not yet implemented
+
 ### 1.0.1.1 ###
 * Adds i18n and l10n features so the plugin can be properly translated in the future
 * Attempts to fix errant PHP warning about string/array conversion ([h/t @codingbee](https://wordpress.org/support/topic/getting-error-when-displaying-content-inside-widget/))
@@ -377,6 +383,10 @@ Unfortunately, because of the way the Views plugin processes posts, the [wpv-pos
 This is the first version of this plugin
 
 ## Upgrade Notice ##
+
+### 2020.8.1 ###
+
+* Adds Post Content Block (Post List Block will be coming in the future)
 
 ### 1.0.1.1 ###
 

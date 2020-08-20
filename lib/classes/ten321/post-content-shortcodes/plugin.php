@@ -20,7 +20,7 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @var string $version holds the version number for the plugin
 			 * @access public
 			 */
-			public static $version = '2020.8.1';
+			public static $version = '2020.8.1.2';
 			/**
 			 * @var string $plugin_path the root path to this plugin
 			 * @access public
