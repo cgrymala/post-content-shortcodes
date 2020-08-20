@@ -563,6 +563,8 @@ namespace Ten321\Post_Content_Shortcodes {
 				}
 				$this->shortcode_atts = shortcode_atts( $this->defaults, $atts );
 
+				$this->debug( 'The full list of shortcode atts after merging defaults looks like: ' . print_r( $this->shortcode_atts, true ) );
+
 				$this->is_true( $this->shortcode_atts['show_excerpt'] );
 				$this->is_true( $this->shortcode_atts['show_image'] );
 				$this->is_true( $this->shortcode_atts['show_title'] );
