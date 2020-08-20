@@ -196,7 +196,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getFieldPostID() {
             let val = '';
-            if ( typeof id !== 'undefined' && id !== null ) {
+            if (typeof id !== 'undefined' && id !== null) {
                 val = id;
             }
 
@@ -204,8 +204,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                 <TextControl
                     label={__('Post ID:', 'post-content-shortcodes')}
                     onChange={(newVal) => {
-                        val = parseInt(newVal);
-                        setAttributes({id: isNaN( val ) ? newVal : parseInt( val )});
+                        const val = parseInt(newVal);
+                        setAttributes({id: isNaN(val) ? newVal : val});
                     }}
                     value={val}
                 />
@@ -214,7 +214,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
 
         function getFieldPostName() {
             let val = '';
-            if ( typeof post_name !== 'undefined' && post_name !== null ) {
+            if (typeof post_name !== 'undefined' && post_name !== null) {
                 val = post_name;
             }
 

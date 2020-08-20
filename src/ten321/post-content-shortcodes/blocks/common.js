@@ -146,17 +146,17 @@ function getFieldImageWidth(props) {
     } = props;
 
     let val = '';
-    if ( typeof image_width !== 'undefined' && image_width !== null ) {
+    if (typeof image_width !== 'undefined' && image_width !== null) {
         val = image_width;
     }
 
     return (
         <TextControl
             label={__('Width: ', 'post-content-shortcodes')}
-            onChange={ ( newVal ) => {
-                val = parseInt( newVal );
-                setAttributes( { image_width: isNaN( newVal ) ? val : parseInt( newVal ) } );
-            } }
+            onChange={(newVal) => {
+                const val = parseInt(newVal);
+                setAttributes({image_width: isNaN(val) ? newVal : val});
+            }}
             value={val}
         />
     );
@@ -170,17 +170,17 @@ function getFieldImageHeight(props) {
     } = props;
 
     let val = '';
-    if ( typeof image_height !== 'undefined' && image_height !== null ) {
+    if (typeof image_height !== 'undefined' && image_height !== null) {
         val = image_height;
     }
 
     return (
         <TextControl
             label={__('Height: ', 'post-content-shortcodes')}
-            onChange={ ( newVal ) => {
-                val = parseInt( newVal );
-                setAttributes( { image_height: isNaN( val ) ? newVal : parseInt( val ) } );
-            } }
+            onChange={(newVal) => {
+                const val = parseInt(newVal);
+                setAttributes({image_height: isNaN(val) ? newVal : val});
+            }}
             value={val}
         />
     );
@@ -288,17 +288,17 @@ function getFieldExcerptLength(props) {
     } = props;
 
     let val = 0;
-    if ( typeof excerpt_length !== 'undefined' && excerpt_length !== null ) {
+    if (typeof excerpt_length !== 'undefined' && excerpt_length !== null) {
         val = excerpt_length;
     }
 
     return (
         <TextControl
             label={__('Limit the excerpt to how many words: ', 'post-content-shortcodes')}
-            onChange={ ( newVal ) => {
-                val = parseInt( newVal );
-                setAttributes( { excerpt_length: isNaN( val ) ? newVal : parseInt( val ) } );
-            } }
+            onChange={(newVal) => {
+                const val = parseInt(newVal);
+                setAttributes({excerpt_length: isNaN(val) ? newVal : val});
+            }}
             value={val}
         />
     );
