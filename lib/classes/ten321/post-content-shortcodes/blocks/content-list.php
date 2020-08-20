@@ -123,7 +123,22 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @since  0.1
 			 */
 			public function render( array $atts, string $content = '' ) {
-				// TODO: Implement render() method.
+				if ( array_key_exists( 'blog', $atts ) ) {
+					$atts['blog'] = intval( $atts['blog']['key'] );
+					$atts['blog_id'] = $atts['blog'];
+				}
+
+				$rt = '';
+
+				/*ob_start();
+				print( '<pre><code>' );
+				var_dump( $atts );
+				print( '</code></pre>' );
+				$rt = ob_get_clean();*/
+
+				$rt .= Plugin::instance()->post_list( $atts );
+
+				return $rt;
 			}
 
 			/**
