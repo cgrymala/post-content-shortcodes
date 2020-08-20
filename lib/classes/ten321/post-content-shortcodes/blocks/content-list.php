@@ -130,11 +130,11 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 
 				$rt = '';
 
-				/*ob_start();
+				ob_start();
 				print( '<pre><code>' );
 				var_dump( $atts );
 				print( '</code></pre>' );
-				$rt = ob_get_clean();*/
+				$rt = ob_get_clean();
 
 				$rt .= Plugin::instance()->post_list( $atts );
 
