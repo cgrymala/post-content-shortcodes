@@ -399,6 +399,39 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             );
         }
 
+        function getListBlock() {
+            return (
+                <ServerSideRender
+                    block="ten321--post-content-shortcodes--blocks/list"
+                    attributes={{
+                        show_title: !!show_title,
+                        show_image: !!show_image,
+                        blog: blog,
+                        image_width: parseInt(image_width),
+                        image_height: parseInt(image_height),
+                        show_comments: !!show_comments,
+                        show_excerpt: !!show_excerpt,
+                        excerpt_length: parseInt(excerpt_length),
+                        read_more: !!read_more,
+                        shortcodes: !!shortcodes,
+                        strip_html: !!strip_html,
+                        show_author: !!show_author,
+                        show_date: !!show_date,
+                        link_image: !!link_image,
+                        post_type: post_type,
+                        post_parent: parseInt(post_parent),
+                        tax_name: tax_name,
+                        tax_term: tax_term,
+                        orderby: orderby,
+                        order: order==='desc'?'desc':'asc',
+                        numberposts: parseInt(numberposts),
+                        post_status: post_status,
+                        ignore_protected: !!ignore_protected,
+                    }}
+                />
+            );
+        }
+
         return (
             <div className={className}>
                 {isSelected &&
@@ -406,6 +439,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     {getPostSelectionPanel()}
                     {getPostAttributesPanel()}
                     {getPostInspectorPanel()}
+                </div>
+                }{!isSelected &&
+                <div>
+                    {getListBlock()}
                 </div>
                 }
             </div>
