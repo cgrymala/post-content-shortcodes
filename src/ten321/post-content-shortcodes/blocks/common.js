@@ -456,3 +456,18 @@ export const getFieldShowDate = function (props) {
         />
     );
 }
+
+export const getDisplayPanel = function(props) {
+    return (
+        <PanelBody title={__('Display Options', 'post-content-shortcodes')}>
+            {getFieldShowTitle(props)}
+            {getFieldShowComments(props)}
+            {getExcerptPanel(props)}
+            {getFieldReadMore(props)}
+            {getFieldShortcodes(props)}
+            {getFieldStripHTML(props)}
+            {getFieldShowAuthor(props)}
+            {getFieldShowDate(props)}
+        </PanelBody>
+    )
+}

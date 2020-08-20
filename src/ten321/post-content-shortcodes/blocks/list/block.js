@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue} from '../common.js';
+import {getAttributeValue, getDisplayPanel} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {InspectorControls} = wp.blockEditor;
@@ -101,6 +101,13 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             {value: 'desc', label: __('Descending', 'post-content-shortcodes')},
         ];
 
+        const statusOptions = [
+            {key: 'publish', name: __('Published', 'post-content-shortcodes')},
+            {key: 'draft', name: __('Draft', 'post-content-shortcodes')},
+            {key: 'pending', name: __('Pending Review', 'post-content-shortcodes')},
+            {key: 'inherit', name: __('Inherited', 'post-content-shortcodes')},
+        ];
+
         const {
             className,
             isSelected,
@@ -126,6 +133,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 orderby,
                 order,
                 numberposts,
+                post_status,
+                ignore_protected,
             },
             setAttributes,
         } = props;
@@ -327,15 +336,69 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             );
         }
 
+        function getPostInspectorPanel() {
+            return (
+                <InspectorControls>
+                    <PanelBody title={__('Advanced Post Selection', 'post-content-shortcodes')}>
+                        {getFieldStatus()}
+                        {getFieldProtected()}
+                    </PanelBody>
+                    {getDisplayPanel(props)}
+                </InspectorControls>
+            )
+        }
+
+        function getFieldStatus() {
+            let selected = statusOptions[0];
+
+            if (typeof post_status !== 'undefined' && post_status !== null) {
+                console.log('Setting a pre-selected option as the post status');
+                selected = post_status;
+            }
+
+            const [fontSize, setFontSize] = useState(selected);
+
+            return (
+                <CustomSelectControl
+                    label={__('Post status:', 'post-content-shortcodes')}
+                    options={statusOptions}
+                    onChange={(newValue, props) => {
+                        setAttributes({post_status: newValue.selectedItem});
+                        return setFontSize(newValue);
+                    }}
+                    value={statusOptions.find((option) => option.key === fontSize.key)}
+                />
+            );
+        }
+
+        function getFieldProtected() {
+            let checked = false;
+            if (typeof ignore_protected !== 'undefined') {
+                checked = ignore_protected;
+            }
+
+            const [isChecked, setChecked] = useState(checked);
+
+            return (
+                <CheckboxControl
+                    label={__('Exclude password-protected posts from the list?', 'post-content-shortcodes')}
+                    checked={isChecked}
+                    onChange={(newValue, props) => {
+                        setChecked(newValue);
+                        setAttributes({ignore_protected: newValue});
+                    }}
+                    name="ignore_protected"
+                />
+            );
+        }
+
         return (
             <div className={className}>
                 {isSelected &&
                 <div>
                     {getPostSelectionPanel()}
                     {getPostAttributesPanel()}
-                    <InspectorControls>
-                        <p>Placeholder</p>
-                    </InspectorControls>
+                    {getPostInspectorPanel()}
                 </div>
                 }
             </div>

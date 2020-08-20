@@ -11,12 +11,8 @@ import './style.scss';
 
 import {
     getAttributeValue,
-    getFieldShowTitle,
-    PCSGetFields,
     getImagePanel,
-    getExcerptPanel,
-    getFieldShowComments,
-    getFieldReadMore, getFieldShortcodes, getFieldStripHTML, getFieldShowAuthor, getFieldShowDate
+    getDisplayPanel
 } from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
@@ -152,21 +148,6 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
         console.log(blogOptions);
         console.log(blog);
 
-        function getDisplayPanel() {
-            return (
-                <PanelBody title={__('Display Options', 'post-content-shortcodes')}>
-                    {getFieldShowTitle(props)}
-                    {getFieldShowComments(props)}
-                    {getExcerptPanel(props)}
-                    {getFieldReadMore(props)}
-                    {getFieldShortcodes(props)}
-                    {getFieldStripHTML(props)}
-                    {getFieldShowAuthor(props)}
-                    {getFieldShowDate(props)}
-                </PanelBody>
-            )
-        }
-
         function getFieldBlog() {
             let selected = blogOptions[0];
 
@@ -269,7 +250,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
                     </PanelBody>
                     <InspectorControls>
                         {getImagePanel(props)}
-                        {getDisplayPanel()}
+                        {getDisplayPanel(props)}
                     </InspectorControls>
                 </div>
                 }
