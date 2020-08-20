@@ -260,19 +260,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
 
             const [ checked, setChecked ] = useState( selected );
 
-            for ( let i in orderOptions ) {
-                if ( ! orderOptions.hasOwnProperty(i) ) {
-                    continue;
-                }
-
-                orderFields.push(
-                    <Radio value={i}>{orderOptions[i]}</Radio>
-                );
-            }
-
             return (
                 <RadioGroup accessibilityLabel={__('Order by:', 'post-content-shortcodes')} onChange={setChecked} checked={checked}>
-                    {orderFields.join('')}
+                    <Radio value="asc">{orderOptions.asc}</Radio>
+                    <Radio value="desc">{orderOptions.desc}</Radio>
                 </RadioGroup>
             );
         }
