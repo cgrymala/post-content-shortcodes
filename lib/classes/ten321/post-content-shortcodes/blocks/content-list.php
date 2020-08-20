@@ -77,7 +77,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'default' => $defaults['post_parent'],
 				);
 				$instance['orderby']          = array(
-					'type'    => 'string',
+					'type'    => 'object',
 					'default' => $defaults['orderby'],
 				);
 				$instance['order']            = array(

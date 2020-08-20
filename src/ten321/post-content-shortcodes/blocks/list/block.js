@@ -73,8 +73,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
     attributes: ten321__post_content_shortcodes__blocks__list.reg_args.attributes,
 
     edit: (props) => {
-        console.log( 'List block attributes:');
-        console.log( ten321__post_content_shortcodes__blocks__list.reg_args.attributes );
+        console.log('List block attributes:');
+        console.log(ten321__post_content_shortcodes__blocks__list.reg_args.attributes);
 
         const blogOptions = ten321__post_content_shortcodes__blocks__list.blogList;
         if (blogOptions[0].key !== 0) {
@@ -125,6 +125,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 tax_term,
                 orderby,
                 order,
+                numberposts,
             },
             setAttributes,
         } = props;
@@ -163,7 +164,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     onChange={(newVal) => {
                         setAttributes({post_type: newVal});
                     }}
-                    value={post_type}
+                    value={post_type.toString()}
                 />
             );
         }
@@ -176,7 +177,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                         onChange={(newVal) => {
                             setAttributes({post_parent: parseInt(newVal)});
                         }}
-                        value={post_parent}
+                        value={parseInt(post_parent)}
                     />
                     <p className="field-note">
                         <em>{__('Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.', 'post-content-shortcodes')}</em>
@@ -192,7 +193,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     onChange={(newVal) => {
                         setAttributes({tax_name: newVal});
                     }}
-                    value={tax_name}
+                    value={tax_name.toString()}
                 />
                 <p className="field-note">
                     <em>{__('If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)', 'post-content-shortcodes')}</em>
@@ -207,7 +208,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     onChange={(newVal) => {
                         setAttributes({tax_term: newVal});
                     }}
-                    value={tax_term}
+                    value={tax_term.toString()}
                 />
                 <p className="field-note">
                     <em>{__('If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs', 'post-content-shortcodes')}</em>
@@ -232,6 +233,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 <PanelBody title={__('Post Attributes', 'post-content-shortcodes')}>
                     {getFieldOrderBy()}
                     {getFieldOrder()}
+                    {getFieldNumberPosts()}
                 </PanelBody>
             )
         }
@@ -261,7 +263,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
 
         function getFieldOrder() {
             let selected = orderOptions[0];
-            if ( typeof order !== 'undefined' && order !== null ) {
+            if (typeof order !== 'undefined' && order !== null) {
                 selected = order;
             }
             return (
@@ -272,6 +274,27 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     onChange={(option) => {
                         setAttributes({order: option})
                     }}/>
+            );
+        }
+
+        function getFieldNumberPosts() {
+            let val = -1;
+            if (typeof numberposts !== 'undefined' && numberposts !== null) {
+                val = parseInt(numberposts);
+            }
+            return (
+                <div>
+                    <TextControl
+                        label={__('How many posts should be shown?', 'post-content-shortcodes')}
+                        onChange={(newVal) => {
+                            setAttributes({numberposts: parseInt(newVal)});
+                        }}
+                        value={val}
+                    />
+                    <p className="field-note">
+                        <em>{__('Leave this set to -1 if you would like all posts to be retrieved and displayed.', 'post-content-shortcodes')}</em>
+                    </p>
+                </div>
             );
         }
 
