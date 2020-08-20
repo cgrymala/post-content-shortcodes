@@ -128,6 +128,10 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					$atts['blog_id'] = $atts['blog'];
 				}
 
+				if ( array_key_exists( 'orderby', $atts ) ) {
+					$atts['orderby'] = $atts['orderby']['key'];
+				}
+
 				$rt = '';
 
 				ob_start();
