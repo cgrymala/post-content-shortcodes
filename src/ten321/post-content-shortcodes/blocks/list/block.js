@@ -13,7 +13,7 @@ import {getAttributeValue} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {InspectorControls} = wp.blockEditor;
-const {PanelBody, CheckboxControl, BaseControl, TextControl, CustomSelectControl, Radio, RadioGroup} = wp.components;
+const {PanelBody, CheckboxControl, BaseControl, TextControl, CustomSelectControl, RadioControl} = wp.components;
 const {useState} = wp.element;
 const {withState} = wp.compose;
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
@@ -54,13 +54,13 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 },
                 transform: ({text}) => {
                     let atts = {};
-                    for ( let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes ) {
-                        if ( ! ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i) ) {
+                    for (let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes) {
+                        if (!ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i)) {
                             continue;
                         }
 
-                        let tmp = getAttributeValue( 'post-list', i, text );
-                        if ( tmp !== null ) {
+                        let tmp = getAttributeValue('post-list', i, text);
+                        if (tmp !== null) {
                             atts[i] = tmp;
                         }
                     }
@@ -82,21 +82,21 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         }
 
         const orderByOptions = [
-            { key: 'post_title', name: __( 'Title', 'post-content-shortcodes' ) },
-            { key: 'date', name: __( 'Post Date', 'post-content-shortcodes' ) },
-            { key: 'menu_order', name: __( 'Menu/Page order', 'post-content-shortcodes' ) },
-            { key: 'ID', name: __( 'Post ID', 'post-content-shortcodes' ) },
-            { key: 'author', name: __( 'Author', 'post-content-shortcodes' ) },
-            { key: 'modified', name: __( 'Post Modification Date', 'post-content-shortcodes' ) },
-            { key: 'parent', name: __( 'Post Parent ID', 'post-content-shortcodes' ) },
-            { key: 'comment_count', name: __( 'Number of Comments', 'post-content-shortcodes' ) },
-            { key: 'rand', name: __( 'Random', 'post-content-shortcodes' ) },
+            {key: 'post_title', name: __('Title', 'post-content-shortcodes')},
+            {key: 'date', name: __('Post Date', 'post-content-shortcodes')},
+            {key: 'menu_order', name: __('Menu/Page order', 'post-content-shortcodes')},
+            {key: 'ID', name: __('Post ID', 'post-content-shortcodes')},
+            {key: 'author', name: __('Author', 'post-content-shortcodes')},
+            {key: 'modified', name: __('Post Modification Date', 'post-content-shortcodes')},
+            {key: 'parent', name: __('Post Parent ID', 'post-content-shortcodes')},
+            {key: 'comment_count', name: __('Number of Comments', 'post-content-shortcodes')},
+            {key: 'rand', name: __('Random', 'post-content-shortcodes')},
         ];
 
-        const orderOptions = {
-            asc: __( 'Ascending', 'post-content-shortcodes' ),
-            desc: __( 'Descending', 'post-content-shortcodes' ),
-        }
+        const orderOptions = [
+            {value: 'asc', label: __('Ascending', 'post-content-shortcodes')},
+            {value: 'desc', label: __('Descending', 'post-content-shortcodes')},
+        ];
 
         const {
             className,
@@ -157,9 +157,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             return (
                 <TextControl
                     label={__('Post type:', 'post-content-shortcodes')}
-                    onChange={ ( newVal ) => {
-                        setAttributes( { post_type: parseInt( newVal ) } );
-                    } }
+                    onChange={(newVal) => {
+                        setAttributes({post_type: parseInt(newVal)});
+                    }}
                     value={post_type}
                 />
             );
@@ -168,14 +168,16 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         function getFieldPostParent() {
             return (
                 <div>
-                <TextControl
-                    label={__('Post parent ID:', 'post-content-shortcodes')}
-                    onChange={ ( newVal ) => {
-                        setAttributes( { post_parent: parseInt( newVal ) } );
-                    } }
-                    value={post_parent}
-                />
-                <p><em>{__( 'Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.', 'post-content-shortcodes' )}</em></p>
+                    <TextControl
+                        label={__('Post parent ID:', 'post-content-shortcodes')}
+                        onChange={(newVal) => {
+                            setAttributes({post_parent: parseInt(newVal)});
+                        }}
+                        value={post_parent}
+                    />
+                    <p className="field-note">
+                        <em>{__('Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.', 'post-content-shortcodes')}</em>
+                    </p>
                 </div>
             );
         }
@@ -184,12 +186,14 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             <div>
                 <TextControl
                     label={__('Taxonomy Slug:', 'post-content-shortcodes')}
-                    onChange={ ( newVal ) => {
-                        setAttributes( { tax_name: parseInt( newVal ) } );
-                    } }
+                    onChange={(newVal) => {
+                        setAttributes({tax_name: parseInt(newVal)});
+                    }}
                     value={tax_name}
                 />
-                <p><em>{__( 'If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)', 'post-content-shortcodes' )}</em></p>
+                <p className="field-note">
+                    <em>{__('If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)', 'post-content-shortcodes')}</em>
+                </p>
             </div>
         }
 
@@ -197,12 +201,14 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             <div>
                 <TextControl
                     label={__('Term Slugs:', 'post-content-shortcodes')}
-                    onChange={ ( newVal ) => {
-                        setAttributes( { tax_term: parseInt( newVal ) } );
-                    } }
+                    onChange={(newVal) => {
+                        setAttributes({tax_term: parseInt(newVal)});
+                    }}
                     value={tax_term}
                 />
-                <p><em>{__( 'If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs', 'post-content-shortcodes' )}</em></p>
+                <p className="field-note">
+                    <em>{__('If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs', 'post-content-shortcodes')}</em>
+                </p>
             </div>
         }
 
@@ -222,6 +228,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             return (
                 <PanelBody title={__('Post Attributes', 'post-content-shortcodes')}>
                     {getFieldOrderBy()}
+                    {getFieldOrder()}
                 </PanelBody>
             )
         }
@@ -250,33 +257,37 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         }
 
         function getFieldOrder() {
-            let selected = orderOptions.asc;
-            if ( typeof order !== 'undefined' && order !== null ) {
+            let selected = orderOptions[0];
+            if (typeof order !== 'undefined' && order !== null) {
                 selected = order;
             }
 
             let orderFields = [];
 
-            const [ checked, setChecked ] = useState( selected );
+            const checked = withState({option: selected});
 
-            return (
-                <RadioGroup accessibilityLabel={__('Order by:', 'post-content-shortcodes')} onChange={setChecked} checked={checked}>
-                    <Radio value="asc">{orderOptions.asc}</Radio>
-                    <Radio value="desc">{orderOptions.desc}</Radio>
-                </RadioGroup>
-            );
+            return withState( {
+                option: 'asc',
+            } )( ( { option, setState } ) => (
+                <RadioControl
+                    label={__('In which order?', 'post-content-shortcodes')}
+                    selected={ option }
+                    options={ orderOptions }
+                    onChange={ ( option ) => { setState( { option } ) } }
+                />
+            ) );
         }
 
         return (
             <div className={className}>
                 {isSelected &&
-                    <div>
-                        {getPostSelectionPanel()}
-                        {getPostAttributesPanel()}
-                        <InspectorControls>
-                            <p>Placeholder</p>
-                        </InspectorControls>
-                    </div>
+                <div>
+                    {getPostSelectionPanel()}
+                    {getPostAttributesPanel()}
+                    <InspectorControls>
+                        <p>Placeholder</p>
+                    </InspectorControls>
+                </div>
                 }
             </div>
         );
