@@ -199,6 +199,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/content', {
             if (typeof id !== 'undefined' && id !== null) {
                 val = id;
             }
+            val = isNaN(parseInt(val)) ? val : parseInt(val);
 
             return (
                 <TextControl

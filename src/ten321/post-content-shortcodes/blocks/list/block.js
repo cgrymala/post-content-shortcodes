@@ -177,8 +177,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         function getFieldPostParent() {
             let val = 0;
             if (typeof post_parent !== 'undefined' && post_parent !== null) {
-                val = parseInt(post_parent);
+                val = post_parent;
             }
+            val = isNaN(parseInt(val)) ? val : parseInt(val);
 
             return (
                 <div>
@@ -307,6 +308,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             if (typeof numberposts !== 'undefined' && numberposts !== null) {
                 val = numberposts;
             }
+            val = isNaN(parseInt(val)) ? val : parseInt(val);
 
             return (
                 <div>

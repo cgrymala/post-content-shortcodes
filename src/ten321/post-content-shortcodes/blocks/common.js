@@ -149,6 +149,7 @@ function getFieldImageWidth(props) {
     if (typeof image_width !== 'undefined' && image_width !== null) {
         val = image_width;
     }
+    val = isNaN(parseInt(val)) ? val : parseInt(val);
 
     return (
         <TextControl
@@ -173,6 +174,7 @@ function getFieldImageHeight(props) {
     if (typeof image_height !== 'undefined' && image_height !== null) {
         val = image_height;
     }
+    val = isNaN(parseInt(val)) ? val : parseInt(val);
 
     return (
         <TextControl
@@ -291,6 +293,7 @@ function getFieldExcerptLength(props) {
     if (typeof excerpt_length !== 'undefined' && excerpt_length !== null) {
         val = excerpt_length;
     }
+    val = isNaN(parseInt(val)) ? val : parseInt(val);
 
     return (
         <TextControl
