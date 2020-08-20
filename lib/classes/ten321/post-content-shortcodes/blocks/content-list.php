@@ -202,6 +202,34 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 					'attributes' => $trans_atts,
 				);
 			}
+
+			/**
+			 * Add any additional elements that need to be in the localized script array
+			 *
+			 * @param array $script the existing script object/array
+			 *
+			 * @access public
+			 * @return array the updated list of script elements
+			 * @since  0.1
+			 */
+			public function localize_script( array $script ) {
+				$script['reg_args'] = array(
+					'attributes' => $this->get_attributes(),
+					'transforms' => $this->get_transform_arguments(),
+				);
+
+				if ( is_multisite() ) {
+					$script['blogList'] = $this->get_blog_list();
+					$blog_id            = intval( get_current_blog_id() );
+					foreach ( $script['blogList'] as $blog ) {
+						if ( intval( $blog['key'] ) === $blog_id ) {
+							$script['currentBlog'] = $blog;
+						}
+					}
+				}
+
+				return $script;
+			}
 		}
 	}
 }
