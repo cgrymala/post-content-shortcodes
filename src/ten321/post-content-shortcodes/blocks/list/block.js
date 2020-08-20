@@ -158,7 +158,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 <TextControl
                     label={__('Post type:', 'post-content-shortcodes')}
                     onChange={(newVal) => {
-                        setAttributes({post_type: parseInt(newVal)});
+                        setAttributes({post_type: newVal});
                     }}
                     value={post_type}
                 />
@@ -187,7 +187,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 <TextControl
                     label={__('Taxonomy Slug:', 'post-content-shortcodes')}
                     onChange={(newVal) => {
-                        setAttributes({tax_name: parseInt(newVal)});
+                        setAttributes({tax_name: newVal});
                     }}
                     value={tax_name}
                 />
@@ -202,7 +202,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 <TextControl
                     label={__('Term Slugs:', 'post-content-shortcodes')}
                     onChange={(newVal) => {
-                        setAttributes({tax_term: parseInt(newVal)});
+                        setAttributes({tax_term: newVal});
                     }}
                     value={tax_term}
                 />
