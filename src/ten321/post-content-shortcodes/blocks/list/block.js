@@ -228,7 +228,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             return (
                 <PanelBody title={__('Post Attributes', 'post-content-shortcodes')}>
                     {getFieldOrderBy()}
-                    {getFieldOrder}
+                    {getFieldOrder()}
                 </PanelBody>
             )
         }
@@ -256,16 +256,14 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             );
         }
 
-        const getFieldOrder = withState( {
-            option: 'asc',
-        } )( ( { option, setState } ) => (
-            <RadioControl
-                label={__('In which order?', 'post-content-shortcodes')}
-                selected={ option }
-                options={ orderOptions }
-                onChange={ ( option ) => { setState( { option } ) } }
-            />
-        ) );
+        function getFieldOrder() {
+            return (
+                <RadioControl
+                    label={__('In which order?','post-content-shortcodes')}
+                    options={orderOptions}
+                    selected={order}/>
+            );
+        }
 
         return (
             <div className={className}>
