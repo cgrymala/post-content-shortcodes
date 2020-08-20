@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./lib/styles/ten321/post-content-shortcodes/default-styles.css":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./lib/styles/ten321/post-content-shortcodes/default-styles.css ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \"/**\\n * Default style definitions for the Post Content Shortcodes plugin\\n * @package WordPress\\n * @subpackage Post Content Shortcodes\\n * @version 1.0\\n */\\nul.post-list {\\n    float: none;\\n    clear: both;\\n    display: block;\\n    list-style: none;\\n    margin: 0;\\n    padding: 0;\\n}\\n\\nul.post-list>li {\\n    display: block;\\n    clear: both;\\n    list-style: none;\\n    margin: 0 0 1em;\\n    padding: 0;\\n    break-inside: avoid-column;\\n    -moz-break-inside: avoid-column;\\n    column-break-inside: avoid;\\n    -webkit-column-break-inside: avoid;\\n    -moz-column-break-inside: avoid;\\n    -o-column-break-inside: avoid;\\n    border-bottom: 1px dotted #666;\\n}\\n\\n.widget .post-list>li {\\n    border: none;\\n}\\n\\n.post-list.with-excerpt {\\n    column-count: 2;\\n    column-gap: 3em;\\n    column-rule: 1px dotted #666;\\n    -webkit-column-count: 2;\\n    -webkit-column-gap: 3em;\\n    -webkit-column-rule: 1px dotted #666;\\n    -moz-column-count: 2;\\n    -moz-column-gap: 3em;\\n    -moz-column-rule: 1px dotted #666;\\n    -o-column-count: 2;\\n    -o-column-gap: 3em;\\n    -o-column-rule: 1px dotted #666;\\n}\\n\\n.pcs-excerpt-wrapper {\\n    clear: both;\\n    float: none;\\n}\\n\\n.with-excerpt .pcs-post-title {\\n    font-size: 2em;\\n    line-height: 1.25em;\\n    color: #000;\\n    font-family: MuseoSlab500, Verdana, Geneva, sans-serif;\\n}\\n\\n.pcs-post-title a {\\n    color: #000;\\n    text-decoration: none;\\n}\\n\\n.pcs-featured-image {\\n    float: left;\\n    clear: left;\\n    margin: 1em 1em 1em 0;\\n    border: none;\\n    padding: 0;\\n}\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack:///./lib/styles/ten321/post-content-shortcodes/default-styles.css?./node_modules/css-loader/dist/cjs.js");
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/ten321/post-content-shortcodes/blocks/list/editor.scss":
 /*!*************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/ten321/post-content-shortcodes/blocks/list/editor.scss ***!
@@ -104,7 +115,7 @@ eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../.
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\n// Module\nexports.push([module.i, \"/**\\n * #.# Styles\\n *\\n * CSS for both Frontend+Backend.\\n */\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack:///./src/ten321/post-content-shortcodes/blocks/list/style.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
+eval("// Imports\nvar ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\nvar ___CSS_LOADER_AT_RULE_IMPORT_0___ = __webpack_require__(/*! -!../../../../../node_modules/css-loader/dist/cjs.js!../../../../../lib/styles/ten321/post-content-shortcodes/default-styles.css */ \"./node_modules/css-loader/dist/cjs.js!./lib/styles/ten321/post-content-shortcodes/default-styles.css\");\nexports = ___CSS_LOADER_API_IMPORT___(false);\nexports.i(___CSS_LOADER_AT_RULE_IMPORT_0___);\n// Module\nexports.push([module.i, \"/**\\n * #.# Styles\\n *\\n * CSS for both Frontend+Backend.\\n */\\n\", \"\"]);\n// Exports\nmodule.exports = exports;\n\n\n//# sourceURL=webpack:///./src/ten321/post-content-shortcodes/blocks/list/style.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
 
 /***/ }),
 
