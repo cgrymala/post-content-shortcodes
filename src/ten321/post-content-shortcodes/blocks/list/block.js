@@ -305,6 +305,9 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             let val = -1;
             if (typeof numberposts !== 'undefined' && numberposts !== null) {
                 val = parseInt(numberposts);
+                if ( isNaN(val) ) {
+                    val = 0;
+                }
             }
 
             return (
