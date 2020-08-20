@@ -9,7 +9,7 @@
 import './editor.scss';
 import './style.scss';
 
-import {getAttributeValue, getDisplayPanel} from '../common.js';
+import {getAttributeValue, getDisplayPanel, getImagePanel} from '../common.js';
 
 const {__} = wp.i18n; // Import __() from wp.i18n
 const {InspectorControls} = wp.blockEditor;
@@ -339,13 +339,20 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         function getPostInspectorPanel() {
             return (
                 <InspectorControls>
-                    <PanelBody title={__('Advanced Post Selection', 'post-content-shortcodes')}>
-                        {getFieldStatus()}
-                        {getFieldProtected()}
-                    </PanelBody>
+                    {getAdvancedPostPanel()}
+                    {getImagePanel(props)}
                     {getDisplayPanel(props)}
                 </InspectorControls>
             )
+        }
+
+        function getAdvancedPostPanel() {
+            return (
+                <PanelBody title={__('Advanced Post Selection', 'post-content-shortcodes')}>
+                    {getFieldStatus()}
+                    {getFieldProtected()}
+                </PanelBody>
+            );
         }
 
         function getFieldStatus() {
