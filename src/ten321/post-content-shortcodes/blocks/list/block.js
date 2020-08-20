@@ -158,18 +158,28 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         }
 
         function getFieldPostType() {
+            let val = '';
+            if (typeof post_type !== 'undefined' && post_type !== null) {
+                val = post_type;
+            }
+
             return (
                 <TextControl
                     label={__('Post type:', 'post-content-shortcodes')}
                     onChange={(newVal) => {
                         setAttributes({post_type: newVal});
                     }}
-                    value={post_type.toString()}
+                    value={val}
                 />
             );
         }
 
         function getFieldPostParent() {
+            let val = 0;
+            if (typeof post_parent !== 'undefined' && post_parent !== null) {
+                val = parseInt(post_parent);
+            }
+
             return (
                 <div>
                     <TextControl
@@ -177,7 +187,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                         onChange={(newVal) => {
                             setAttributes({post_parent: parseInt(newVal)});
                         }}
-                        value={parseInt(post_parent)}
+                        value={val}
                     />
                     <p className="field-note">
                         <em>{__('Leave this blank (or set to 0) to retrieve and display all posts that match the other criteria specified.', 'post-content-shortcodes')}</em>
@@ -187,33 +197,47 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         }
 
         function getFieldTaxonomySlug() {
-            <div>
-                <TextControl
-                    label={__('Taxonomy Slug:', 'post-content-shortcodes')}
-                    onChange={(newVal) => {
-                        setAttributes({tax_name: newVal});
-                    }}
-                    value={tax_name.toString()}
-                />
-                <p className="field-note">
-                    <em>{__('If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)', 'post-content-shortcodes')}</em>
-                </p>
-            </div>
+            let val = '';
+            if (typeof tax_name !== 'undefined' && tax_name !== null) {
+                val = tax_name;
+            }
+
+            return (
+                <div>
+                    <TextControl
+                        label={__('Taxonomy Slug:', 'post-content-shortcodes')}
+                        onChange={(newVal) => {
+                            setAttributes({tax_name: newVal});
+                        }}
+                        value={val}
+                    />
+                    <p className="field-note">
+                        <em>{__('If you would like to limit posts to a specific set of terms within a taxonomy, please enter the taxonomy slug above (e.g. "category", "tag", etc.)', 'post-content-shortcodes')}</em>
+                    </p>
+                </div>
+            );
         }
 
         function getFieldTermSlug() {
-            <div>
-                <TextControl
-                    label={__('Term Slugs:', 'post-content-shortcodes')}
-                    onChange={(newVal) => {
-                        setAttributes({tax_term: newVal});
-                    }}
-                    value={tax_term.toString()}
-                />
-                <p className="field-note">
-                    <em>{__('If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs', 'post-content-shortcodes')}</em>
-                </p>
-            </div>
+            let val = '';
+            if (typeof tax_term !== 'undefined' && tax_term !== null) {
+                val = tax_term;
+            }
+
+            return (
+                <div>
+                    <TextControl
+                        label={__('Term Slugs:', 'post-content-shortcodes')}
+                        onChange={(newVal) => {
+                            setAttributes({tax_term: newVal});
+                        }}
+                        value={val}
+                    />
+                    <p className="field-note">
+                        <em>{__('If you would like to limit posts to a specifc set of terms within a taxonomy, please enter a space-separated list of either the term slugs or the term IDs', 'post-content-shortcodes')}</em>
+                    </p>
+                </div>
+            );
         }
 
         function getPostSelectionPanel() {
@@ -282,6 +306,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             if (typeof numberposts !== 'undefined' && numberposts !== null) {
                 val = parseInt(numberposts);
             }
+
             return (
                 <div>
                     <TextControl
