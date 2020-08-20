@@ -257,15 +257,6 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         }
 
         function getFieldOrder() {
-            let selected = orderOptions[0];
-            if (typeof order !== 'undefined' && order !== null) {
-                selected = order;
-            }
-
-            let orderFields = [];
-
-            const checked = withState({option: selected});
-
             return withState( {
                 option: 'asc',
             } )( ( { option, setState } ) => (
