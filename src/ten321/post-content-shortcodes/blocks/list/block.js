@@ -222,7 +222,6 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             return (
                 <PanelBody title={__('Post Attributes', 'post-content-shortcodes')}>
                     {getFieldOrderBy()}
-                    {getFieldOrder()}
                 </PanelBody>
             )
         }
@@ -275,7 +274,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                         {getPostSelectionPanel()}
                         {getPostAttributesPanel()}
                         <InspectorControls>
-
+                            <p>Placeholder</p>
                         </InspectorControls>
                     </div>
                 }
