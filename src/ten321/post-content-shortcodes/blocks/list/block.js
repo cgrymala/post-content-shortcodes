@@ -259,9 +259,12 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         function getFieldOrder() {
             return (
                 <RadioControl
-                    label={__('In which order?','post-content-shortcodes')}
+                    label={__('In which order?', 'post-content-shortcodes')}
                     options={orderOptions}
-                    selected={order}/>
+                    selected={order}
+                    onChange={(option) => {
+                        setState({option})
+                    }}/>
             );
         }
 
