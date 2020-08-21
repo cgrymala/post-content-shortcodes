@@ -99,8 +99,12 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                             }
                         } else if (i === 'orderby') {
                             for (let b in orderByOptions) {
-                                if (!orderByOptions.hasOwnProperty(b) || tmp === null) {
+                                if (!orderByOptions.hasOwnProperty(b)) {
                                     continue;
+                                }
+
+                                if (tmp === null) {
+                                    tmp = 'post_title';
                                 }
 
                                 if ((orderByOptions[b].key.toLowerCase() === tmp.toLowerCase())) {
