@@ -133,7 +133,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                                 case 'show_date' :
                                 case 'link_image' :
                                 case 'ignore_protected' :
-                                    atts[i] = tmp === 'true' || tmp === 1 || tmp === '1' || tmp === true;
+                                    atts[i] = String(tmp).toLowerCase() === 'true' || Number(tmp) === 1;
                                     break;
                                 case 'post_parent' :
                                 case 'image_width' :
