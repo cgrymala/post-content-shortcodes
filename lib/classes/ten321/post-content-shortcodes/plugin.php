@@ -1339,7 +1339,7 @@ namespace Ten321\Post_Content_Shortcodes {
 			/**
 			 * Output any comments on a post
 			 *
-			 * @param post $newpost the post object for which to display comments
+			 * @param \WP_Post $newpost the post object for which to display comments
 			 *
 			 * @return string the HTML for the comments
 			 * @since  0.1

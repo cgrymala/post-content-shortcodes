@@ -68,7 +68,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
         __('Multisite'),
         __('excerpt'),
     ],
-    transforms: {
+    /*transforms: {
         from: [
             {
                 type: 'block',
@@ -153,7 +153,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 }
             }
         ]
-    },
+    },*/
     attributes: ten321__post_content_shortcodes__blocks__list.reg_args.attributes,
 
     edit: (props) => {
