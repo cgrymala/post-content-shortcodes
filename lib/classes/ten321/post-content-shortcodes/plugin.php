@@ -917,6 +917,7 @@ namespace Ten321\Post_Content_Shortcodes {
 				$excluded_tax = apply_filters( 'post-content-shortcodes-excluded-taxonomies', array(
 					'csb_visibility',
 					'csb_clone',
+					'type',
 				) );
 
 				foreach ( $args as $k => $v ) {
