@@ -19,6 +19,30 @@ const {withState} = wp.compose;
 const {registerBlockType} = wp.blocks; // Import registerBlockType() from wp.blocks
 const {ServerSideRender} = wp.editor;
 
+const orderByOptions = [
+    {key: 'post_title', name: __('Title', 'post-content-shortcodes')},
+    {key: 'date', name: __('Post Date', 'post-content-shortcodes')},
+    {key: 'menu_order', name: __('Menu/Page order', 'post-content-shortcodes')},
+    {key: 'ID', name: __('Post ID', 'post-content-shortcodes')},
+    {key: 'author', name: __('Author', 'post-content-shortcodes')},
+    {key: 'modified', name: __('Post Modification Date', 'post-content-shortcodes')},
+    {key: 'parent', name: __('Post Parent ID', 'post-content-shortcodes')},
+    {key: 'comment_count', name: __('Number of Comments', 'post-content-shortcodes')},
+    {key: 'rand', name: __('Random', 'post-content-shortcodes')},
+];
+
+const orderOptions = [
+    {value: 'asc', label: __('Ascending', 'post-content-shortcodes')},
+    {value: 'desc', label: __('Descending', 'post-content-shortcodes')},
+];
+
+const statusOptions = [
+    {key: 'publish', name: __('Published', 'post-content-shortcodes')},
+    {key: 'draft', name: __('Draft', 'post-content-shortcodes')},
+    {key: 'pending', name: __('Pending Review', 'post-content-shortcodes')},
+    {key: 'inherit', name: __('Inherited', 'post-content-shortcodes')},
+];
+
 /**
  * Register: aa Gutenberg Block.
  *
@@ -54,14 +78,74 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 },
                 transform: ({text}) => {
                     let atts = {};
-                    for (let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes) {
-                        if (!ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i)) {
+                    for (let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes) {
+                        if (!ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i)) {
                             continue;
                         }
 
-                        let tmp = getAttributeValue('post-list', i, text);
-                        if (tmp !== null) {
-                            atts[i] = tmp;
+                        let tmp = getAttributeValue('post-content', i, text);
+                        if (i === 'blog') {
+                            let blogList = ten321__post_content_shortcodes__blocks__list.blogList;
+                            for (let b in blogList) {
+                                if (!blogList.hasOwnProperty(b)) {
+                                    continue;
+                                }
+
+                                if ((blogList[b].key * 1) !== (tmp * 1)) {
+                                    continue;
+                                }
+
+                                atts[i] = blogList[b];
+                            }
+                        } else if (i === 'orderby') {
+                            for (let b in orderByOptions) {
+                                if (!orderByOptions.hasOwnProperty(b)) {
+                                    continue;
+                                }
+
+                                if ((orderByOptions[b].key.toLowerCase() === tmp.toLowerCase())) {
+                                    atts[i] = orderByOptions[b];
+                                }
+                            }
+                        } else if (i === 'post_status') {
+                            for (let b in statusOptions) {
+                                if (!statusOptions.hasOwnProperty(b)) {
+                                    continue;
+                                }
+
+                                if (statusOptions[b].key.toLowerCase() === tmp.toLowerCase()) {
+                                    atts[i] = statusOptions[b];
+                                }
+                            }
+                        } else if (tmp !== null) {
+                            switch (i) {
+                                case 'order' :
+                                    atts[i] = tmp.toLowerCase() === 'desc' ? 'desc' : 'asc';
+                                    break;
+                                case 'show_title' :
+                                case 'show_image' :
+                                case 'show_comments' :
+                                case 'show_excerpt' :
+                                case 'read_more' :
+                                case 'shortcodes' :
+                                case 'strip_html' :
+                                case 'show_author' :
+                                case 'show_date' :
+                                case 'link_image' :
+                                case 'ignore_protected' :
+                                    atts[i] = tmp === 'true' || tmp === 1 || tmp === '1' || tmp === true;
+                                    break;
+                                case 'post_parent' :
+                                case 'image_width' :
+                                case 'image_height' :
+                                case 'excerpt_length' :
+                                case 'numberposts' :
+                                    atts[i] = Number(tmp);
+                                    break;
+                                default :
+                                    atts[i] = tmp;
+                                    break;
+                            }
                         }
                     }
 
@@ -83,30 +167,6 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 name: '-- Please select a blog --',
             });
         }
-
-        const orderByOptions = [
-            {key: 'post_title', name: __('Title', 'post-content-shortcodes')},
-            {key: 'date', name: __('Post Date', 'post-content-shortcodes')},
-            {key: 'menu_order', name: __('Menu/Page order', 'post-content-shortcodes')},
-            {key: 'ID', name: __('Post ID', 'post-content-shortcodes')},
-            {key: 'author', name: __('Author', 'post-content-shortcodes')},
-            {key: 'modified', name: __('Post Modification Date', 'post-content-shortcodes')},
-            {key: 'parent', name: __('Post Parent ID', 'post-content-shortcodes')},
-            {key: 'comment_count', name: __('Number of Comments', 'post-content-shortcodes')},
-            {key: 'rand', name: __('Random', 'post-content-shortcodes')},
-        ];
-
-        const orderOptions = [
-            {value: 'asc', label: __('Ascending', 'post-content-shortcodes')},
-            {value: 'desc', label: __('Descending', 'post-content-shortcodes')},
-        ];
-
-        const statusOptions = [
-            {key: 'publish', name: __('Published', 'post-content-shortcodes')},
-            {key: 'draft', name: __('Draft', 'post-content-shortcodes')},
-            {key: 'pending', name: __('Pending Review', 'post-content-shortcodes')},
-            {key: 'inherit', name: __('Inherited', 'post-content-shortcodes')},
-        ];
 
         const {
             className,
@@ -407,11 +467,11 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                         show_title: !!show_title,
                         show_image: !!show_image,
                         blog: blog,
-                        image_width: isNaN(parseInt(image_width))?0:parseInt(image_width),
-                        image_height: isNaN(parseInt(image_height))?0:parseInt(image_height),
+                        image_width: isNaN(parseInt(image_width)) ? 0 : parseInt(image_width),
+                        image_height: isNaN(parseInt(image_height)) ? 0 : parseInt(image_height),
                         show_comments: !!show_comments,
                         show_excerpt: !!show_excerpt,
-                        excerpt_length: isNaN(parseInt(excerpt_length))?0:parseInt(excerpt_length),
+                        excerpt_length: isNaN(parseInt(excerpt_length)) ? 0 : parseInt(excerpt_length),
                         read_more: !!read_more,
                         shortcodes: !!shortcodes,
                         strip_html: !!strip_html,
@@ -419,12 +479,12 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                         show_date: !!show_date,
                         link_image: !!link_image,
                         post_type: post_type,
-                        post_parent: isNaN(parseInt(post_parent))?0:parseInt(post_parent),
+                        post_parent: isNaN(parseInt(post_parent)) ? 0 : parseInt(post_parent),
                         tax_name: tax_name,
                         tax_term: tax_term,
                         orderby: orderby,
-                        order: order==='desc'?'desc':'asc',
-                        numberposts: isNaN(parseInt(numberposts))?0:parseInt(numberposts),
+                        order: order === 'desc' ? 'desc' : 'asc',
+                        numberposts: isNaN(parseInt(numberposts)) ? 0 : parseInt(numberposts),
                         post_status: post_status,
                         ignore_protected: !!ignore_protected,
                     }}
@@ -441,10 +501,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                     {getPostInspectorPanel()}
                 </div>
                 }{!isSelected &&
-                <div>
-                    {getListBlock()}
-                </div>
-                }
+            <div>
+                {getListBlock()}
+            </div>
+            }
             </div>
         );
     }
