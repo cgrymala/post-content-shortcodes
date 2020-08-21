@@ -338,6 +338,21 @@ namespace Ten321\Post_Content_Shortcodes {
 			}
 
 			/**
+			 * Retrieve the list of default attributes
+			 *
+			 * @access public
+			 * @return array the list of default attributes
+			 * @since  2020.8
+			 */
+			public function get_defaults() {
+				if ( empty( $this->defaults ) ) {
+					$this->_setup_defaults();
+				}
+
+				return $this->defaults;
+			}
+
+			/**
 			 * Enqueue the default stylesheet
 			 * Only enqueues the stylesheet if the option is set to do so
 			 *
