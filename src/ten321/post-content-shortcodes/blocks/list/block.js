@@ -83,7 +83,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                             continue;
                         }
 
-                        let tmp = getAttributeValue('post-content', i, text);
+                        let tmp = getAttributeValue('post-list', i, text);
                         if (i === 'blog') {
                             let blogList = ten321__post_content_shortcodes__blocks__list.blogList;
                             for (let b in blogList) {
