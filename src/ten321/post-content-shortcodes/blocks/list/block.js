@@ -78,8 +78,8 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                 },
                 transform: ({text}) => {
                     let atts = {};
-                    for (let i in ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes) {
-                        if (!ten321__post_content_shortcodes__blocks__content.reg_args.transforms.attributes.hasOwnProperty(i)) {
+                    for (let i in ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes) {
+                        if (!ten321__post_content_shortcodes__blocks__list.reg_args.transforms.attributes.hasOwnProperty(i)) {
                             continue;
                         }
 
@@ -205,10 +205,10 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             if (typeof blog !== 'undefined' && blog !== null) {
                 console.log('Setting a pre-selected option as blog');
                 selected = blog;
-            } else if (typeof ten321__post_content_shortcodes__blocks__content.currentBlog !== 'undefined') {
+            } else if (typeof ten321__post_content_shortcodes__blocks__list.currentBlog !== 'undefined') {
                 console.log('Setting the "current blog" as blog');
-                console.log(ten321__post_content_shortcodes__blocks__content.currentBlog);
-                selected = ten321__post_content_shortcodes__blocks__content.currentBlog;
+                console.log(ten321__post_content_shortcodes__blocks__list.currentBlog);
+                selected = ten321__post_content_shortcodes__blocks__list.currentBlog;
             }
 
             const [fontSize, setFontSize] = useState(selected);
