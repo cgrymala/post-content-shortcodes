@@ -99,7 +99,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                             }
                         } else if (i === 'orderby') {
                             for (let b in orderByOptions) {
-                                if (!orderByOptions.hasOwnProperty(b)) {
+                                if (!orderByOptions.hasOwnProperty(b) || tmp === null) {
                                     continue;
                                 }
 
@@ -109,7 +109,7 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
                             }
                         } else if (i === 'post_status') {
                             for (let b in statusOptions) {
-                                if (!statusOptions.hasOwnProperty(b)) {
+                                if (!statusOptions.hasOwnProperty(b) || tmp === null) {
                                     continue;
                                 }
 
