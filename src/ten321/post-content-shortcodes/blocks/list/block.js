@@ -6,7 +6,7 @@
  */
 
 //  Import CSS.
-/*import './editor.scss';
+import './editor.scss';
 import './style.scss';
 
 import {getAttributeValue, getDisplayPanel, getImagePanel} from '../common.js';
@@ -43,7 +43,7 @@ const statusOptions = [
     {key: 'inherit', name: __('Inherited', 'post-content-shortcodes')},
 ];
 
-/!**
+/**
  * Register: aa Gutenberg Block.
  *
  * Registers a new block provided a unique name and an object defining its
@@ -55,7 +55,7 @@ const statusOptions = [
  * @param  {Object}   settings Block settings.
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
- *!/
+ */
 registerBlockType('ten321--post-content-shortcodes--blocks/list', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __('PCS Post List Block'), // Block title.
@@ -508,4 +508,4 @@ registerBlockType('ten321--post-content-shortcodes--blocks/list', {
             </div>
         );
     }
-});*/
+});
