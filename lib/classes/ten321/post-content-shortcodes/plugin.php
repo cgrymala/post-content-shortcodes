@@ -15,40 +15,45 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @var Plugin $instance holds the single instance of this class
 			 * @access private
 			 */
-			private static $instance;
+			private static Plugin $instance;
 			/**
 			 * @var string $version holds the version number for the plugin
 			 * @access public
 			 */
-			public static $version = '2020.8.1.2';
+			public static string $version = '2020.8.1.2';
 			/**
 			 * @var string $plugin_path the root path to this plugin
 			 * @access public
 			 */
-			public static $plugin_path = '';
+			public static string $plugin_path = '';
 			/**
 			 * @var string $plugin_url the root URL to this plugin
 			 * @access public
 			 */
-			public static $plugin_url = '';
+			public static string $plugin_url = '';
+			/**
+			 * @var string $plugin_dir_name the directory in which the plugin resides
+			 * @access public
+			 */
+			public string $plugin_dir_name = '';
 			/**
 			 * @since   0.1
 			 * @access  public
 			 * @var     array() the array of default shortcode attributes
 			 */
-			public $defaults = array();
+			public array $defaults = array();
 			/**
 			 * @since   0.1
 			 * @access  public
 			 * @var     array() the array of global plugin settings
 			 */
-			public $settings = array();
+			public array $settings = array();
 			/**
 			 * @since  0.1
 			 * @access public
 			 * @var    array the array of default plugin settings
 			 */
-			public $stock_settings = array(
+			public array $stock_settings = array(
 				'enable-network-settings'   => true,
 				'enable-site-settings'      => true,
 				'enable-pcs-content-widget' => true,
@@ -61,25 +66,25 @@ namespace Ten321\Post_Content_Shortcodes {
 			 * @access public
 			 * @var    bool whether to use the built-in plugin style sheet
 			 */
-			public $use_styles = true;
+			public bool $use_styles = true;
 			/**
 			 * @since  0.1
 			 * @access public
 			 * @var    array the array of attributes for the current shortcode
 			 */
-			public $shortcode_atts = array();
+			public array $shortcode_atts = array();
 			/**
 			 * @since  0.1
 			 * @access public
 			 * @var    null|int the ID of the post currently being processed
 			 */
-			public $current_post_id = null;
+			public ?int $current_post_id = null;
 			/**
 			 * @since  0.1
 			 * @access public
 			 * @var    null|int the ID of the blog from which the post/list is being retrieved
 			 */
-			public $current_blog_id = null;
+			public ?int $current_blog_id = null;
 
 			/**
 			 * Creates the \Ten321\Post_Content_Shortcodes\Plugin object
