@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "scss": "node-sass -o dist/ten321/post-content-shortcodes/blocks/content src/ten321/post-content-shortcodes/blocks/content/editor.scss && node-sass -o dist/ten321/post-content-shortcodes/blocks/content src/ten321/post-content-shortcodes/blocks/content/style.scss && node-sass -o dist/ten321/post-content-shortcodes/blocks/list src/ten321/post-content-shortcodes/blocks/list/editor.scss && node-sass -o dist/ten321/post-content-shortcodes/blocks/list src/ten321/post-content-shortcodes/blocks/list/style.scss",
+    "scss": "sass src/ten321/post-content-shortcodes/blocks/content/editor.scss dist/ten321/post-content-shortcodes/blocks/content/editor.css && sass src/ten321/post-content-shortcodes/blocks/content/style.scss dist/ten321/post-content-shortcodes/blocks/content/style.css && sass src/ten321/post-content-shortcodes/blocks/list/editor.scss dist/ten321/post-content-shortcodes/blocks/list/editor.css && sass src/ten321/post-content-shortcodes/blocks/list/style.scss dist/ten321/post-content-shortcodes/blocks/list/style.css",
     "cssmin": "cleancss -o dist/ten321/post-content-shortcodes/blocks/content/block.editor.build.css dist/ten321/post-content-shortcodes/blocks/content/editor.css && cleancss -o dist/ten321/post-content-shortcodes/blocks/content/block.build.css dist/ten321/post-content-shortcodes/blocks/content/style.css && cleancss -o dist/ten321/post-content-shortcodes/blocks/list/block.editor.build.css dist/ten321/post-content-shortcodes/blocks/list/editor.css && cleancss -o dist/ten321/post-content-shortcodes/blocks/list/block.build.css dist/ten321/post-content-shortcodes/blocks/list/style.css",
     "webpack": "webpack",
     "uglify": "uglifyjs -o dist/ten321/post-content-shortcodes/blocks/content/block.min.js dist/ten321/post-content-shortcodes/blocks/content/block.js && uglifyjs -o dist/ten321/post-content-shortcodes/blocks/list/block.min.js dist/ten321/post-content-shortcodes/blocks/list/block.js",
@@ -28,19 +28,18 @@
   },
   "homepage": "https://github.com/cgrymala/post-content-shortcodes#readme",
   "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-react": "^7.10.4",
-    "babel-loader": "^8.1.0",
-    "clean-css-cli": "^4.3.0",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-react": "^7.24.7",
+    "babel-loader": "^9.1.3",
+    "clean-css-cli": "^5.6.3",
     "concat": "^1.0.3",
-    "cross-env": "^7.0.2",
-    "css-loader": "^3.6.0",
-    "node-sass": "^4.14.1",
-    "sass": "^1.26.10",
-    "sass-loader": "^8.0.2",
-    "style-loader": "^1.2.1",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "cross-env": "^7.0.3",
+    "css-loader": "^7.1.2",
+    "sass": "^1.78.0",
+    "sass-loader": "^16.0.1",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
   }
 }

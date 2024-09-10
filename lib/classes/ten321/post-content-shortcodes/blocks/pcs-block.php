@@ -278,7 +278,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the list of attributes
 			 * @since  0.1
 			 */
-			public function get_attributes( array $atts = array(), array $defaults = array() ) {
+			public function get_attributes( array $atts = array(), array $defaults = array() ): array {
 				$all = Plugin::instance()->get_defaults();
 
 				$instance = array();

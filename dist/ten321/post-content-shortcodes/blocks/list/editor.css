@@ -5,6 +5,9 @@
  * which makes it higher in priority.
  */
 .wp-block-ten321--post-content-shortcodes--blocks-list p.field-note {
-  font-size: .8em;
+  font-size: 0.8em;
   font-style: italic;
-  margin-top: 0; }
+  margin-top: 0;
+}
+
+/*# sourceMappingURL=editor.css.map */

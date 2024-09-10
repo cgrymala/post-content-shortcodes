@@ -60,8 +60,8 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the full list of attributes
 			 * @since  0.1
 			 */
-			public function get_attributes( array $atts = array(), array $defaults = array() ) {
-				$defaults = Plugin::instance()->defaults;
+			public function get_attributes( array $atts = array(), array $defaults = array() ): array {
+				$defaults = Plugin::instance()->get_defaults();
 				$instance = parent::get_attributes( $atts, $defaults );
 
 				$instance['type']             = array(
