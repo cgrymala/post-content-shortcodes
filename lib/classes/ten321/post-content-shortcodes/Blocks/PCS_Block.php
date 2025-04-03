@@ -17,30 +17,25 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 	if ( ! class_exists( 'PCS_Block' ) ) {
 		abstract class PCS_Block {
 			/**
-			 * @var PCS_Block $instance holds the single instance of this class
-			 * @access private
-			 */
-			private static $instance;
-			/**
 			 * @var string $block_path holds the file path for the block's assets
 			 * @access protected
 			 */
-			protected $block_path = '';
+			protected string $block_path = '';
 			/**
 			 * @var string $block_namespace holds the namespace for the block
 			 * @access protected
 			 */
-			protected $block_namespace = '';
+			protected string $block_namespace = '';
 			/**
 			 * @var string $block_title holds the name of the block
 			 * @access protected
 			 */
-			protected $block_title = '';
+			protected string $block_title = '';
 			/**
 			 * @var string $block_type the sub-type of block being registered
 			 * @access protected
 			 */
-			protected $block_type = '';
+			protected string $block_type = '';
 
 			/**
 			 * Creates the PCS_Block object
@@ -55,22 +50,6 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 				$this->block_path      = Helpers::plugins_url( '/dist/ten321/post-content-shortcodes/blocks/' . $this->block_type . '/' );
 
 				add_action( 'init', array( $this, 'register_block_type' ) );
-			}
-
-			/**
-			 * Returns the instance of this class.
-			 *
-			 * @access  public
-			 * @return  PCS_Block
-			 * @since   2020.8
-			 */
-			public static function instance() {
-				if ( ! isset( self::$instance ) ) {
-					$className      = __CLASS__;
-					self::$instance = new $className;
-				}
-
-				return self::$instance;
 			}
 
 			/**
@@ -115,7 +94,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the updated list of arguments
 			 * @since  0.1
 			 */
-			abstract public function get_args( array $args );
+			abstract public function get_args( array $args ): array;
 
 			/**
 			 * Register the block stylesheet and return the handle
@@ -124,7 +103,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return string the handle of the registered stylesheet
 			 * @since  0.1
 			 */
-			public function get_stylesheet() {
+			public function get_stylesheet(): string {
 				if ( $this->script_debug() ) {
 					$file = $this->block_path . 'style.css';
 				} else {
@@ -151,7 +130,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return string the handle of the registered JS file
 			 * @since  0.1
 			 */
-			public function get_editor_script() {
+			public function get_editor_script(): string {
 				if ( $this->script_debug() ) {
 					$file = $this->block_path . 'block.js';
 				} else {
@@ -187,7 +166,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return string the handle of the stylesheet
 			 * @since  0.1
 			 */
-			public function get_editor_style() {
+			public function get_editor_style(): string {
 				if ( $this->script_debug() ) {
 					$file = $this->block_path . 'editor.css';
 				} else {
@@ -214,7 +193,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return bool whether to use debuggable scripts
 			 * @since  0.1
 			 */
-			protected function script_debug() {
+			protected function script_debug(): bool {
 				return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 			}
 
@@ -228,7 +207,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return string the rendered HTML for the block
 			 * @since  0.1
 			 */
-			abstract public function render( array $atts, string $content = '' );
+			abstract public function render( array $atts, string $content = '' ): string;
 
 			/**
 			 * Add any additional elements that need to be in the localized script array
@@ -369,7 +348,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the updated list of arguments
 			 * @since  0.1
 			 */
-			abstract public function register_args( array $args );
+			abstract public function register_args( array $args ): array;
 
 			/**
 			 * Retrieve a list of all blogs in this multisite
@@ -378,7 +357,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the list of blogs
 			 * @since  0.1
 			 */
-			protected function get_blog_list() {
+			protected function get_blog_list(): array {
 				$blog_list = array();
 
 				global $wpdb;

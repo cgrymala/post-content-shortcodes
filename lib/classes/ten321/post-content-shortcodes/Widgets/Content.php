@@ -34,7 +34,7 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 			 * @deprecated since 0.9
 			 * @access public
 			 */
-			public function Content() {
+			public function Content(): Content {
 				return self::__construct();
 			}
 
@@ -129,7 +129,7 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 			 * @return array the sanitized settings for this instance of the widget
 			 * @since  0.1
 			 */
-			public function update( $new_instance, $old_instance ) {
+			public function update( $new_instance, $old_instance ): array {
 				$instance                    = $this->get_common_values( $new_instance );
 				$instance['type']            = 'content';
 				$instance['id']              = isset( $new_instance['id'] ) ? absint( $new_instance['id'] ) : 0;

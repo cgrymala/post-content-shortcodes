@@ -20,7 +20,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @var Content $instance holds the single instance of this class
 			 * @access private
 			 */
-			private static $instance;
+			private static Content $instance;
 
 			/**
 			 * Creates the Content object
@@ -42,7 +42,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return  Content
 			 * @since   2020.8
 			 */
-			public static function instance() {
+			public static function instance(): Content {
 				if ( ! isset( self::$instance ) ) {
 					$className      = __CLASS__;
 					self::$instance = new $className;
@@ -98,7 +98,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return string the rendered HTML for the block
 			 * @since  0.1
 			 */
-			public function render( array $atts, string $content = '' ) {
+			public function render( array $atts, string $content = '' ): string {
 				if ( array_key_exists( 'blog', $atts ) ) {
 					$atts['blog'] = intval( $atts['blog']['key'] );
 					$atts['blog_id'] = $atts['blog'];
@@ -126,7 +126,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the updated list of arguments
 			 * @since  0.1
 			 */
-			public function get_args( array $args ) {
+			public function get_args( array $args ): array {
 				return $this->register_args( $args );
 			}
 
@@ -139,7 +139,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the updated list of arguments
 			 * @since  0.1
 			 */
-			public function register_args( array $args ) {
+			public function register_args( array $args ): array {
 				if ( ! array_key_exists( 'transforms', $args ) ) {
 					$args['transforms'] = array( 'from' => array() );
 				}
@@ -159,7 +159,7 @@ namespace Ten321\Post_Content_Shortcodes\Blocks {
 			 * @return array the transforms portion of the array
 			 * @since  0.1
 			 */
-			public function get_transform_arguments() {
+			public function get_transform_arguments(): array {
 				$trans_atts = array();
 
 				$atts = $this->get_attributes();

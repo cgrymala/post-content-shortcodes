@@ -29,7 +29,7 @@ function updateVersionNumber() {
             countMatches: true
         },
         {
-            files: './lib/classes/ten321/post-content-shortcodes/Plugin.php',
+            files: './lib/classes/ten321/post-content-shortcodes/Base.php',
             from: /public static string \$version = '([\d|\.]+)';/g,
             to: "public static string $version = '" + versionNumber + "';",
             countMatches: true

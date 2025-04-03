@@ -20,14 +20,6 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 		 */
 		class PCS_Widget extends \WP_Widget {
 			/**
-			 * Holds the version number for use with various assets
-			 *
-			 * @since  1.0
-			 * @access public
-			 * @var    string
-			 */
-			public $version = '0.9.9.2';
-			/**
 			 * @since  0.1
 			 * @access public
 			 * @var    array the array of default attributes
@@ -141,7 +133,7 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 			 * @return void
 			 * @since  0.1
 			 */
-			public function WP_Widget_construct( $id, $name, $widget_ops = array(), $control_ops = array() ) {
+			public function WP_Widget_construct( string $id, string $name, array $widget_ops = array(), array $control_ops = array() ) {
 				\WP_Widget::__construct( $id, $name, $widget_ops, $control_ops );
 			}
 
@@ -195,7 +187,7 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 			 * @return bool
 			 * @since  0.1
 			 */
-			public function get_blogs() {
+			public function get_blogs(): bool {
 				if ( ! is_multisite() ) {
 					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 						error_log( '[PCS Notice]: This site does not appear to be multisite-enabled.' );
@@ -257,7 +249,7 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 			 * @return void
 			 * @since  0.1
 			 */
-			public function common_fields( $instance = array() ) {
+			public function common_fields( array $instance = array() ) {
 				$has_templates = false;
 				if ( array_key_exists( 'view_template', $this->defaults ) ) {
 					$templates = $this->get_view_templates();
@@ -408,7 +400,7 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 			 * @return \WP_Post[] the list of Views templates
 			 * @since  0.1
 			 */
-			public function get_view_templates() {
+			public function get_view_templates(): array {
 				return get_posts( array(
 					'post_type'      => 'view-template',
 					'orderby'        => 'title',
@@ -434,7 +426,7 @@ namespace Ten321\Post_Content_Shortcodes\Widgets {
 			 * @return array the updated/sanitized array of options
 			 * @since  0.1
 			 */
-			public function get_common_values( $new_instance = array() ) {
+			public function get_common_values( array $new_instance = array() ): array {
 				$instance                   = array();
 				$instance['show_title']     = array_key_exists( 'show_title', $new_instance ) ? true : false;
 				$instance['show_image']     = array_key_exists( 'show_image', $new_instance ) ? true : false;
