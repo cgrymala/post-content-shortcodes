@@ -1,0 +1,51 @@
+{
+  "name": "ten321/post-content-shortcodes",
+  "description": "Post Content Shortcodes",
+  "version": "2.0.0",
+  "authors": [
+    {
+      "name": "Curtiss Grymala",
+      "email": "curtiss@ten-321.com"
+    }
+  ],
+  "config": {
+    "vendor-dir": "vendor",
+    "preferred-install": "dist",
+    "platform": {
+      "php": "8.2"
+    },
+    "allow-plugins": {
+      "composer/installers": true
+    }
+  },
+  "type": "project",
+  "license": "Proprietary",
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*"
+      ]
+    }
+  ],
+  "require": {
+    "php": "^7.4|>=8.2",
+    "salesforce/handlebars-php": "3.*",
+    "yahnis-elsts/plugin-update-checker": "dev-master",
+    "vlucas/phpdotenv": "^5.6@dev"
+  },
+  "extra": {
+    "installer-paths": {
+      "vendor/{$name}": [
+        "type:wordpress-plugin"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Ten321\\Post_Content_Shortcodes\\": "lib/classes/ten321/post-content-shortcodes"
+    }
+  }
+}

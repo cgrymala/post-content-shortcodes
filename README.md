@@ -1,14 +1,9 @@
 # Post Content Shortcodes #
-**Contributors:** cgrymala
-
-**Tags:** shortcode, clone, syndication, post content, post list
-
-**Requires at least:** 5.2
-
-**Tested up to:** 5.5
-
-**Stable tag:** 1.0.1.1
-
+Contributors: cgrymala  
+Tags: shortcode, clone, syndication, post content, post list  
+Requires at least: 6.7  
+Tested up to: 6.7.2  
+Stable tag: 2.0.0  
 
 Adds shortcodes to display the content of a post or a list of posts.
 
