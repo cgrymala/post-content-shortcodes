@@ -16,11 +16,11 @@ namespace {
 
 	if ( file_exists( __DIR__ . '/.env' ) ) {
 		$dotenv = Dotenv\Dotenv::createImmutable( __DIR__ );
-		$dotenv->ifPresent( 'UMW_RSS_DISPLAY_REPO_IS_CUSTOM_GITLAB' )->isBoolean();
+		$dotenv->ifPresent( 'POST_CONTENT_SHORTCODES_REPO_IS_CUSTOM_GITLAB' )->isBoolean();
 		$dotenv->load();
 	} else if ( file_exists( __DIR__ . '/.env.default' ) ) {
 		$dotenv = Dotenv\Dotenv::createImmutable( __DIR__, '.env.default' );
-		$dotenv->ifPresent( 'UMW_RSS_DISPLAY_REPO_IS_CUSTOM_GITLAB' )->isBoolean();
+		$dotenv->ifPresent( 'POST_CONTENT_SHORTCODES_REPO_IS_CUSTOM_GITLAB' )->isBoolean();
 		$dotenv->load();
 	}
 }

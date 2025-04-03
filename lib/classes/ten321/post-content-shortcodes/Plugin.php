@@ -81,6 +81,8 @@ namespace Ten321\Post_Content_Shortcodes {
 				$this->plugin_dir_name = 'post-content-shortcodes/post-content-shortcodes.php';
 				add_action( 'plugins_loaded', array( $this, 'startup' ), 99 );
 
+				Updates::instance();
+
 				Blocks\Content_List::instance();
 				Blocks\Content::instance();
 			}
