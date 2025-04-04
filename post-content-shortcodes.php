@@ -29,6 +29,10 @@ namespace Ten321\Post_Content_Shortcodes {
 	global $post_content_shortcodes_obj;
 
 	if ( ! isset( $post_content_shortcodes_obj ) ) {
-		$GLOBALS['post_content_shortcodes_obj'] = Plugin::instance();
+		if ( is_admin() ) {
+			$post_content_shortcodes_obj = Admin::instance();
+		} else {
+			$post_content_shortcodes_obj = Plugin::instance();
+		}
 	}
 }

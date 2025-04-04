@@ -277,12 +277,12 @@ namespace Ten321\Post_Content_Shortcodes {
 				if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 					require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 				}
-				$rt = function_exists( 'is_plugin_active_for_network' ) && is_multisite() && is_plugin_active_for_network( $this->plugin_dir_name );
+				$rt = function_exists( 'is_plugin_active_for_network' ) && is_multisite() && is_plugin_active_for_network( Helpers::plugins_path( '/post-content-shortcodes.php' ) );
 				$fe = function_exists( 'is_plugin_active_for_network' ) ? 'does' : 'does not';
 				$im = is_multisite() ? 'is' : 'is not';
 				$pa = 'is not';
 				if ( function_exists( 'is_plugin_active_for_network' ) ) {
-					$pa = is_plugin_active_for_network( $this->plugin_dir_name ) ? 'is' : 'is not';
+					$pa = is_plugin_active_for_network( Helpers::plugins_path( '/post-content-shortcodes.php' ) ) ? 'is' : 'is not';
 				}
 
 				/*$this->debug( sprintf( 'Evaluating whether the plugin is active on the network. The primary result is: %s.', print_r( $rt, true ) ) );
